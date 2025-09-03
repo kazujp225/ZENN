@@ -1,0 +1,557 @@
+/* Scrap Detail Page Styles */
+.scrap-detail-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f9fafb 0%, white 100%);
+}
+
+.scrap-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Header Section */
+.scrap-detail-header {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.scrap-detail-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.scrap-detail-header-content {
+  position: relative;
+}
+
+.scrap-detail-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.scrap-detail-emoji {
+  font-size: 3.5rem;
+  line-height: 1;
+  animation: emoji-float 3s ease-in-out infinite;
+}
+
+@keyframes emoji-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.scrap-detail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.scrap-detail-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s infinite;
+}
+
+.scrap-detail-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.scrap-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.scrap-detail-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.scrap-detail-author:hover {
+  opacity: 0.8;
+}
+
+.scrap-detail-author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scrap-detail-author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.scrap-detail-author-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.scrap-detail-author-username {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.scrap-detail-dates {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.scrap-detail-separator {
+  color: #d1d5db;
+}
+
+.scrap-detail-stats {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.scrap-detail-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.scrap-detail-stat svg {
+  stroke: currentColor;
+}
+
+.scrap-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.scrap-detail-tag {
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #4b5563;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.scrap-detail-tag:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px -4px rgba(102, 126, 234, 0.4);
+}
+
+/* Main Layout */
+.scrap-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+}
+
+.scrap-detail-main {
+  min-width: 0;
+}
+
+/* Content Section */
+.scrap-detail-content {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-body {
+  line-height: 1.8;
+  color: #374151;
+}
+
+.markdown-body h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.markdown-body h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.markdown-body code {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.markdown-body pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.markdown-body li {
+  margin: 0.5rem 0;
+}
+
+/* Comments Section */
+.scrap-detail-comments {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.1);
+}
+
+.scrap-detail-comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.scrap-detail-comments-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.scrap-detail-comment-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.scrap-detail-comment-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(102, 126, 234, 0.4);
+}
+
+/* Comment Form */
+.scrap-detail-comment-form {
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 2px solid #e5e7eb;
+}
+
+.scrap-detail-comment-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.scrap-detail-comment-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.scrap-detail-comment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Comment List */
+.scrap-detail-comments-list {
+  space-y: 1.5rem;
+}
+
+.scrap-detail-comment {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.scrap-detail-comment:hover {
+  background: #f3f4f6;
+}
+
+.scrap-detail-comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.scrap-detail-comment-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.scrap-detail-comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.scrap-detail-comment-name {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.scrap-detail-comment-username {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.scrap-detail-comment-time {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.scrap-detail-comment-content {
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.scrap-detail-comment-footer {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.scrap-detail-comment-like,
+.scrap-detail-comment-reply {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0.25rem 0.5rem;
+}
+
+.scrap-detail-comment-like:hover {
+  color: #ef4444;
+}
+
+.scrap-detail-comment-reply:hover {
+  color: #2563eb;
+}
+
+/* Sidebar */
+.scrap-detail-sidebar {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+/* Author Card */
+.scrap-detail-author-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.1);
+}
+
+.scrap-detail-author-card-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+.scrap-detail-author-card-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.scrap-detail-author-card-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.scrap-detail-author-card-name {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 1.125rem;
+}
+
+.scrap-detail-author-card-username {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.scrap-detail-author-card-bio {
+  color: #4b5563;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.scrap-detail-author-card-stats {
+  padding: 0.75rem 0;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.scrap-detail-author-card-follow {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Related Scraps */
+.scrap-detail-related {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.1);
+}
+
+.scrap-detail-related-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.scrap-detail-related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.scrap-detail-related-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.scrap-detail-related-item:hover {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  transform: translateX(4px);
+}
+
+.scrap-detail-related-emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.scrap-detail-related-text {
+  flex: 1;
+  color: #374151;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .scrap-detail-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .scrap-detail-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .scrap-detail-header {
+    padding: 1.5rem;
+  }
+  
+  .scrap-detail-title {
+    font-size: 1.75rem;
+  }
+  
+  .scrap-detail-emoji {
+    font-size: 2.5rem;
+  }
+  
+  .scrap-detail-stats {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}

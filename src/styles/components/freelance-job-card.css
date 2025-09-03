@@ -1,0 +1,457 @@
+/* ==========================================
+   Freelance Job Card - Minimal Professional Design
+   ========================================== */
+
+.freelance-job-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.freelance-job-card:hover {
+  border-color: #D1D5DB;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.freelance-job-card__inner {
+  padding: var(--space-6);
+}
+
+/* Badges */
+.freelance-job-card__badges {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.freelance-job-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.freelance-job-card__badge--new {
+  background: #ECFDF5;
+  color: #10B981;
+  border: 1px solid #10B98120;
+}
+
+.freelance-job-card__badge--urgent {
+  background: #FEF2F2;
+  color: #EF4444;
+  border: 1px solid #EF444420;
+}
+
+.freelance-job-card__badge--verified {
+  background: #EFF6FF;
+  color: #3B82F6;
+  border: 1px solid #3B82F620;
+}
+
+.freelance-job-card__status {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.freelance-job-card__status--open {
+  background: #F0F9FF;
+  color: #0EA5E9;
+  border: 1px solid #0EA5E920;
+}
+
+.freelance-job-card__status--progress {
+  background: #FEF3C7;
+  color: #F59E0B;
+  border: 1px solid #F59E0B20;
+}
+
+.freelance-job-card__status--closed {
+  background: #F3F4F6;
+  color: #6B7280;
+  border: 1px solid #6B728020;
+}
+
+.freelance-job-card__status--completed {
+  background: #ECFDF5;
+  color: #10B981;
+  border: 1px solid #10B98120;
+}
+
+/* Header */
+.freelance-job-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.freelance-job-card__category {
+  flex-shrink: 0;
+}
+
+.freelance-job-card__category-label {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #F9FAFB;
+  color: #4B5563;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+}
+
+.freelance-job-card__budget {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.freelance-job-card__budget-label {
+  display: block;
+  font-size: 11px;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.freelance-job-card__budget-amount {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1F2937;
+  line-height: 1.2;
+}
+
+/* Content */
+.freelance-job-card__content {
+  position: relative;
+}
+
+.freelance-job-card__title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: var(--space-3);
+}
+
+.freelance-job-card__title a {
+  color: #1F2937;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.freelance-job-card__title a:hover {
+  color: #10B981;
+}
+
+.freelance-job-card__description {
+  color: #6B7280;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+/* Info */
+.freelance-job-card__info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: 1px solid #F3F4F6;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.freelance-job-card__info-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: #4B5563;
+}
+
+.freelance-job-card__info-item svg {
+  width: 16px;
+  height: 16px;
+  color: #9CA3AF;
+  flex-shrink: 0;
+}
+
+.freelance-job-card__work-style-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.freelance-job-card__location {
+  color: #9CA3AF;
+  font-size: 12px;
+}
+
+.freelance-job-card__info-item--deadline {
+  color: #DC2626;
+}
+
+.freelance-job-card__info-item--deadline svg {
+  color: #DC2626;
+}
+
+/* Skills */
+.freelance-job-card__skills {
+  margin-bottom: var(--space-4);
+}
+
+.freelance-job-card__skills-label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-2);
+}
+
+.freelance-job-card__skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.freelance-job-card__skill {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #F3F4F6;
+  color: #4B5563;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  line-height: 1.3;
+}
+
+.freelance-job-card__skill--more {
+  background: #E5E7EB;
+  color: #6B7280;
+  font-weight: 600;
+}
+
+/* Requirements */
+.freelance-job-card__requirements {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3);
+  background: #FAFBFC;
+  border-radius: 8px;
+  border: 1px solid #F3F4F6;
+}
+
+.freelance-job-card__requirements-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-2);
+}
+
+.freelance-job-card__requirements-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.freelance-job-card__requirements-list li {
+  position: relative;
+  font-size: 13px;
+  color: #4B5563;
+  line-height: 1.6;
+  padding-left: 16px;
+}
+
+.freelance-job-card__requirements-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #10B981;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Client Info */
+.freelance-job-card__client {
+  display: flex;
+  align-items: center;
+  padding: var(--space-3);
+  background: #FAFBFC;
+  border-radius: 8px;
+  margin-bottom: var(--space-4);
+  transition: background 0.2s;
+}
+
+.freelance-job-card__client:hover {
+  background: #F3F4F6;
+}
+
+.freelance-job-card__client-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.freelance-job-card__client-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #E5E7EB;
+}
+
+.freelance-job-card__client-info {
+  flex: 1;
+}
+
+.freelance-job-card__client-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 2px;
+}
+
+.freelance-job-card__client-company {
+  color: #6B7280;
+  font-weight: 400;
+}
+
+.freelance-job-card__client-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.freelance-job-card__client-rating svg {
+  width: 14px;
+  height: 14px;
+}
+
+.freelance-job-card__client-jobs {
+  color: #9CA3AF;
+  margin-left: 4px;
+}
+
+/* Stats */
+.freelance-job-card__stats {
+  display: flex;
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid #F3F4F6;
+  margin-bottom: var(--space-4);
+}
+
+.freelance-job-card__stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.freelance-job-card__stat svg {
+  width: 16px;
+  height: 16px;
+  color: #9CA3AF;
+}
+
+/* Footer */
+.freelance-job-card__footer {
+  display: flex;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid #F3F4F6;
+}
+
+.freelance-job-card__button {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.freelance-job-card__button--detail {
+  background: #F3F4F6;
+  color: #4B5563;
+  border-color: #E5E7EB;
+}
+
+.freelance-job-card__button--detail:hover {
+  background: #E5E7EB;
+  color: #1F2937;
+}
+
+.freelance-job-card__button--apply {
+  background: #10B981;
+  color: white;
+}
+
+.freelance-job-card__button--apply:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .freelance-job-card__inner {
+    padding: var(--space-4);
+  }
+
+  .freelance-job-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .freelance-job-card__budget {
+    text-align: left;
+  }
+
+  .freelance-job-card__info {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .freelance-job-card__footer {
+    flex-direction: column;
+  }
+
+  .freelance-job-card__button {
+    width: 100%;
+  }
+}

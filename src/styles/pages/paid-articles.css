@@ -1,0 +1,357 @@
+/* 有料記事ページ - ミニマルデザイン */
+.paid-articles-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* ヘッダー */
+.paid-articles-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.paid-articles-header__content {
+  flex: 1;
+}
+
+.paid-articles-header__title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #0f172a;
+}
+
+.paid-articles-header__icon {
+  font-size: 2rem;
+}
+
+.paid-articles-header__description {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.paid-articles-header__button {
+  background: #0f172a;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.paid-articles-header__button:hover {
+  background: #1e293b;
+}
+
+/* 統計バナー */
+.paid-articles-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin-bottom: 3rem;
+  background: #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.paid-articles-stat {
+  background: white;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.paid-articles-stat__value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.paid-articles-stat__label {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* レイアウト */
+.paid-articles-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+/* サイドバー */
+.paid-articles-sidebar {
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+}
+
+.paid-articles-filter {
+  margin-bottom: 2rem;
+}
+
+.paid-articles-filter__title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.paid-articles-filter__select {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  background: white;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.paid-articles-filter__select:hover {
+  border-color: #cbd5e1;
+}
+
+.paid-articles-filter__select:focus {
+  outline: none;
+  border-color: #0f172a;
+}
+
+.paid-articles-filter__options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.paid-articles-filter__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.paid-articles-filter__option:hover {
+  color: #0f172a;
+}
+
+.paid-articles-filter__option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #0f172a;
+}
+
+.paid-articles-filter__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.paid-articles-filter__checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #0f172a;
+}
+
+/* カテゴリー */
+.paid-articles-categories {
+  margin-bottom: 2rem;
+}
+
+.paid-articles-categories__title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.paid-articles-categories__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.paid-articles-category {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 0;
+  text-decoration: none;
+  color: #475569;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.paid-articles-category:hover {
+  color: #0f172a;
+}
+
+.paid-articles-category__emoji {
+  width: 1.5rem;
+  margin-right: 0.75rem;
+  text-align: center;
+}
+
+.paid-articles-category__name {
+  flex: 1;
+}
+
+.paid-articles-category__count {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* インフォボックス */
+.paid-articles-info {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.paid-articles-info__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+}
+
+.paid-articles-info__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.paid-articles-info__list li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.paid-articles-info__list li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #0f172a;
+}
+
+/* メインコンテンツ */
+.paid-articles-main {
+  min-height: 100vh;
+}
+
+.paid-articles-results {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.paid-articles-results__count {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.paid-articles-results__clear {
+  padding: 0.375rem 0.75rem;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  color: #64748b;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.paid-articles-results__clear:hover {
+  border-color: #0f172a;
+  color: #0f172a;
+}
+
+/* 記事グリッド */
+.paid-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* ロードモア */
+.paid-articles-load-more {
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0;
+}
+
+.paid-articles-load-more button {
+  padding: 0.75rem 2rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.paid-articles-load-more button:hover {
+  border-color: #0f172a;
+  color: #0f172a;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1024px) {
+  .paid-articles-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .paid-articles-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .paid-articles-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .paid-articles-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .paid-articles-grid {
+    grid-template-columns: 1fr;
+  }
+}

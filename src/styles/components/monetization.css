@@ -1,0 +1,845 @@
+/* Monetization Components Styles - ミニマルデザイン */
+
+/* ===== Paid Article Card - 洗練版 ===== */
+.paid-article-card {
+  position: relative;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  height: 100%;
+}
+
+.paid-article-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.paid-article-card__inner {
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.paid-article-card__price-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+}
+
+.paid-article-card__price {
+  display: inline-block;
+  padding: 0.375rem 0.875rem;
+  background: #0f172a;
+  color: white;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.paid-article-card__purchased {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  background: #10b981;
+  color: white;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.8125rem;
+}
+
+.paid-article-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.paid-article-card__emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.paid-article-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.paid-article-card__read-time {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.paid-article-card__read-time svg {
+  width: 12px;
+  height: 12px;
+}
+
+.paid-article-card__verified {
+  display: flex;
+  align-items: center;
+}
+
+.paid-article-card__verified svg {
+  width: 14px;
+  height: 14px;
+}
+
+.paid-article-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.paid-article-card__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 0.75rem 0;
+}
+
+.paid-article-card__title a {
+  color: #0f172a;
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.paid-article-card:hover .paid-article-card__title a {
+  color: #1e293b;
+}
+
+.paid-article-card__preview {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin: 0 0 1rem 0;
+}
+
+.paid-article-card__stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.paid-article-card__stat {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.paid-article-card__stat svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.paid-article-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.paid-article-card__rating svg {
+  width: 12px;
+  height: 12px;
+}
+
+.paid-article-card__rating span {
+  margin-left: 0.25rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+.paid-article-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+.paid-article-card__tag {
+  padding: 0.25rem 0.625rem;
+  background: #f8fafc;
+  color: #475569;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.paid-article-card__tag:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.paid-article-card__tag--more {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #94a3b8;
+  cursor: default;
+}
+
+.paid-article-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.paid-article-card__author {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #475569;
+  font-size: 0.8125rem;
+}
+
+.paid-article-card__author:hover {
+  color: #334155;
+}
+
+.paid-article-card__author-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.paid-article-card__author-name {
+  font-weight: 500;
+}
+
+.paid-article-card__date {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.paid-article-card__overlay {
+  display: none;
+}
+
+/* ===== Consultation Card ===== */
+.consultation-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.consultation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.consultation-card__inner {
+  padding: 1.5rem;
+}
+
+.consultation-card__status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.consultation-card__available,
+.consultation-card__busy {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.consultation-card__available {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.consultation-card__busy {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.consultation-card__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.consultation-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.consultation-card__category {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.consultation-card__category-icon {
+  font-size: 1.25rem;
+}
+
+.consultation-card__category-label {
+  color: #64748b;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.consultation-card__price {
+  text-align: right;
+}
+
+.consultation-card__price-amount {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.consultation-card__price-duration {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.consultation-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.consultation-card__title a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.consultation-card:hover .consultation-card__title a {
+  color: #1e293b;
+}
+
+.consultation-card__description {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.consultation-card__mentor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.consultation-card__mentor-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.consultation-card__mentor-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.consultation-card__mentor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.consultation-card__mentor-name {
+  font-weight: 500;
+  color: #0f172a;
+  font-size: 0.875rem;
+}
+
+.consultation-card__mentor-title {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.consultation-card__mentor-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #f59e0b;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.consultation-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.consultation-card__stat {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.consultation-card__stat--highlight {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.consultation-card__languages {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.consultation-card__language {
+  padding: 0.125rem 0.5rem;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.consultation-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.consultation-card__tag {
+  padding: 0.25rem 0.5rem;
+  background: #f8fafc;
+  color: #64748b;
+  border-radius: 3px;
+  font-size: 0.75rem;
+}
+
+.consultation-card__reviews {
+  padding: 0.75rem;
+  background: #fffbeb;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.consultation-card__review-snippet {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.consultation-card__review-text {
+  flex: 1;
+  color: #78350f;
+  font-size: 0.8125rem;
+  font-style: italic;
+}
+
+.consultation-card__reviews-link {
+  color: #f59e0b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.consultation-card__reviews-link:hover {
+  text-decoration: underline;
+}
+
+.consultation-card__footer {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.consultation-card__button {
+  flex: 1;
+  padding: 0.625rem;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.consultation-card__button--detail {
+  background: white;
+  color: #475569;
+  border: 1px solid #e5e7eb;
+}
+
+.consultation-card__button--detail:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.consultation-card__button--book {
+  background: #0f172a;
+  color: white;
+}
+
+.consultation-card__button--book:hover {
+  background: #1e293b;
+}
+
+/* ===== Freelance Job Card ===== */
+.freelance-job-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.freelance-job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #cbd5e1;
+}
+
+.freelance-job-card__inner {
+  padding: 1.5rem;
+}
+
+.freelance-job-card__badges {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.freelance-job-card__badge {
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.freelance-job-card__badge--new {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.freelance-job-card__badge--urgent {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.freelance-job-card__badge--verified {
+  background: #dbeafe;
+  color: #1e40af;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.freelance-job-card__status {
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.freelance-job-card__status--open {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.freelance-job-card__status--progress {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.freelance-job-card__status--closed {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.freelance-job-card__status--completed {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.freelance-job-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.freelance-job-card__category-label {
+  padding: 0.375rem 0.875rem;
+  background: #f0fdf4;
+  color: #14532d;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.freelance-job-card__budget {
+  text-align: right;
+}
+
+.freelance-job-card__budget-label {
+  display: block;
+  color: #64748b;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.freelance-job-card__budget-amount {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.freelance-job-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.freelance-job-card__title a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.freelance-job-card:hover .freelance-job-card__title a {
+  color: #1e293b;
+}
+
+.freelance-job-card__description {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.freelance-job-card__info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.freelance-job-card__info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.freelance-job-card__info-item--deadline {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.freelance-job-card__work-style-icon {
+  font-size: 0.875rem;
+}
+
+.freelance-job-card__location {
+  color: #475569;
+}
+
+.freelance-job-card__skills {
+  margin-bottom: 1rem;
+}
+
+.freelance-job-card__skills-label {
+  color: #64748b;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.freelance-job-card__skills-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.freelance-job-card__skill {
+  padding: 0.25rem 0.5rem;
+  background: #f0fdf4;
+  color: #14532d;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.freelance-job-card__skill--more {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.freelance-job-card__requirements {
+  margin-bottom: 1rem;
+}
+
+.freelance-job-card__requirements-label {
+  color: #64748b;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.freelance-job-card__requirements-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.freelance-job-card__requirements-list li {
+  color: #475569;
+  font-size: 0.8125rem;
+  margin-bottom: 0.25rem;
+}
+
+.freelance-job-card__client {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.freelance-job-card__client-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.freelance-job-card__client-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.freelance-job-card__client-name {
+  font-weight: 500;
+  color: #0f172a;
+  font-size: 0.875rem;
+}
+
+.freelance-job-card__client-company {
+  color: #64748b;
+  font-weight: 400;
+}
+
+.freelance-job-card__client-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.freelance-job-card__client-jobs {
+  margin-left: 0.25rem;
+}
+
+.freelance-job-card__stats {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.freelance-job-card__stat {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.freelance-job-card__footer {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.freelance-job-card__button {
+  flex: 1;
+  padding: 0.625rem;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.freelance-job-card__button--detail {
+  background: white;
+  color: #475569;
+  border: 1px solid #e5e7eb;
+}
+
+.freelance-job-card__button--detail:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.freelance-job-card__button--apply {
+  background: #0f172a;
+  color: white;
+}
+
+.freelance-job-card__button--apply:hover {
+  background: #1e293b;
+}

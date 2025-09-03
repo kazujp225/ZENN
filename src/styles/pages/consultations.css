@@ -1,0 +1,1161 @@
+/* ==========================================
+   相談ページ - Consultation Page Styles
+   ========================================== */
+
+.consultations-page {
+  min-height: 100vh;
+  background: var(--color-bg-secondary);
+}
+
+/* ==========================================
+   Hero Section - Minimal Design
+   ========================================== */
+
+.consultations-hero--minimal {
+  background: #FFFFFF;
+  padding: calc(var(--space-20) + 80px) 0 var(--space-16);
+  margin-bottom: 0;
+  position: relative;
+}
+
+.consultations-hero--minimal::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #E5E7EB, transparent);
+}
+
+.consultations-hero__inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--space-8);
+}
+
+.consultations-hero__main {
+  text-align: center;
+}
+
+.consultations-hero__title-wrapper {
+  position: relative;
+  margin-bottom: var(--space-8);
+}
+
+.consultations-hero__title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #1F2937;
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.01em;
+  position: relative;
+}
+
+.consultations-hero__title-line {
+  display: block;
+  position: relative;
+}
+
+.consultations-hero__title-line:first-child {
+  margin-bottom: var(--space-2);
+}
+
+.consultations-hero__title-text {
+  position: relative;
+  z-index: 2;
+}
+
+.consultations-hero__title-accent {
+  position: relative;
+  z-index: 2;
+  color: #1F2937;
+  display: inline-block;
+  padding: 0 var(--space-1);
+  font-weight: 800;
+}
+
+.consultations-hero__title-accent::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 100%);
+  opacity: 0.15;
+  z-index: -1;
+  border-radius: 2px;
+  animation: highlight 2s ease-in-out infinite;
+}
+
+@keyframes highlight {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scaleX(1.05);
+  }
+}
+
+.consultations-hero__title-decoration {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+  animation: fadeIn 1s ease-out 0.5s both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.consultations-hero__description {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: #6B7280;
+  margin-bottom: var(--space-10);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stats Section */
+.consultations-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+  padding: var(--space-8);
+  background: #FAFBFC;
+  border-radius: 12px;
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.consultations-hero__stat {
+  text-align: center;
+}
+
+.consultations-hero__stat-number {
+  display: block;
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: var(--space-1);
+}
+
+.consultations-hero__stat-label {
+  display: block;
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  font-weight: 400;
+}
+
+/* Actions */
+.consultations-hero__actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-bottom: var(--space-6);
+  animation: fadeInUp 0.8s ease-out 0.7s both;
+}
+
+.consultations-hero__btn {
+  padding: var(--space-3) var(--space-6);
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.15s;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.consultations-hero__btn--primary {
+  background: #1F2937;
+  color: white;
+}
+
+.consultations-hero__btn--primary:hover {
+  background: #111827;
+  transform: translateY(-1px);
+}
+
+.consultations-hero__btn--ghost {
+  background: transparent;
+  color: #6B7280;
+  border: 1px solid #E5E7EB;
+}
+
+.consultations-hero__btn--ghost:hover {
+  background: #F9FAFB;
+  border-color: #D1D5DB;
+}
+
+/* Features */
+.consultations-hero__features {
+  display: flex;
+  gap: var(--space-6);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.8s ease-out 0.9s both;
+}
+
+.consultations-hero__feature {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 0.875rem;
+  color: #9CA3AF;
+}
+
+.consultations-hero__feature svg {
+  color: #D1D5DB;
+  flex-shrink: 0;
+}
+
+/* Remove visual section - keeping it minimal */
+
+/* ==========================================
+   Categories
+   ========================================== */
+
+.consultations-categories {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  overflow-x: auto;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.consultations-category {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: 1px solid #E5E7EB;
+  border-radius: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.consultations-category:hover {
+  background: #F9FAFB;
+  border-color: #D1D5DB;
+}
+
+.consultations-category--active {
+  background: #1F2937;
+  color: white;
+  border-color: #1F2937;
+}
+
+.consultations-category__emoji {
+  font-size: 1.25rem;
+}
+
+.consultations-category__label {
+  font-size: 0.95rem;
+}
+
+/* ==========================================
+   Layout
+   ========================================== */
+
+.consultations-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--space-8);
+  margin-top: var(--space-6);
+}
+
+/* ==========================================
+   Sidebar
+   ========================================== */
+
+.consultations-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Filter Section */
+.consultations-filter {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+}
+
+.consultations-filter__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.consultations-filter__section {
+  margin-top: var(--space-6);
+}
+
+.consultations-filter__subtitle {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+  color: var(--color-fg-secondary);
+}
+
+.consultations-filter__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.consultations-filter__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  padding: var(--space-2) 0;
+}
+
+.consultations-filter__option input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+}
+
+.consultations-filter__option span {
+  font-size: 0.95rem;
+}
+
+.consultations-filter__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  padding: var(--space-2) 0;
+}
+
+.consultations-filter__checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+}
+
+/* Top Mentors */
+.consultations-top-mentors {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+}
+
+.consultations-top-mentors__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+}
+
+.consultations-top-mentors__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.consultations-top-mentor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: background 0.2s;
+}
+
+.consultations-top-mentor:hover {
+  background: var(--color-bg-secondary);
+}
+
+.consultations-top-mentor__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+}
+
+.consultations-top-mentor__info {
+  flex: 1;
+}
+
+.consultations-top-mentor__name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.consultations-top-mentor__rating {
+  font-size: 0.85rem;
+  color: var(--color-fg-secondary);
+}
+
+/* Benefits */
+.consultations-benefits {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.consultations-benefits__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+  color: #166534;
+}
+
+.consultations-benefits__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.consultations-benefits__list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.95rem;
+  color: #166534;
+}
+
+/* ==========================================
+   Main Content
+   ========================================== */
+
+.consultations-main {
+  min-width: 0;
+  background: white;
+  border-radius: 12px;
+  padding: var(--space-6);
+  border: 1px solid #F3F4F6;
+}
+
+/* Results Bar */
+.consultations-results {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) 0;
+}
+
+.consultations-results__count {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-fg-secondary);
+}
+
+.consultations-results__clear {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.consultations-results__clear:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Consultations Grid */
+.consultations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-6);
+}
+
+/* Load More */
+.consultations-load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-12);
+  padding-bottom: var(--space-8);
+}
+
+/* ==========================================
+   How It Works Section
+   ========================================== */
+
+.consultations-how-it-works {
+  padding: var(--space-20) 0;
+  text-align: center;
+  background: #FAFBFC;
+  margin: 0;
+  position: relative;
+}
+
+.consultations-how-it-works::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(180deg, #FFFFFF, #FAFBFC);
+}
+
+.consultations-how-it-works__title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: var(--space-10);
+  color: #1F2937;
+  position: relative;
+  z-index: 1;
+}
+
+.consultations-how-it-works__steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+  position: relative;
+}
+
+.consultations-how-it-works__steps::before {
+  content: '';
+  position: absolute;
+  top: 80px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--color-border) 20%, var(--color-border) 80%, transparent);
+  z-index: 0;
+}
+
+.consultations-how-it-works__step {
+  position: relative;
+  background: white;
+  padding: var(--space-6);
+  border-radius: 12px;
+  border: 1px solid #F3F4F6;
+  text-align: center;
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+
+.consultations-how-it-works__step:hover {
+  transform: translateY(-2px);
+  border-color: #E5E7EB;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.consultations-how-it-works__step-number {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.consultations-how-it-works__step-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-3);
+}
+
+.consultations-how-it-works__step h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+  color: var(--color-fg);
+}
+
+.consultations-how-it-works__step p {
+  font-size: 0.9rem;
+  color: var(--color-fg-secondary);
+  line-height: 1.5;
+}
+
+/* ==========================================
+   Popular Topics
+   ========================================== */
+
+.consultations-popular-topics {
+  padding: var(--space-16) 0;
+  background: #FFFFFF;
+  margin: 0;
+}
+
+.consultations-popular-topics__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: var(--space-8);
+  color: #1F2937;
+  text-align: center;
+}
+
+.consultations-popular-topics__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.consultations-popular-topic {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  background: #FAFBFC;
+  padding: var(--space-5);
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.consultations-popular-topic:hover {
+  background: white;
+  border-color: #E5E7EB;
+  transform: translateX(4px);
+}
+
+.consultations-popular-topic__icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.consultations-popular-topic__content {
+  flex: 1;
+}
+
+.consultations-popular-topic__content h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+  color: var(--color-fg);
+}
+
+.consultations-popular-topic__content p {
+  font-size: 0.85rem;
+  color: var(--color-fg-secondary);
+  margin-bottom: var(--space-2);
+  line-height: 1.4;
+}
+
+.consultations-popular-topic__count {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ==========================================
+   Empty State
+   ========================================== */
+
+.consultations-empty {
+  text-align: center;
+  padding: var(--space-16) var(--space-8);
+  background: white;
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-8);
+}
+
+.consultations-empty__icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-4);
+  opacity: 0.5;
+}
+
+.consultations-empty__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+  color: var(--color-fg);
+}
+
+.consultations-empty__description {
+  font-size: 1rem;
+  color: var(--color-fg-secondary);
+  margin-bottom: var(--space-6);
+}
+
+/* ==========================================
+   Success Stories Section
+   ========================================== */
+
+.consultations-success-stories {
+  padding: var(--space-20) 0;
+  background: #FAFBFC;
+  margin: 0;
+  position: relative;
+}
+
+.consultations-success-stories::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 20%, #E5E7EB 50%, transparent 80%);
+}
+
+.consultations-success-stories__title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: var(--space-10);
+  color: #1F2937;
+}
+
+.consultations-success-stories__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-6);
+  padding: 0 var(--space-8);
+}
+
+.consultations-success-story {
+  background: white;
+  padding: var(--space-6);
+  border-radius: 12px;
+  border: 1px solid #F3F4F6;
+  transition: all 0.2s ease;
+}
+
+.consultations-success-story:hover {
+  border-color: #E5E7EB;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.consultations-success-story__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.consultations-success-story__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+}
+
+.consultations-success-story__name {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.consultations-success-story__role {
+  font-size: 0.85rem;
+  color: var(--color-fg-secondary);
+}
+
+.consultations-success-story__rating {
+  margin-bottom: var(--space-3);
+  color: #fbbf24;
+}
+
+.consultations-success-story__comment {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-fg-secondary);
+  margin-bottom: var(--space-3);
+  font-style: italic;
+}
+
+.consultations-success-story__mentor {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ==========================================
+   FAQ Section
+   ========================================== */
+
+.consultations-faq {
+  padding: var(--space-20) 0;
+  background: #FFFFFF;
+  margin: 0;
+}
+
+.consultations-faq__title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: var(--space-10);
+  color: #1F2937;
+}
+
+.consultations-faq__grid {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.consultations-faq__item {
+  background: #FAFBFC;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.15s ease;
+  margin-bottom: var(--space-3);
+}
+
+.consultations-faq__item[open] {
+  background: white;
+  border-color: #E5E7EB;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.consultations-faq__question {
+  padding: var(--space-5);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-fg);
+  transition: background 0.2s;
+}
+
+.consultations-faq__question:hover {
+  background: var(--color-bg-secondary);
+}
+
+.consultations-faq__question svg {
+  transition: transform 0.2s;
+  color: var(--color-fg-secondary);
+}
+
+.consultations-faq__item[open] .consultations-faq__question svg {
+  transform: rotate(180deg);
+}
+
+.consultations-faq__answer {
+  padding: 0 var(--space-5) var(--space-5);
+  font-size: 0.95rem;
+  color: var(--color-fg-secondary);
+  line-height: 1.6;
+}
+
+.consultations-faq__footer {
+  text-align: center;
+  margin-top: var(--space-6);
+  font-size: 0.95rem;
+  color: var(--color-fg-secondary);
+}
+
+.consultations-faq__footer .link {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* ==========================================
+   CTA Section
+   ========================================== */
+
+.consultations-cta {
+  padding: var(--space-20) var(--space-8);
+  background: #1F2937;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  margin-top: var(--space-16);
+}
+
+.consultations-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.consultations-cta__content {
+  position: relative;
+  z-index: 1;
+}
+
+.consultations-cta__title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.01em;
+}
+
+.consultations-cta__description {
+  font-size: 1.15rem;
+  margin-bottom: var(--space-8);
+  opacity: 0.95;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.consultations-cta__benefits {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.consultations-cta__benefit {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 1rem;
+}
+
+.consultations-cta__benefit svg {
+  flex-shrink: 0;
+}
+
+/* ==========================================
+   Animations
+   ========================================== */
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================
+   Responsive Design
+   ========================================== */
+
+@media (max-width: 1024px) {
+  .consultations-hero--minimal {
+    padding: calc(var(--space-16) + 60px) 0 var(--space-16);
+  }
+
+  .consultations-hero__title {
+    font-size: 2.25rem;
+  }
+
+  .consultations-hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .consultations-hero__actions {
+    justify-content: center;
+  }
+
+  .consultations-how-it-works__steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .consultations-how-it-works__steps::before {
+    display: none;
+  }
+
+  .consultations-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .consultations-sidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 768px) {
+  .consultations-hero--minimal {
+    padding: calc(var(--space-12) + 40px) 0 var(--space-12);
+  }
+
+  .consultations-hero__title {
+    font-size: 1.875rem;
+  }
+
+  .consultations-hero__title-accent::before {
+    height: 10px;
+  }
+
+  .consultations-hero__description {
+    font-size: 1rem;
+  }
+
+  .consultations-hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  .consultations-hero__stat-number {
+    font-size: 1.5rem;
+  }
+
+  .consultations-hero__features {
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+
+  .consultations-how-it-works__steps {
+    grid-template-columns: 1fr;
+  }
+
+  .consultations-popular-topics__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .consultations-categories {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .consultations-categories::-webkit-scrollbar {
+    display: none;
+  }
+
+  .consultations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .consultations-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .consultations-success-stories__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .consultations-cta__title {
+    font-size: 1.75rem;
+  }
+
+  .consultations-cta__benefits {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .consultations-hero--minimal {
+    padding: calc(var(--space-10) + 30px) 0 var(--space-10);
+  }
+
+  .consultations-hero__inner {
+    padding: 0 var(--space-4);
+  }
+
+  .consultations-hero__title {
+    font-size: 1.625rem;
+  }
+
+  .consultations-hero__title-accent::before {
+    height: 8px;
+  }
+
+  .consultations-hero__title-decoration svg {
+    width: 50px;
+  }
+
+  .consultations-hero__stats {
+    padding: var(--space-4);
+  }
+
+  .consultations-hero__stat-number {
+    font-size: 1.25rem;
+  }
+
+  .consultations-hero__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .consultations-hero__btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .consultations-how-it-works__title,
+  .consultations-popular-topics__title,
+  .consultations-success-stories__title,
+  .consultations-faq__title {
+    font-size: 1.5rem;
+  }
+
+  .consultations-cta__title {
+    font-size: 1.5rem;
+  }
+
+  .consultations-cta__description {
+    font-size: 1rem;
+  }
+}

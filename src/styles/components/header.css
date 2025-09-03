@@ -1,0 +1,577 @@
+/* ==========================================
+   Enhanced Header Styles
+   ========================================== */
+
+.zenn-header {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.zenn-header--scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.zenn-header__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.zenn-header__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+/* ==========================================
+   Left Section (Logo + Mobile Menu)
+   ========================================== */
+
+.zenn-header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.zenn-header__mobile-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: var(--space-2);
+  border: none;
+  background: none;
+  color: var(--color-fg-secondary);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.zenn-header__mobile-toggle:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-fg);
+}
+
+.zenn-header__mobile-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.zenn-header__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.zenn-header__logo:hover {
+  color: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.zenn-header__logo-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.zenn-header__logo-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* ==========================================
+   Navigation
+   ========================================== */
+
+.zenn-header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.zenn-header__nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-fg-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+  position: relative;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.zenn-header__nav-link:hover {
+  color: var(--color-fg);
+  background: var(--color-bg-secondary);
+  transform: translateY(-1px);
+}
+
+.zenn-header__nav-link--active {
+  color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.zenn-header__nav-link--active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 1px;
+}
+
+.zenn-header__nav-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.zenn-header__nav-separator {
+  width: 1px;
+  height: 20px;
+  flex-shrink: 0;
+  background: var(--color-border);
+  margin: 0 var(--space-2);
+}
+
+/* ==========================================
+   Right Section (Search + Auth)
+   ========================================== */
+
+.zenn-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Search */
+.zenn-header__search {
+  position: relative;
+  width: 280px;
+}
+
+.zenn-header__search-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-10);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: white;
+  font-size: 0.875rem;
+  color: var(--color-fg);
+  transition: all 0.2s;
+}
+
+.zenn-header__search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.zenn-header__search-input::placeholder {
+  color: var(--color-fg-tertiary);
+}
+
+.zenn-header__search-icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--color-fg-tertiary);
+  pointer-events: none;
+}
+
+.zenn-header__search-mobile {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: var(--space-2);
+  border: none;
+  background: none;
+  color: var(--color-fg-secondary);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.zenn-header__search-mobile:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-fg);
+}
+
+.zenn-header__search-mobile svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Auth Buttons */
+.zenn-header__auth {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.zenn-header__login-btn {
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
+}
+
+.zenn-header__login-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.zenn-header__post-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.2);
+}
+
+.zenn-header__post-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.zenn-header__post-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* User Menu */
+.zenn-header__user-menu {
+  position: relative;
+}
+
+.zenn-header__user-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1);
+  border: none;
+  background: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.zenn-header__user-trigger:hover {
+  background: var(--color-bg-secondary);
+}
+
+.zenn-header__user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  object-fit: cover;
+  transition: all 0.2s;
+}
+
+.zenn-header__user-trigger:hover .zenn-header__user-avatar {
+  border-color: var(--color-primary);
+}
+
+.zenn-header__user-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--color-fg-secondary);
+  transition: transform 0.2s;
+}
+
+.zenn-header__user-trigger[aria-expanded="true"] .zenn-header__user-chevron {
+  transform: rotate(180deg);
+}
+
+.zenn-header__user-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 280px;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: var(--space-2);
+  z-index: 60;
+}
+
+.zenn-header__user-info {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-2);
+}
+
+.zenn-header__user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.zenn-header__user-profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  object-fit: cover;
+}
+
+.zenn-header__user-profile-info h4 {
+  font-weight: 600;
+  color: var(--color-fg);
+  margin-bottom: 2px;
+}
+
+.zenn-header__user-profile-info p {
+  font-size: 0.875rem;
+  color: var(--color-fg-secondary);
+}
+
+.zenn-header__user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  background: none;
+  color: var(--color-fg);
+  text-decoration: none;
+  font-size: 0.875rem;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.zenn-header__user-menu-item:hover {
+  background: var(--color-bg-secondary);
+}
+
+.zenn-header__user-menu-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--color-fg-secondary);
+}
+
+.zenn-header__user-menu-separator {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-2) 0;
+}
+
+.zenn-header__logout-btn {
+  color: #dc2626 !important;
+}
+
+.zenn-header__logout-btn:hover {
+  background: #fee2e2 !important;
+}
+
+.zenn-header__logout-btn svg {
+  color: #dc2626 !important;
+}
+
+/* ==========================================
+   Mobile Menu
+   ========================================== */
+
+.zenn-header__mobile-menu {
+  background: white;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.zenn-header__mobile-nav {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.zenn-header__mobile-nav-link {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-fg);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+}
+
+.zenn-header__mobile-nav-link:hover {
+  background: var(--color-bg-secondary);
+}
+
+.zenn-header__mobile-separator {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-4) 0;
+}
+
+.zenn-header__mobile-login {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.zenn-header__mobile-login:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ==========================================
+   Responsive Design
+   ========================================== */
+
+@media (max-width: 1024px) {
+  .zenn-header__content {
+    gap: var(--space-3);
+  }
+
+  .zenn-header__nav-link {
+    padding: var(--space-2) var(--space-2);
+    font-size: 0.8125rem;
+  }
+
+  .zenn-header__nav-icon {
+    font-size: 0.875rem;
+  }
+
+  .zenn-header__search {
+    display: none;
+  }
+
+  .zenn-header__search-mobile {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .zenn-header__content {
+    gap: var(--space-2);
+    height: 60px;
+  }
+
+  .zenn-header__nav {
+    display: none;
+  }
+
+  .zenn-header__mobile-toggle {
+    display: flex;
+  }
+
+  .zenn-header__container {
+    padding: 0 var(--space-3);
+  }
+
+  .zenn-header__logo {
+    font-size: 1.25rem;
+  }
+
+  .zenn-header__logo-icon {
+    font-size: 1.5rem;
+  }
+
+  .zenn-header__post-btn span {
+    display: none;
+  }
+
+  .zenn-header__user-dropdown {
+    width: calc(100vw - 32px);
+    right: -16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .zenn-header__container {
+    padding: 0 var(--space-2);
+  }
+
+  .zenn-header__right {
+    gap: var(--space-2);
+  }
+}
+
+/* ==========================================
+   Dark Mode Support
+   ========================================== */
+
+@media (prefers-color-scheme: dark) {
+  .zenn-header {
+    background: rgba(31, 41, 55, 0.95);
+    border-color: #374151;
+  }
+
+  .zenn-header--scrolled {
+    background: rgba(31, 41, 55, 0.98);
+  }
+
+  .zenn-header__search-input {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .zenn-header__user-dropdown {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .zenn-header__mobile-menu {
+    background: #1f2937;
+    border-color: #374151;
+  }
+}

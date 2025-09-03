@@ -1,0 +1,497 @@
+/* ==========================================
+   UI Components Styles - Button, Badge, etc.
+   ========================================== */
+
+/* ==========================================
+   Button Component
+   ========================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+  outline: none;
+}
+
+.btn:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Button Variants */
+.btn--primary {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn--primary:active:not(:disabled) {
+  background: var(--color-primary-dark);
+  transform: translateY(0);
+}
+
+.btn--secondary {
+  background: white;
+  color: var(--color-fg);
+  border-color: var(--color-border);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn--secondary:active:not(:disabled) {
+  background: var(--color-bg-secondary);
+  transform: translateY(0);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-fg-secondary);
+  border-color: transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--color-bg-secondary);
+  color: var(--color-fg);
+  transform: translateY(-1px);
+}
+
+.btn--ghost:active:not(:disabled) {
+  background: var(--color-bg-secondary);
+  transform: translateY(0);
+}
+
+/* Button Sizes */
+.btn--small {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.875rem;
+  min-height: 32px;
+}
+
+.btn--medium {
+  padding: var(--space-3) var(--space-4);
+  font-size: 0.9375rem;
+  min-height: 40px;
+}
+
+.btn--large {
+  padding: var(--space-4) var(--space-6);
+  font-size: 1.0625rem;
+  min-height: 48px;
+}
+
+/* Loading State */
+.btn--loading {
+  color: transparent;
+}
+
+.btn--loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.75s linear infinite;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================
+   Badge Component
+   ========================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+/* Badge Variants */
+.badge--primary {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.badge--secondary {
+  background: var(--color-bg-secondary);
+  color: var(--color-fg-secondary);
+  border-color: var(--color-border);
+}
+
+.badge--default {
+  background: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.badge--success {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.badge--danger {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.badge--open {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.badge--closed {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+/* Badge Sizes */
+.badge--small {
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.75rem;
+  line-height: 1;
+  min-height: 20px;
+}
+
+.badge--medium {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  min-height: 24px;
+}
+
+/* Badge with Icon */
+.badge--with-icon {
+  gap: var(--space-1);
+}
+
+.badge--with-icon .badge__icon {
+  font-size: 0.875em;
+}
+
+/* ==========================================
+   Form Elements
+   ========================================== */
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: var(--space-3);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-fg);
+  background: white;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input::placeholder {
+  color: var(--color-fg-tertiary);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-input:disabled {
+  background: var(--color-bg-secondary);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ==========================================
+   Loading States
+   ========================================== */
+
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+.loading-spinner--small {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.loading-spinner--large {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================
+   Skeleton Loading
+   ========================================== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-secondary) 25%,
+    var(--color-border) 50%,
+    var(--color-bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+.skeleton--text {
+  height: 1em;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton--avatar {
+  border-radius: var(--radius-full);
+}
+
+.skeleton--button {
+  height: 40px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ==========================================
+   Tooltip
+   ========================================== */
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip__content {
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1f2937;
+  color: white;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 1000;
+}
+
+.tooltip__content::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: #1f2937;
+}
+
+.tooltip:hover .tooltip__content {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ==========================================
+   Modal/Dialog
+   ========================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.modal {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modal-appear 0.2s ease-out;
+}
+
+.modal__header {
+  padding: var(--space-6) var(--space-6) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  color: var(--color-fg-secondary);
+  transition: color 0.2s, background 0.2s;
+}
+
+.modal__close:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-fg);
+}
+
+.modal__body {
+  padding: var(--space-6);
+}
+
+.modal__footer {
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================
+   Responsive Utilities
+   ========================================== */
+
+@media (max-width: 768px) {
+  .btn {
+    min-height: 44px; /* Better touch targets on mobile */
+  }
+  
+  .btn--small {
+    min-height: 36px;
+    padding: var(--space-2) var(--space-4);
+  }
+  
+  .form-input {
+    padding: var(--space-4);
+    font-size: 1rem; /* Prevent zoom on iOS */
+  }
+  
+  .modal {
+    margin: var(--space-4);
+    max-width: calc(100vw - var(--space-8));
+  }
+}
+
+/* ==========================================
+   Dark Mode Support (if needed)
+   ========================================== */
+
+@media (prefers-color-scheme: dark) {
+  .btn--secondary {
+    background: #1f2937;
+    color: #f9fafb;
+    border-color: #374151;
+  }
+  
+  .btn--secondary:hover:not(:disabled) {
+    background: #374151;
+    border-color: var(--color-primary);
+  }
+  
+  .form-input {
+    background: #1f2937;
+    color: #f9fafb;
+    border-color: #374151;
+  }
+  
+  .modal {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+}
