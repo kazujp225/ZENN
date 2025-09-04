@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import '@/styles/components/user-dropdown.css';
 
@@ -61,36 +62,36 @@ export const UserDropdown: React.FC = () => {
               マイページ
             </a>
             
-            <a href="/dashboard/articles" className="user-dropdown-item">
+            <Link href="/dashboard/articles" className="user-dropdown-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
               </svg>
               記事の管理
-            </a>
+            </Link>
 
-            <a href="/dashboard/books" className="user-dropdown-item">
+            <Link href="/dashboard/books" className="user-dropdown-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
               </svg>
               本の管理
-            </a>
+            </Link>
 
-            <a href="/dashboard/scraps" className="user-dropdown-item">
+            <Link href="/dashboard/scraps" className="user-dropdown-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
               </svg>
               スクラップの管理
-            </a>
+            </Link>
 
-            <a href="/settings/profile" className="user-dropdown-item">
+            <Link href="/settings/profile" className="user-dropdown-item">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="3"/>
                 <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M12 1v6m0 6v6m-4.22-13.22L3.54 6.22M20.46 20.46l-4.24-4.24M12 7v10m5-5H7"/>
               </svg>
               設定
-            </a>
+            </Link>
           </nav>
 
           <div className="user-dropdown-divider" />

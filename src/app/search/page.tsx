@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+export const dynamic = 'force-dynamic'
+
+import { Suspense, useState } from 'react'
 import { useSearch } from '@/hooks/useSearch'
 import { SearchInput } from '@/components/search/SearchInput'
 import { SearchFilters } from '@/components/search/SearchFilters'
@@ -9,7 +11,7 @@ import { BookCard } from '@/components/cards/BookCard'
 import { ScrapCard } from '@/components/cards/ScrapCard'
 import '@/styles/pages/search.css'
 
-export default function SearchPage() {
+function SearchPageContent() {
   const {
     query,
     setQuery,
@@ -168,7 +170,6 @@ export default function SearchPage() {
               <div className="search-filter__options">
                 {[
                   { value: 'all', label: 'すべての期間' },
-                  { value: 'day', label: '24時間以内' },
                   { value: 'week', label: '1週間以内' },
                   { value: 'month', label: '1ヶ月以内' },
                   { value: 'year', label: '1年以内' }
@@ -297,7 +298,7 @@ export default function SearchPage() {
                   ))}
                   {filters.dateRange !== 'all' && (
                     <div className="search-active-filter">
-                      {filters.dateRange === 'day' ? '24時間以内' :
+                      {
                        filters.dateRange === 'week' ? '1週間以内' :
                        filters.dateRange === 'month' ? '1ヶ月以内' : '1年以内'}
                       <span 
@@ -419,5 +420,24 @@ export default function SearchPage() {
         </main>
       </div>
     </div>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="search-page">
+        <div className="search-hero">
+          <div className="search-hero__container">
+            <h1 className="search-hero__title">🔍 知識を探索しよう</h1>
+            <p className="search-hero__description">
+              読み込み中...
+            </p>
+          </div>
+        </div>
+      </div>
+    }>
+      <SearchPageContent />
+    </Suspense>
   )
 }

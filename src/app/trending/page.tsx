@@ -79,18 +79,15 @@ const mockTrendingScraps = [
     id: '1',
     title: '新しいCSS機能についての雑談',
     author: {
-      id: 'author3',
       name: 'CSS Ninja',
       username: 'css-ninja',
-      avatar: '/images/avatar-placeholder.svg',
-      githubUsername: 'css-ninja'
+      avatar: '/images/avatar-placeholder.svg'
     },
     publishedAt: '2024-01-16',
-    likes: 42,
-    comments: 15,
-    isLiked: false,
-    slug: 'css-discussion',
-    status: 'open' as const
+    updatedAt: '2024-01-17',
+    commentsCount: 15,
+    isOpen: true,
+    emoji: '💬'
   }
 ]
 

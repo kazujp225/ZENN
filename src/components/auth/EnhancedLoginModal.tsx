@@ -190,7 +190,7 @@ export function EnhancedLoginModal({
             setErrors({ email: 'ログイン試行回数が上限に達しました。しばらくお待ちください' })
             return
           }
-          await login(formData.email, formData.password, formData.rememberMe)
+          await login({ email: formData.email, password: formData.password }, formData.rememberMe)
           handleClose()
           break
 

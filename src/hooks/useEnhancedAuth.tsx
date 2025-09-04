@@ -412,7 +412,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
           }
         }
         
-        const userProfile = userProfiles[role] || userProfiles.user
+        const userProfile = userProfiles[role as keyof typeof userProfiles] || userProfiles.user
         
         const mockUser: User = {
           ...userProfile,

@@ -30,7 +30,7 @@ export class CommentErrorBoundary extends Component<Props, State> {
     console.error('コメント機能でエラーが発生:', error, errorInfo)
     
     this.setState({
-      errorInfo: errorInfo.componentStack
+      errorInfo: errorInfo.componentStack || undefined
     })
 
     // エラー報告サービスに送信（本番環境では）

@@ -355,7 +355,7 @@ export const ProviderUsageExamples = {
   // ページ全体
   PageExample: () => (
     <PageProvider title="記事一覧" description="記事一覧ページ">
-      {/* ページコンテンツ */}
+      <div>{/* ページコンテンツ */}</div>
     </PageProvider>
   ),
 
@@ -368,7 +368,7 @@ export const ProviderUsageExamples = {
       }}
       retryCount={3}
     >
-      {/* APIを使用するコンポーネント */}
+      <div>{/* APIを使用するコンポーネント */}</div>
     </ApiProvider>
   ),
 
@@ -382,7 +382,7 @@ export const ProviderUsageExamples = {
         // 送信成功時の処理
       }}
     >
-      {/* フォームコンポーネント */}
+      <div>{/* フォームコンポーネント */}</div>
     </FormProvider>
   ),
 
@@ -392,7 +392,7 @@ export const ProviderUsageExamples = {
       enableVirtualization={true}
       chunkSize={100}
     >
-      {/* 大量データを扱うコンポーネント */}
+      <div>{/* 大量データを扱うコンポーネント */}</div>
     </HighPerformanceProvider>
   )
 }

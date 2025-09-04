@@ -16,6 +16,7 @@
   "type": "commonjs",
   "dependencies": {
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@types/react-window": "^1.8.8",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "next": "^15.5.2",
@@ -23,6 +24,7 @@
     "react-dom": "^19.1.1",
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.6",
+    "react-window": "^2.0.2",
     "remark-gfm": "^4.0.1",
     "swr": "^2.3.6",
     "zustand": "^5.0.8"

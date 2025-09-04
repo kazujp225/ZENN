@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useState, useEffect, useCallback, useRef, Suspense } from 'react'
 import { useEnhancedSearch, type SearchSuggestion, type SearchResult } from '@/hooks/useEnhancedSearch'
 import { ArticleCard } from '@/components/cards/ArticleCard'
@@ -130,19 +132,29 @@ function SearchPageContent() {
       return (
         <BookCard
           key={key}
-          book={result}
-          showAuthor={true}
-          showTags={true}
+          id={result.id}
+          title={result.title}
+          coverImage={undefined}
+          author={result.author}
+          price={'free'}
+          likes={result.likes}
+          publishedAt={result.publishedAt}
+          description={result.excerpt}
         />
       )
     } else {
       return (
         <ArticleCard
           key={key}
-          article={result}
-          showAuthor={true}
-          showTags={true}
-          variant={viewMode === 'list' ? 'horizontal' : 'vertical'}
+          id={result.id}
+          title={result.title}
+          emoji={result.emoji}
+          author={result.author}
+          publishedAt={result.publishedAt}
+          likes={result.likes}
+          comments={result.comments || 0}
+          type={'tech'}
+          tags={result.tags}
         />
       )
     }

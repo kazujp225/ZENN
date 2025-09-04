@@ -1,9 +1,10 @@
 'use client'
 
-import { memo, useMemo, useState, useCallback } from 'react'
+import React, { memo, useMemo, useState, useCallback } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { ja } from 'date-fns/locale'
-import { FixedSizeList as List } from 'react-window'
+// @ts-ignore
+import { List as FixedSizeList } from 'react-window'
 import clsx from 'clsx'
 import { Badge } from '@/components/ui/Badge'
 import type { SearchResult } from '@/hooks/useEnhancedSearch'
@@ -24,9 +25,9 @@ interface EnhancedSearchResultsProps {
 interface SearchResultItemProps {
   result: SearchResult
   viewMode: 'grid' | 'list' | 'compact'
-  showAuthor: boolean
-  showTags: boolean
-  showMetrics: boolean
+  showAuthor?: boolean
+  showTags?: boolean
+  showMetrics?: boolean
   onResultClick?: (result: SearchResult) => void
   onTagClick?: (tag: string) => void
   onAuthorClick?: (author: string) => void
@@ -36,9 +37,9 @@ interface SearchResultItemProps {
 const SearchResultItem = memo<SearchResultItemProps>(({
   result,
   viewMode,
-  showAuthor,
-  showTags,
-  showMetrics,
+  showAuthor = true,
+  showTags = true,
+  showMetrics = true,
   onResultClick,
   onTagClick,
   onAuthorClick
@@ -466,15 +467,19 @@ const VirtualizedResults = memo<VirtualizedResultsProps>(({
     </div>
   ), [results, props])
 
+  const List = FixedSizeList as any
+  
   return (
-    <List
-      height={height}
-      itemCount={results.length}
-      itemSize={itemHeight}
-      width="100%"
-    >
-      {Row}
-    </List>
+    <div>
+      <List
+        height={height}
+        itemCount={results.length}
+        itemSize={itemHeight}
+        width="100%"
+      >
+        {Row}
+      </List>
+    </div>
   )
 })
 

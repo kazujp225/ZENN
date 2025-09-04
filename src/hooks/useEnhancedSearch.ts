@@ -537,13 +537,13 @@ export function useEnhancedSearch() {
         await new Promise(resolve => setTimeout(resolve, 150))
 
         const mockSuggestions: SearchSuggestion[] = [
-          { text: 'Next.js 14', type: 'query', count: 120 },
-          { text: 'Next.js App Router', type: 'query', count: 89 },
-          { text: 'React Server Components', type: 'query', count: 67 },
-          { text: 'TypeScript', type: 'tag', count: 234 },
-          { text: 'Web開発', type: 'tag', count: 156 },
-          { text: 'dev_taro', type: 'author', count: 45 },
-          { text: 'フロントエンド', type: 'query', count: 203 }
+          { text: 'Next.js 14', type: 'query' as const, count: 120 },
+          { text: 'Next.js App Router', type: 'query' as const, count: 89 },
+          { text: 'React Server Components', type: 'query' as const, count: 67 },
+          { text: 'TypeScript', type: 'tag' as const, count: 234 },
+          { text: 'Web開発', type: 'tag' as const, count: 156 },
+          { text: 'dev_taro', type: 'author' as const, count: 45 },
+          { text: 'フロントエンド', type: 'query' as const, count: 203 }
         ].filter(suggestion => 
           suggestion.text.toLowerCase().includes(searchQuery.toLowerCase())
         ).slice(0, 8)

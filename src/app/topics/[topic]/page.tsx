@@ -209,12 +209,19 @@ const getTopicContent = (topic: string) => {
   return { articles, books, scraps }
 }
 
-export default function TopicPage({ params }: { params: { topic: string } }) {
+export default async function TopicPage({ params }: { params: Promise<{ topic: string }> }) {
+  const resolvedParams = await params
+  const topicId = resolvedParams.topic
+  
+  return <TopicPageClient topicId={topicId} />
+}
+
+function TopicPageClient({ topicId }: { topicId: string }) {
   const [activeTab, setActiveTab] = useState('all')
   const [isFollowing, setIsFollowing] = useState(false)
   
-  const topic = getTopicData(params.topic)
-  const content = getTopicContent(params.topic)
+  const topic = getTopicData(topicId)
+  const content = getTopicContent(topicId)
   
   const tabs = [
     { id: 'all', label: 'すべて', icon: '📋' },
