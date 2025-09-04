@@ -453,10 +453,18 @@ export default function ScrapsPage() {
                     </div>
 
                     <div className="scrap-card-enhanced__meta">
-                      <Link href={`/@${scrap.author.username}`} className="scrap-card-enhanced__author">
+                      <div 
+                        className="scrap-card-enhanced__author"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          window.location.href = `/${scrap.author.username}`
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <img src={scrap.author.avatar} alt={scrap.author.name} className="scrap-card-enhanced__author-avatar" />
                         <span>{scrap.author.name}</span>
-                      </Link>
+                      </div>
                       <span className="scrap-card-enhanced__date">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                           <circle cx="7" cy="7" r="5.5" stroke="currentColor"/>

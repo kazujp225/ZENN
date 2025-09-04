@@ -219,7 +219,7 @@ export function ArticleLayoutV2({ article, slots }: ArticleLayoutProps) {
 
                   {/* 著者情報 */}
                   <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                    <Link href={`/@${article.author.username}`}>
+                    <Link href={`/${article.author.username}`}>
                       <img 
                         src={article.author.avatar} 
                         alt={article.author.name}
@@ -228,7 +228,7 @@ export function ArticleLayoutV2({ article, slots }: ArticleLayoutProps) {
                     </Link>
                     <div className="flex-1">
                       <Link 
-                        href={`/@${article.author.username}`}
+                        href={`/${article.author.username}`}
                         className="font-semibold hover:text-blue-600 transition-colors"
                       >
                         {article.author.name}
@@ -308,7 +308,7 @@ export function ArticleLayoutV2({ article, slots }: ArticleLayoutProps) {
                         <div className="bg-gray-50 rounded-lg p-4">
                           <div className="flex items-center gap-2 mb-2">
                             <Link 
-                              href={`/@${comment.author.username}`}
+                              href={`/${comment.author.username}`}
                               className="font-semibold hover:text-blue-600"
                             >
                               {comment.author.name}
@@ -333,7 +333,7 @@ export function ArticleLayoutV2({ article, slots }: ArticleLayoutProps) {
                                 <div className="flex-1 bg-white border rounded-lg p-3">
                                   <div className="flex items-center gap-2 mb-1">
                                     <Link 
-                                      href={`/@${reply.author.username}`}
+                                      href={`/${reply.author.username}`}
                                       className="font-medium text-sm hover:text-blue-600"
                                     >
                                       {reply.author.name}

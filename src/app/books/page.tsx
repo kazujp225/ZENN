@@ -301,10 +301,18 @@ export default function BooksPage() {
                     </div>
                     <div className="book-card-enhanced__content">
                       <h3 className="book-card-enhanced__title">{book.title}</h3>
-                      <Link href={`/@${book.author.username}`} className="book-card-enhanced__author">
+                      <div 
+                        className="book-card-enhanced__author"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          window.location.href = `/${book.author.username}`
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
                         <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
                         <span>{book.author.name}</span>
-                      </Link>
+                      </div>
                       <div className="book-card-enhanced__meta">
                         <span className="book-card-enhanced__pages">
                           📄 {book.totalPages}ページ
@@ -494,7 +502,7 @@ export default function BooksPage() {
                       </div>
                       <div className="book-card-enhanced__content">
                         <h3 className="book-card-enhanced__title">{book.title}</h3>
-                        <Link href={`/@${book.author.username}`} className="book-card-enhanced__author">
+                        <Link href={`/${book.author.username}`} className="book-card-enhanced__author">
                           <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
                           <span>{book.author.name}</span>
                         </Link>

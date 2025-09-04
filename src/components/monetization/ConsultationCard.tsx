@@ -99,7 +99,7 @@ export const ConsultationCard = ({
 
           {/* Mentor Info */}
           <div className="consultation-card__mentor">
-            <Link href={`/@${mentor.username}`} className="consultation-card__mentor-link">
+            <Link href={`/${mentor.username}`} className="consultation-card__mentor-link">
               <Image
                 src={mentor.avatar}
                 alt={mentor.name}

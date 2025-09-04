@@ -59,7 +59,7 @@ interface AuthContextType {
   isRateLimited: boolean
   
   // Authentication methods
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>
+  login: (credentials: { email: string; password: string }, rememberMe?: boolean) => Promise<void>
   signup: (email: string, password: string, name: string, username?: string) => Promise<void>
   logout: (allDevices?: boolean) => Promise<void>
   loginWithGoogle: () => Promise<void>
@@ -337,13 +337,15 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   // ログイン
-  const login = useCallback(async (email: string, password: string, rememberMe: boolean = false) => {
+  const login = useCallback(async (credentials: { email: string; password: string }, rememberMe: boolean = false) => {
+    const { email, password } = credentials
+    
     // バリデーション
     if (!validateEmail(email)) {
       throw new Error('有効なメールアドレスを入力してください')
     }
     
-    if (!password.trim()) {
+    if (!password || !password.trim()) {
       throw new Error('パスワードを入力してください')
     }
 
@@ -360,29 +362,70 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000))
 
       // デモ用認証
-      if (email === 'test@example.com' && password === 'Password123!') {
+      const demoCredentials = [
+        { email: 'user@example.com', password: 'password', role: 'user' },
+        { email: 'pro@example.com', password: 'password', role: 'pro' },
+        { email: 'admin@example.com', password: 'password', role: 'admin' }
+      ]
+      
+      const matchedUser = demoCredentials.find(cred => cred.email === email && cred.password === password)
+      
+      if (matchedUser || (email === 'test@example.com' && password === 'Password123!')) {
+        const role = matchedUser?.role || 'user'
+        
+        const userProfiles = {
+          user: {
+            id: '1',
+            username: 'user_sample',
+            name: '一般ユーザー',
+            bio: 'Zennで技術記事を読んで学習しています',
+            followersCount: 50,
+            followingCount: 120,
+            articlesCount: 3,
+            subscription: { tier: 'free' as const }
+          },
+          pro: {
+            id: '2',
+            username: 'pro_developer',
+            name: 'プロ開発者',
+            bio: '現役エンジニア。React/TypeScript/Node.jsの記事を投稿しています',
+            followersCount: 500,
+            followingCount: 200,
+            articlesCount: 45,
+            subscription: {
+              tier: 'pro' as const,
+              expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+            }
+          },
+          admin: {
+            id: '3',
+            username: 'admin_master',
+            name: '管理者',
+            bio: 'Zennプラットフォームの管理者です',
+            followersCount: 5000,
+            followingCount: 100,
+            articlesCount: 200,
+            subscription: {
+              tier: 'premium' as const,
+              expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+            }
+          }
+        }
+        
+        const userProfile = userProfiles[role] || userProfiles.user
+        
         const mockUser: User = {
-          id: '1',
-          username: 'testuser',
-          name: 'テストユーザー',
+          ...userProfile,
           email,
           avatar: '/images/avatar-placeholder.svg',
-          bio: 'セキュリティ強化されたテストユーザーです',
           website: 'https://example.com',
-          location: '日本',
-          followersCount: 150,
-          followingCount: 75,
-          articlesCount: 42,
+          location: '東京, Japan',
           createdAt: '2023-01-01T00:00:00Z',
           emailVerified: true,
           twoFactorEnabled: false,
           lastActiveAt: new Date().toISOString(),
           provider: 'email',
-          permissions: ['read', 'write', 'comment'],
-          subscription: {
-            tier: 'pro',
-            expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-          }
+          permissions: role === 'admin' ? ['read', 'write', 'comment', 'moderate', 'admin'] : ['read', 'write', 'comment']
         }
         
         const mockSession: AuthSession = {

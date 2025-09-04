@@ -541,14 +541,14 @@ export default function ConsultationsPage() {
             <div className="consultations-top-mentors">
               <h3 className="consultations-top-mentors__title">⭐ トップメンター</h3>
               <div className="consultations-top-mentors__list">
-                <Link href="/@senior_dev" className="consultations-top-mentor">
+                <Link href="/senior_dev" className="consultations-top-mentor">
                   <img src="/images/avatar-placeholder.svg" alt="" className="consultations-top-mentor__avatar" />
                   <div className="consultations-top-mentor__info">
                     <div className="consultations-top-mentor__name">山田太郎</div>
                     <div className="consultations-top-mentor__rating">⭐ 4.9 (234)</div>
                   </div>
                 </Link>
-                <Link href="/@react_expert" className="consultations-top-mentor">
+                <Link href="/react_expert" className="consultations-top-mentor">
                   <img src="/images/avatar-placeholder.svg" alt="" className="consultations-top-mentor__avatar" />
                   <div className="consultations-top-mentor__info">
                     <div className="consultations-top-mentor__name">鈴木花子</div>

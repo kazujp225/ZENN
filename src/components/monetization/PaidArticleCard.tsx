@@ -134,7 +134,7 @@ export const PaidArticleCard = ({
 
         {/* Footer */}
         <div className="paid-article-card__footer">
-          <Link href={`/@${author.username}`} className="paid-article-card__author">
+          <Link href={`/${author.username}`} className="paid-article-card__author">
             <Image
               src={author.avatar}
               alt={author.name}

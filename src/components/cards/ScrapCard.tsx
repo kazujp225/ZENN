@@ -98,7 +98,7 @@ export const ScrapCard = ({
         
         {/* Footer */}
         <div className="scrap-card__footer">
-          <Link href={`/@${author.username}`} className="scrap-card__author">
+          <Link href={`/${author.username}`} className="scrap-card__author">
             <div className="scrap-card__author-avatar">
               <Image
                 src={author.avatar}

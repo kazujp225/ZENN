@@ -110,7 +110,7 @@ export function BookLayout({ book }: BookLayoutProps) {
                   
                   {/* 著者情報 */}
                   <div className="flex items-center gap-4 p-4 bg-white/80 backdrop-blur rounded-xl mb-6">
-                    <Link href={`/@${book.author.username}`}>
+                    <Link href={`/${book.author.username}`}>
                       <img 
                         src={book.author.avatar} 
                         alt={book.author.name}
@@ -119,7 +119,7 @@ export function BookLayout({ book }: BookLayoutProps) {
                     </Link>
                     <div className="flex-1">
                       <Link 
-                        href={`/@${book.author.username}`}
+                        href={`/${book.author.username}`}
                         className="text-lg font-semibold hover:text-blue-600 transition-colors"
                       >
                         {book.author.name}

@@ -72,7 +72,7 @@ export const ArticleCard = ({
         )}
         
         <div className="card__meta">
-          <Link href={`/@${author.username}`} className="flex items-center gap-2">
+          <Link href={`/${author.username}`} className="flex items-center gap-2">
             <Image
               src={author.avatar}
               alt={author.name}

@@ -399,7 +399,7 @@ export default function TopicPage({ params }: { params: { topic: string } }) {
                   {topic.trendingAuthors.map(author => (
                     <Link
                       key={author.username}
-                      href={`/@${author.username}`}
+                      href={`/${author.username}`}
                       className="topic-author"
                     >
                       <div className={`topic-author__rank topic-author__rank--${

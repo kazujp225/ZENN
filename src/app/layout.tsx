@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Layout } from '@/components/common/Layout'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { EnhancedAuthProvider } from '@/hooks/useEnhancedAuth'
 import '@/styles/globals.css'
+import '@/styles/components/auth.css'
 
 export const metadata: Metadata = {
   title: 'Zenn Clone - エンジニアのための知識共有コミュニティ',
@@ -16,7 +19,11 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <Layout>{children}</Layout>
+        <AuthProvider>
+          <EnhancedAuthProvider>
+            <Layout>{children}</Layout>
+          </EnhancedAuthProvider>
+        </AuthProvider>
       </body>
     </html>
   )

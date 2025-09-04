@@ -1,42 +1,53 @@
 .profile-page {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #f8fafc, #ffffff);
+  background: var(--color-bg);
+  padding-top: var(--space-4);
 }
 
 .profile-header {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--color-border-light);
 }
 
 .profile-header__cover {
-  height: 200px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 240px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #764ba2 100%);
   position: relative;
+  overflow: hidden;
+}
+
+.profile-header__cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 .profile-header__content {
-  padding: 0 2rem 2rem;
+  padding: 0 var(--space-8) var(--space-8);
   position: relative;
 }
 
 .profile-header__avatar-wrapper {
   position: absolute;
-  top: -60px;
-  left: 2rem;
-  padding: 4px;
-  background: #ffffff;
+  top: -70px;
+  left: var(--space-8);
+  padding: 5px;
+  background: white;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .profile-header__avatar {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   object-fit: cover;
+  display: block;
 }
 
 .profile-header__actions {
@@ -83,7 +94,7 @@
 }
 
 .profile-header__info {
-  padding-top: 80px;
+  padding-top: 90px;
 }
 
 .profile-header__name {
@@ -97,15 +108,16 @@
 }
 
 .profile-header__verified {
-  width: 24px;
-  height: 24px;
-  background: #2563eb;
+  width: 28px;
+  height: 28px;
+  background: var(--color-primary);
   color: white;
   border-radius: 50%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .profile-header__username {
@@ -189,20 +201,36 @@
 .profile-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #f3f4f6, #ffffff);
-  border: 1px solid #e5e7eb;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: linear-gradient(135deg, #f8f9fa, white);
+  border: 1px solid var(--color-border-light);
   border-radius: 100px;
   font-size: 0.875rem;
+  font-weight: 500;
   transition: all 0.2s;
   cursor: help;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--color-primary-light), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
 .profile-badge:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border-color: #2563eb;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-primary);
+}
+
+.profile-badge:hover::before {
+  opacity: 0.1;
 }
 
 .profile-badge__icon {
@@ -210,10 +238,12 @@
 }
 
 .profile-tabs {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  border: 1px solid var(--color-border-light);
+  margin-bottom: var(--space-6);
 }
 
 .profile-tabs__header {
@@ -461,11 +491,12 @@
 }
 
 .profile-activity {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
-  margin-top: 2rem;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border-light);
+  padding: var(--space-6);
+  margin-top: 0;
 }
 
 .profile-activity__title {
@@ -486,15 +517,18 @@
 
 .profile-activity__item {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background: #f9fafb;
-  border-radius: 8px;
-  transition: background 0.2s;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+  border: 1px solid transparent;
 }
 
 .profile-activity__item:hover {
-  background: #f3f4f6;
+  background: white;
+  border-color: var(--color-border-light);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .profile-activity__icon {

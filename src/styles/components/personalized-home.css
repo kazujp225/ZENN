@@ -1,0 +1,434 @@
+/* ==========================================
+   パーソナライズドホーム
+   ========================================== */
+
+.personalized-home {
+  margin-bottom: var(--space-8);
+}
+
+/* ウェルカムバナー */
+.personalized-home__banner {
+  background: linear-gradient(135deg, var(--color-primary), #764ba2);
+  color: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  margin-bottom: var(--space-8);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.personalized-home__banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.personalized-home__banner-content {
+  position: relative;
+  z-index: 1;
+}
+
+.personalized-home__banner-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+
+.personalized-home__banner-subtitle {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.personalized-home__banner-stats {
+  display: flex;
+  gap: var(--space-6);
+  position: relative;
+  z-index: 1;
+}
+
+.personalized-home__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.personalized-home__stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: var(--space-1);
+}
+
+.personalized-home__stat-label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+/* 継続して読む */
+.personalized-home__continue {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--color-border-light);
+}
+
+.personalized-home__section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-fg);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.personalized-home__section-icon {
+  font-size: 1.5rem;
+}
+
+.personalized-home__continue-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.personalized-home__continue-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.personalized-home__continue-item:hover {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateX(4px);
+}
+
+.personalized-home__continue-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+}
+
+.personalized-home__continue-emoji {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.personalized-home__continue-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.personalized-home__continue-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-fg);
+  margin-bottom: var(--space-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.personalized-home__continue-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--color-fg-tertiary);
+}
+
+.personalized-home__continue-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.personalized-home__progress-bar {
+  width: 100px;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.personalized-home__progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.personalized-home__progress-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  min-width: 35px;
+  text-align: right;
+}
+
+/* メインコンテンツ */
+.personalized-home__main {
+  background: white;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--color-border-light);
+}
+
+/* タブナビゲーション */
+.personalized-home__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border-light);
+  background: var(--color-bg-secondary);
+}
+
+.personalized-home__tab {
+  flex: 1;
+  padding: var(--space-4);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--color-fg-secondary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.personalized-home__tab:hover {
+  background: white;
+  color: var(--color-fg);
+}
+
+.personalized-home__tab--active {
+  background: white;
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.personalized-home__tab-icon {
+  font-size: 1.125rem;
+}
+
+/* タブコンテンツ */
+.personalized-home__tab-content {
+  padding: var(--space-6);
+}
+
+.personalized-home__articles {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* フォロー中アップデート */
+.personalized-home__updates {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.personalized-home__update {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+}
+
+.personalized-home__update:hover {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.personalized-home__update-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.personalized-home__update-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.personalized-home__update-text {
+  font-size: 0.875rem;
+  color: var(--color-fg-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.personalized-home__update-text strong {
+  color: var(--color-fg);
+}
+
+.personalized-home__update-action {
+  margin-left: var(--space-1);
+}
+
+.personalized-home__update-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-fg);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.personalized-home__update-icon {
+  font-size: 1.25rem;
+}
+
+.personalized-home__update-time {
+  font-size: 0.75rem;
+  color: var(--color-fg-quaternary);
+}
+
+/* おすすめの著者 */
+.personalized-home__authors {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border-light);
+}
+
+.personalized-home__authors-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.personalized-home__author {
+  padding: var(--space-4);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s;
+}
+
+.personalized-home__author:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.personalized-home__author-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  text-decoration: none;
+}
+
+.personalized-home__author-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.personalized-home__author-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.personalized-home__author-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-fg);
+  margin-bottom: 2px;
+}
+
+.personalized-home__author-username {
+  font-size: 0.8125rem;
+  color: var(--color-fg-tertiary);
+}
+
+.personalized-home__author-bio {
+  font-size: 0.875rem;
+  color: var(--color-fg-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--space-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.personalized-home__author-stats {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+  font-size: 0.8125rem;
+  color: var(--color-fg-tertiary);
+}
+
+.personalized-home__author-follow {
+  width: 100%;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.personalized-home__author-follow:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .personalized-home__banner {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-6);
+  }
+  
+  .personalized-home__banner-stats {
+    margin-top: var(--space-4);
+  }
+  
+  .personalized-home__authors-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .personalized-home__continue-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .personalized-home__continue-progress {
+    width: 100%;
+    margin-top: var(--space-2);
+  }
+  
+  .personalized-home__progress-bar {
+    flex: 1;
+  }
+}

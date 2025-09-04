@@ -3,29 +3,42 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
-interface LoginModalProps {
+interface SignupModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSwitchToSignup: () => void;
+  onSwitchToLogin: () => void;
 }
 
-export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSwitchToSignup }) => {
-  const { login } = useAuth();
+export const SignupModal: React.FC<SignupModalProps> = ({ isOpen, onClose, onSwitchToLogin }) => {
+  const { signup } = useAuth();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (password !== confirmPassword) {
+      setError('パスワードが一致しません');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('パスワードは6文字以上で入力してください');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      await login(email, password);
+      await signup(username, email, password);
       onClose();
     } catch (err) {
-      setError('ログインに失敗しました');
+      setError('登録に失敗しました');
     } finally {
       setIsLoading(false);
     }
@@ -39,13 +52,26 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSwitc
         <button className="modal-close" onClick={onClose}>×</button>
         
         <div className="modal-header">
-          <h2>ログイン</h2>
-          <p>アカウントにログインしてください</p>
+          <h2>新規登録</h2>
+          <p>アカウントを作成してZennを始めましょう</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="auth-error">{error}</div>}
           
+          <div className="form-group">
+            <label htmlFor="username">ユーザー名</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="zenn_user"
+              required
+              autoComplete="username"
+            />
+          </div>
+
           <div className="form-group">
             <label htmlFor="email">メールアドレス</label>
             <input
@@ -66,9 +92,22 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSwitc
               type="password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              placeholder="パスワード"
+              placeholder="6文字以上"
               required
-              autoComplete="current-password"
+              autoComplete="new-password"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmPassword">パスワード（確認）</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              placeholder="パスワードを再入力"
+              required
+              autoComplete="new-password"
             />
           </div>
 
@@ -77,7 +116,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSwitc
             className="auth-submit-btn"
             disabled={isLoading}
           >
-            {isLoading ? 'ログイン中...' : 'ログイン'}
+            {isLoading ? '登録中...' : 'アカウントを作成'}
           </button>
         </form>
 
@@ -89,7 +128,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSwitc
           <svg viewBox="0 0 24 24" width="20" height="20">
             <path fill="currentColor" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/>
           </svg>
-          GitHubでログイン
+          GitHubで登録
         </button>
 
         <button className="auth-social-btn auth-google">
@@ -99,14 +138,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onSwitc
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
           </svg>
-          Googleでログイン
+          Googleで登録
         </button>
 
         <div className="auth-footer">
           <p>
-            アカウントをお持ちでない方は
-            <button onClick={onSwitchToSignup} className="auth-switch-link">
-              新規登録
+            既にアカウントをお持ちの方は
+            <button onClick={onSwitchToLogin} className="auth-switch-link">
+              ログイン
             </button>
           </p>
         </div>

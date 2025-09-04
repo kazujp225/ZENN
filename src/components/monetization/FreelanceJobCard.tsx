@@ -201,7 +201,7 @@ export const FreelanceJobCard = ({
 
           {/* Client Info */}
           <div className="freelance-job-card__client">
-            <Link href={`/@${client.username}`} className="freelance-job-card__client-link">
+            <Link href={`/${client.username}`} className="freelance-job-card__client-link">
               <Image
                 src={client.avatar}
                 alt={client.name}

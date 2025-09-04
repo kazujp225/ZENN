@@ -1,0 +1,417 @@
+/* ==========================================
+   認証ページ共通スタイル
+   ========================================== */
+
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.auth-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: white;
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-6);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: var(--space-2);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.auth-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+}
+
+.auth-subtitle a {
+  color: white;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: opacity 0.2s;
+}
+
+.auth-subtitle a:hover {
+  opacity: 0.8;
+}
+
+/* ==========================================
+   認証フォームカード
+   ========================================== */
+
+.auth-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* デモボタンセクション */
+.auth-demo {
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.auth-demo__label {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-fg-tertiary);
+  margin-bottom: var(--space-4);
+}
+
+.auth-demo__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-demo__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: white;
+  color: var(--color-fg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-demo__button:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-demo__button--user {
+  border-color: var(--color-border);
+  background: var(--color-bg);
+}
+
+.auth-demo__button--pro {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.auth-demo__button--admin {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.auth-demo__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 区切り線 */
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: var(--space-6) 0;
+}
+
+.auth-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-border-light);
+}
+
+.auth-divider__text {
+  position: relative;
+  display: inline-block;
+  padding: 0 var(--space-3);
+  background: white;
+  color: var(--color-fg-tertiary);
+  font-size: 0.875rem;
+}
+
+/* フォーム */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.auth-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-fg);
+}
+
+.auth-input {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.auth-input::placeholder {
+  color: var(--color-fg-quaternary);
+}
+
+.auth-hint {
+  font-size: 0.75rem;
+  color: var(--color-fg-tertiary);
+  margin-top: var(--space-1);
+}
+
+/* Remember & Forgot */
+.auth-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.auth-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.auth-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.auth-checkbox:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.auth-checkbox-label {
+  font-size: 0.875rem;
+  color: var(--color-fg);
+  cursor: pointer;
+}
+
+.auth-link {
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* エラーメッセージ */
+.auth-error {
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: start;
+  gap: var(--space-2);
+}
+
+.auth-error__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-error);
+}
+
+.auth-error__message {
+  font-size: 0.875rem;
+  color: var(--color-error-text);
+  line-height: 1.5;
+}
+
+/* 送信ボタン */
+.auth-submit {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.auth-submit:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.auth-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ソーシャルログイン */
+.auth-social {
+  margin-top: var(--space-6);
+}
+
+.auth-social__buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.auth-social__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: white;
+  color: var(--color-fg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-social__button:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-fg);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-social__icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* 利用規約 */
+.auth-terms {
+  display: flex;
+  align-items: start;
+  gap: var(--space-2);
+}
+
+.auth-terms__checkbox {
+  margin-top: 1px;
+  flex-shrink: 0;
+}
+
+.auth-terms__text {
+  font-size: 0.875rem;
+  color: var(--color-fg-secondary);
+  line-height: 1.5;
+}
+
+.auth-terms__text a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.auth-terms__text a:hover {
+  text-decoration: underline;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .auth-card {
+    padding: var(--space-6);
+  }
+  
+  .auth-title {
+    font-size: 1.75rem;
+  }
+  
+  .auth-social__buttons {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* アニメーション */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-card {
+  animation: slideUp 0.4s ease;
+}
+
+.auth-demo__button {
+  animation: slideUp 0.4s ease backwards;
+}
+
+.auth-demo__button:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.auth-demo__button:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.auth-demo__button:nth-child(3) {
+  animation-delay: 0.2s;
+}

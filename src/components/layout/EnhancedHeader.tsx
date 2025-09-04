@@ -7,7 +7,6 @@ import Image from 'next/image'
 import clsx from 'clsx'
 import { useEnhancedAuth } from '@/hooks/useEnhancedAuth'
 import { useEnhancedSearch } from '@/hooks/useEnhancedSearch'
-import { EnhancedLoginModal } from '@/components/auth/EnhancedLoginModal'
 
 interface HeaderProps {
   className?: string
@@ -19,7 +18,6 @@ export function EnhancedHeader({ className }: HeaderProps) {
   const { user, logout, isLoading } = useEnhancedAuth()
   const { query, setQuery, suggestions, getSuggestions } = useEnhancedSearch()
   
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false)
@@ -347,7 +345,7 @@ export function EnhancedHeader({ className }: HeaderProps) {
                       {/* メニューアイテム */}
                       <div className="py-1">
                         <Link
-                          href={`/@${user.username}`}
+                          href={`/${user.username}`}
                           className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                           onClick={() => setShowUserMenu(false)}
                         >
@@ -405,12 +403,12 @@ export function EnhancedHeader({ className }: HeaderProps) {
                   )}
                 </div>
               ) : (
-                <button
-                  onClick={() => setIsLoginModalOpen(true)}
+                <Link
+                  href="/login"
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                   ログイン
-                </button>
+                </Link>
               )}
 
               {/* モバイルメニューボタン */}
@@ -466,11 +464,6 @@ export function EnhancedHeader({ className }: HeaderProps) {
         )}
       </header>
 
-      {/* ログインモーダル */}
-      <EnhancedLoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      />
     </>
   )
 }

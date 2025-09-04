@@ -450,10 +450,14 @@ export default function ArticlesPage() {
                       </div>
                       
                       <div className="article-card-enhanced__meta">
-                        <Link 
-                          href={`/@${article.author.username}`}
+                        <div 
                           className="article-card-enhanced__author"
-                          onClick={(e) => e.stopPropagation()}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            window.location.href = `/${article.author.username}`
+                          }}
+                          style={{ cursor: 'pointer' }}
                         >
                           <img 
                             src={article.author.avatar} 
@@ -461,7 +465,7 @@ export default function ArticlesPage() {
                             className="article-card-enhanced__author-avatar"
                           />
                           <span>{article.author.name}</span>
-                        </Link>
+                        </div>
                         <span className="article-card-enhanced__date">
                           {new Date(article.publishedAt).toLocaleDateString('ja-JP')}
                         </span>

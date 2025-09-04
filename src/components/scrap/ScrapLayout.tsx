@@ -120,7 +120,7 @@ export function ScrapLayout({ scrap }: ScrapLayoutProps) {
 
             {/* 著者情報 */}
             <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl mb-6">
-              <Link href={`/@${scrap.author.username}`}>
+              <Link href={`/${scrap.author.username}`}>
                 <img 
                   src={scrap.author.avatar} 
                   alt={scrap.author.name}
@@ -129,7 +129,7 @@ export function ScrapLayout({ scrap }: ScrapLayoutProps) {
               </Link>
               <div className="flex-1">
                 <Link 
-                  href={`/@${scrap.author.username}`}
+                  href={`/${scrap.author.username}`}
                   className="text-lg font-semibold hover:text-blue-600 transition-colors"
                 >
                   {scrap.author.name}
@@ -178,7 +178,7 @@ export function ScrapLayout({ scrap }: ScrapLayoutProps) {
                 <div className="flex gap-4">
                   {/* アバターとライン */}
                   <div className="relative flex-shrink-0">
-                    <Link href={`/@${post.author.username}`}>
+                    <Link href={`/${post.author.username}`}>
                       <img 
                         src={post.author.avatar} 
                         alt={post.author.name}
@@ -198,7 +198,7 @@ export function ScrapLayout({ scrap }: ScrapLayoutProps) {
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <Link 
-                          href={`/@${post.author.username}`}
+                          href={`/${post.author.username}`}
                           className="font-semibold text-lg hover:text-blue-600 transition-colors"
                         >
                           {post.author.name}

@@ -350,7 +350,7 @@ export const EnhancedArticleLayout = memo(({ article, slots }: EnhancedArticleLa
 
                   {/* 著者情報 */}
                   <div className="article-layout__author-info">
-                    <Link href={`/@${article.author.username}`} className="article-layout__author-link">
+                    <Link href={`/${article.author.username}`} className="article-layout__author-link">
                       <img 
                         src={article.author.avatar} 
                         alt=""
