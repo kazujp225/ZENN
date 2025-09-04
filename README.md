@@ -1,92 +1,220 @@
-# Claude Code 社内導入支援LP
+# 🚀 Zenn Clone - エンジニア向け知識共有プラットフォーム
 
-Claude Code社内導入支援サービスのランディングページです。Next.js 14+とTypeScriptを使用して構築されています。
+Zenn.devのクローンアプリケーションです。Next.js 15.5.2 + TypeScriptを使用して構築されており、エンジニア向けの記事・書籍・スクラップ共有機能を提供します。
 
-## 概要
+## ✨ 主要機能
 
-外注に頼らず、内製で"すぐ動く"開発体制をつくるための研修サービスです。
-既存社員が最短1か月で自走でき、外注コストの1/3以下で運用が可能になります。
+### 🔐 認証システム
+- **3つのユーザータイプ**: 一般ユーザー、Proユーザー、管理者
+- **ダミーログイン**: 開発・デモ用の簡単ログイン機能
+- **ユーザープロフィール**: カスタマイズ可能なプロフィールページ
 
-## 主要セクション
+### 📝 コンテンツ機能
+- **記事 (Articles)**: テクニカル記事とアイデア記事
+- **書籍 (Books)**: 有料/無料の電子書籍
+- **スクラップ (Scraps)**: ディスカッション形式の短文投稿
+- **求人 (Jobs)**: エンジニア向け求人情報
+- **相談 (Consultations)**: エキスパート相談サービス
 
-- 🎯 **ヒーローセクション** - サービスの価値提案とCTA
-- 💭 **課題想起** - 外注費、スピード、属人化の課題を提示
-- ✨ **サービス特徴** - 4つの主要な特徴
-- 💰 **料金プラン** - 個人向け4コース＋チーム導入プラン
-- 📚 **学習ステップ** - 4段階の学習プロセス
-- 🚀 **ベネフィット** - 受講後の未来
-- 💬 **実績・声** - 導入企業の声
-- ❓ **FAQ** - よくある質問
+### 🎯 ページ機能
+- **パーソナライズホーム**: ログイン後の個別最適化ページ
+- **Explore**: カテゴリ別コンテンツ探索
+- **トレンディング**: 人気コンテンツ表示
+- **プロフィール**: ユーザーページと投稿管理
 
-## 技術スタック
+## 🛠 技術スタック
 
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 15.5.2 (App Router)
 - **Language**: TypeScript
-- **Styling**: CSS Modules + CSS Variables
-- **State Management**: Zustand
-- **Data Fetching**: SWR
+- **Styling**: CSS Modules + BEM命名規則
+- **State Management**: React Context API
+- **Authentication**: カスタム認証システム
+- **Icons**: 絵文字ベースのアイコンシステム
 
-## セットアップ
+## 🚀 クイックスタート
+
+### 前提条件
+- Node.js 18.0.0以上
+- npm または yarn
+
+### インストールと起動
 
 ```bash
+# リポジトリのクローン
+git clone https://github.com/kazujp225/ZENN.git
+cd ZENN/zenn-clone
+
 # 依存関係のインストール
 npm install
 
-# 開発サーバーの起動（ポート4000）
-npm run dev -- --port 4000
+# 開発サーバーの起動
+npm run dev
 
-# ビルド
+# ブラウザで開く
+# http://localhost:3000
+```
+
+### ビルドとデプロイ
+
+```bash
+# プロダクションビルド
 npm run build
 
 # プロダクションサーバーの起動
 npm start
 
 # 型チェック
-npm run typecheck
+npm run type-check
+
+# Linting
+npm run lint
 ```
 
-## プロジェクト構造
+## 🎨 デザインシステム
+
+### カラーパレット
+- **プライマリ**: `#2563eb` (ブルー)
+- **テキスト**: `#0f172a` (ダークグレー) 
+- **ボーダー**: `#e5e7eb` (ライトグレー)
+- **背景**: `#f8fafc` (オフホワイト)
+
+### レスポンシブブレイクポイント
+- **モバイル**: `< 768px`
+- **タブレット**: `768px - 1024px`
+- **デスクトップ**: `> 1024px`
+
+## 🔑 ダミーログイン認証情報
+
+開発・デモ用の認証情報：
+
+### 一般ユーザー 👤
+- **Email**: `user@example.com`
+- **Password**: `password`
+
+### Proユーザー ⭐
+- **Email**: `pro@example.com` 
+- **Password**: `password`
+
+### 管理者 🔧
+- **Email**: `admin@example.com`
+- **Password**: `password`
+
+## 📁 プロジェクト構造
 
 ```
 zenn-clone/
+├── public/                 # 静的ファイル
+│   └── images/            # 画像アセット
 ├── src/
-│   ├── app/           # Next.js App Router
-│   ├── components/    # React コンポーネント
-│   │   ├── common/    # Header, Footer, Layout
-│   │   ├── cards/     # カードコンポーネント
-│   │   └── ui/        # Badge, Button, Tabs, Chip
-│   └── styles/        # グローバルスタイル + LP専用スタイル
-├── public/            # 静的ファイル
-└── package.json       # プロジェクト設定
+│   ├── app/               # Next.js App Router
+│   │   ├── [username]/    # 動的ユーザーページ
+│   │   ├── articles/      # 記事関連ページ
+│   │   ├── books/         # 書籍関連ページ
+│   │   ├── login/         # 認証ページ
+│   │   └── ...           # その他のページ
+│   ├── components/        # React コンポーネント
+│   │   ├── cards/        # カードコンポーネント
+│   │   ├── common/       # 共通コンポーネント
+│   │   ├── features/     # 機能別コンポーネント
+│   │   └── ui/           # UIコンポーネント
+│   ├── contexts/         # React Context
+│   ├── hooks/            # カスタムフック
+│   └── styles/           # CSS Modules
+│       ├── components/   # コンポーネントスタイル
+│       ├── pages/        # ページスタイル
+│       └── globals.css   # グローバルスタイル
+├── .gitignore            # Git無視ファイル
+├── next.config.js        # Next.js設定
+├── package.json          # プロジェクト設定
+└── tsconfig.json         # TypeScript設定
 ```
 
-## 特徴
+## 🎯 主要コンポーネント
 
-### LP専用機能
-- スクロール連動ヘッダー（透明→白背景）
-- スムーススクロールナビゲーション
-- アコーディオンFAQ
-- グラデーションヒーロー
-- レスポンシブ料金カード
+### カードコンポーネント
+- `ArticleCard` - 記事表示カード
+- `BookCard` - 書籍表示カード
+- `ScrapCard` - スクラップ表示カード
+- `JobCard` - 求人表示カード
 
-### コース内容
-1. **ビギナーズ** (¥50,000) - Web作成基礎
-2. **スタンダード** (¥100,000) - バックエンド構築
-3. **プロフェッショナル** (¥150,000) - iOSアプリ作成
-4. **全部入りパック** (¥250,000) - 総合コース
-5. **チーム導入** (¥150,000/月/人) - 3名以上
+### 共通コンポーネント
+- `Header` - レスポンシブヘッダー
+- `Footer` - フッター
+- `UserDropdown` - ユーザーメニュー
+- `AuthButtons` - 認証ボタン
 
-## アクセス
+### 機能コンポーネント
+- `PersonalizedHome` - 個人化ホームページ
+- `ExploreContent` - 探索ページコンテンツ
+- `TrendingSection` - トレンディングセクション
 
-開発サーバー起動後：
-- http://localhost:4000/
+## 📱 レスポンシブ対応
 
-## パフォーマンス
+- **Mobile First**: モバイル優先設計
+- **Flexible Grid**: CSS GridとFlexboxの活用
+- **Adaptive Typography**: デバイスに応じた文字サイズ
+- **Touch Friendly**: タッチデバイス最適化
 
-- Lighthouse目標スコア: 90+
-- Web Vitals最適化済み
-- 画像最適化対応
+## 🎨 UI/UX特徴
 
-## ライセンス
+### アニメーション
+- **スムーススクロール**: ページ内リンク
+- **ホバー効果**: カードとボタンのインタラクション
+- **フェードイン**: コンテンツ表示アニメーション
 
-このプロジェクトは学習・デモ目的で作成されたものです。
+### アクセシビリティ
+- **キーボードナビゲーション**: 完全対応
+- **スクリーンリーダー**: ARIA属性付与
+- **コントラスト**: WCAG 2.2 AA準拠
+- **フォーカス管理**: 明確なフォーカス表示
+
+## 🚀 デプロイ
+
+### Vercel (推奨)
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+### その他のプラットフォーム
+- **Netlify**: `npm run build` → `out/` フォルダをデプロイ
+- **AWS Amplify**: Git連携で自動デプロイ
+- **GitHub Pages**: Static Export対応
+
+## 📈 パフォーマンス
+
+### 目標メトリクス
+- **Lighthouse Score**: 90+
+- **LCP**: < 2.5s
+- **FID**: < 100ms
+- **CLS**: < 0.1
+
+### 最適化施策
+- 画像の最適化 (Next.js Image)
+- コード分割
+- CSS最適化
+- フォント最適化
+
+## 🤝 コントリビューション
+
+1. このリポジトリをフォーク
+2. feature ブランチを作成 (`git checkout -b feature/AmazingFeature`)
+3. 変更をコミット (`git commit -m 'Add some AmazingFeature'`)
+4. ブランチにプッシュ (`git push origin feature/AmazingFeature`)
+5. プルリクエストを作成
+
+## 📝 ライセンス
+
+このプロジェクトは学習・デモ目的で作成されています。
+
+## 🙏 謝辞
+
+- [Zenn.dev](https://zenn.dev) - オリジナルプラットフォームへのリスペクト
+- [Next.js](https://nextjs.org) - 優れたReactフレームワーク
+- [TypeScript](https://www.typescriptlang.org) - 型安全性の提供
+
+---
+
+**開発者**: [@kazujp225](https://github.com/kazujp225)  
+**リポジトリ**: https://github.com/kazujp225/ZENN.git  
+**デモサイト**: http://localhost:3000 (ローカル環境)
