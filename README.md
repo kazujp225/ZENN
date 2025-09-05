@@ -1,41 +1,56 @@
 # 🚀 Zenn Clone - エンジニア向け知識共有プラットフォーム
 
-Zenn.devのクローンアプリケーションです。Next.js 15.5.2 + TypeScriptを使用して構築されており、エンジニア向けの記事・書籍・スクラップ共有機能を提供します。
+Zenn.devのクローンアプリケーションです。Next.js 14 + TypeScriptを使用して構築されており、エンジニア向けの記事・書籍・スクラップ共有機能を提供します。
 
 ## ✨ 主要機能
 
 ### 🔐 認証システム
+- **2つの認証システム**: AuthContextとEnhancedAuthProviderの統合
 - **3つのユーザータイプ**: 一般ユーザー、Proユーザー、管理者
 - **ダミーログイン**: 開発・デモ用の簡単ログイン機能
-- **ユーザープロフィール**: カスタマイズ可能なプロフィールページ
+- **セッション管理**: LocalStorage基盤の認証状態管理
 
 ### 📝 コンテンツ機能
-- **記事 (Articles)**: テクニカル記事とアイデア記事
+- **記事 (Articles)**: テクニカル記事とアイデア記事の投稿・管理
 - **書籍 (Books)**: 有料/無料の電子書籍
 - **スクラップ (Scraps)**: ディスカッション形式の短文投稿
 - **求人 (Jobs)**: エンジニア向け求人情報
 - **相談 (Consultations)**: エキスパート相談サービス
 
-### 🎯 ページ機能
-- **パーソナライズホーム**: ログイン後の個別最適化ページ
-- **Explore**: カテゴリ別コンテンツ探索
-- **トレンディング**: 人気コンテンツ表示
-- **プロフィール**: ユーザーページと投稿管理
+### 🎯 ダッシュボード機能
+- **統合ダッシュボード**: 記事、書籍、スクラップの一元管理
+- **リアルタイム統計**: 閲覧数、いいね、コメント数の表示
+- **収益管理**: 有料コンテンツの収益追跡
+- **分析機能**: コンテンツパフォーマンスの可視化
+
+### ⚙️ 設定システム
+- **プロフィール設定**: アバター、自己紹介、ソーシャルリンク
+- **アカウント設定**: パスワード変更、2要素認証、セッション管理
+- **通知設定**: メール、プッシュ、デスクトップ通知の管理
+- **表示設定**: テーマ、フォントサイズ、コードブロックのカスタマイズ
+- **プライバシー設定**: プロフィール公開範囲、データ管理
+- **外部連携**: GitHub、Twitter、Slack連携、Webhook、API管理
+- **収益設定**: 支払い方法、税務情報、出金管理
+
+### 🤖 AI機能
+- **AIアシスタント**: スマートな記事推薦とコンテンツ提案
+- **個別最適化**: ユーザー行動に基づくパーソナライゼーション
 
 ## 🛠 技術スタック
 
-- **Framework**: Next.js 15.5.2 (App Router)
+- **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Styling**: CSS Modules + BEM命名規則
-- **State Management**: React Context API
-- **Authentication**: カスタム認証システム
-- **Icons**: 絵文字ベースのアイコンシステム
+- **State Management**: React Context API + カスタムフック
+- **Authentication**: デュアル認証システム（AuthContext + EnhancedAuth）
+- **UI/UX**: レスポンシブデザイン、ダークモード対応準備
 
 ## 🚀 クイックスタート
 
 ### 前提条件
 - Node.js 18.0.0以上
 - npm または yarn
+- Git
 
 ### インストールと起動
 
@@ -74,7 +89,10 @@ npm run lint
 
 ### カラーパレット
 - **プライマリ**: `#2563eb` (ブルー)
-- **テキスト**: `#0f172a` (ダークグレー) 
+- **成功**: `#10b981` (グリーン)
+- **警告**: `#f59e0b` (オレンジ)
+- **エラー**: `#dc2626` (レッド)
+- **テキスト**: `#0f172a` (ダークグレー)
 - **ボーダー**: `#e5e7eb` (ライトグレー)
 - **背景**: `#f8fafc` (オフホワイト)
 
@@ -83,19 +101,25 @@ npm run lint
 - **タブレット**: `768px - 1024px`
 - **デスクトップ**: `> 1024px`
 
-## 🔑 ダミーログイン認証情報
+## 🔑 ログイン方法
 
-開発・デモ用の認証情報：
+### テスト用ログイン
 
-### 一般ユーザー 👤
+テストログインページ: `/test-login`
+
+任意のメールアドレスとパスワードでログイン可能です。
+
+### ダミーアカウント
+
+#### 一般ユーザー 👤
 - **Email**: `user@example.com`
 - **Password**: `password`
 
-### Proユーザー ⭐
-- **Email**: `pro@example.com` 
+#### Proユーザー ⭐
+- **Email**: `pro@example.com`
 - **Password**: `password`
 
-### 管理者 🔧
+#### 管理者 🔧
 - **Email**: `admin@example.com`
 - **Password**: `password`
 
@@ -110,15 +134,31 @@ zenn-clone/
 │   │   ├── [username]/    # 動的ユーザーページ
 │   │   ├── articles/      # 記事関連ページ
 │   │   ├── books/         # 書籍関連ページ
+│   │   ├── dashboard/     # ダッシュボード
+│   │   ├── settings/      # 設定ページ群
+│   │   │   ├── layout.tsx # 設定共通レイアウト
+│   │   │   ├── profile/   # プロフィール設定
+│   │   │   ├── account/   # アカウント設定
+│   │   │   ├── notifications/ # 通知設定
+│   │   │   ├── appearance/    # 表示設定
+│   │   │   ├── privacy/       # プライバシー設定
+│   │   │   ├── integrations/  # 連携設定
+│   │   │   └── revenue/       # 収益設定
 │   │   ├── login/         # 認証ページ
 │   │   └── ...           # その他のページ
 │   ├── components/        # React コンポーネント
+│   │   ├── ai/           # AIアシスタント
+│   │   ├── auth/         # 認証関連
 │   │   ├── cards/        # カードコンポーネント
 │   │   ├── common/       # 共通コンポーネント
 │   │   ├── features/     # 機能別コンポーネント
 │   │   └── ui/           # UIコンポーネント
 │   ├── contexts/         # React Context
+│   │   └── AuthContext.tsx # 認証コンテキスト
 │   ├── hooks/            # カスタムフック
+│   │   └── useEnhancedAuth.tsx # 拡張認証フック
+│   ├── utils/            # ユーティリティ関数
+│   │   └── articleStore.ts # 記事データ管理
 │   └── styles/           # CSS Modules
 │       ├── components/   # コンポーネントスタイル
 │       ├── pages/        # ページスタイル
@@ -126,27 +166,32 @@ zenn-clone/
 ├── .gitignore            # Git無視ファイル
 ├── next.config.js        # Next.js設定
 ├── package.json          # プロジェクト設定
+├── README.md             # このファイル
 └── tsconfig.json         # TypeScript設定
 ```
 
 ## 🎯 主要コンポーネント
 
-### カードコンポーネント
-- `ArticleCard` - 記事表示カード
-- `BookCard` - 書籍表示カード
-- `ScrapCard` - スクラップ表示カード
-- `JobCard` - 求人表示カード
+### 認証コンポーネント
+- `AuthProvider` - 認証コンテキストプロバイダー
+- `UserDropdown` - ユーザーメニュードロップダウン
+- `AuthButtons` - ログイン/サインアップボタン
 
-### 共通コンポーネント
-- `Header` - レスポンシブヘッダー
-- `Footer` - フッター
-- `UserDropdown` - ユーザーメニュー
-- `AuthButtons` - 認証ボタン
+### ダッシュボードコンポーネント
+- `DashboardPage` - 統合ダッシュボード
+- `ArticleManagement` - 記事管理
+- `StatsCards` - 統計カード
+- `RevenueChart` - 収益グラフ
 
-### 機能コンポーネント
-- `PersonalizedHome` - 個人化ホームページ
-- `ExploreContent` - 探索ページコンテンツ
-- `TrendingSection` - トレンディングセクション
+### 設定コンポーネント
+- `SettingsLayout` - 設定ページ共通レイアウト
+- `ProfileSettings` - プロフィール設定
+- `NotificationSettings` - 通知設定
+- `PrivacySettings` - プライバシー設定
+
+### AI機能
+- `AIAssistant` - AIアシスタントウィジェット
+- `AIRecommendations` - AI推薦エンジン
 
 ## 📱 レスポンシブ対応
 
@@ -154,6 +199,7 @@ zenn-clone/
 - **Flexible Grid**: CSS GridとFlexboxの活用
 - **Adaptive Typography**: デバイスに応じた文字サイズ
 - **Touch Friendly**: タッチデバイス最適化
+- **Hamburger Menu**: モバイル用ハンバーガーメニュー
 
 ## 🎨 UI/UX特徴
 
@@ -161,12 +207,23 @@ zenn-clone/
 - **スムーススクロール**: ページ内リンク
 - **ホバー効果**: カードとボタンのインタラクション
 - **フェードイン**: コンテンツ表示アニメーション
+- **ローディング状態**: スケルトンスクリーンとスピナー
 
 ### アクセシビリティ
 - **キーボードナビゲーション**: 完全対応
 - **スクリーンリーダー**: ARIA属性付与
 - **コントラスト**: WCAG 2.2 AA準拠
 - **フォーカス管理**: 明確なフォーカス表示
+
+## 🐛 既知の問題と解決策
+
+### 認証システム
+- **問題**: 2つの認証システムが混在
+- **解決**: AuthContextがEnhancedAuthのLocalStorageキーも読み取るように対応済み
+
+### z-index問題
+- **問題**: ドロップダウンメニューが他の要素の下に隠れる
+- **解決**: z-index階層を適切に設定（9999）
 
 ## 🚀 デプロイ
 
@@ -194,6 +251,18 @@ vercel --prod
 - コード分割
 - CSS最適化
 - フォント最適化
+- 遅延読み込み
+
+## 🔄 今後の改善予定
+
+- [ ] リアルタイムデータベース統合
+- [ ] WebSocket通知システム
+- [ ] ダークモード完全実装
+- [ ] 国際化（i18n）対応
+- [ ] PWA対応
+- [ ] テスト自動化（Jest + React Testing Library）
+- [ ] E2Eテスト（Playwright）
+- [ ] CI/CDパイプライン構築
 
 ## 🤝 コントリビューション
 
@@ -205,16 +274,21 @@ vercel --prod
 
 ## 📝 ライセンス
 
-このプロジェクトは学習・デモ目的で作成されています。
+このプロジェクトは学習・デモ目的で作成されています。商用利用の際はご注意ください。
 
 ## 🙏 謝辞
 
 - [Zenn.dev](https://zenn.dev) - オリジナルプラットフォームへのリスペクト
 - [Next.js](https://nextjs.org) - 優れたReactフレームワーク
 - [TypeScript](https://www.typescriptlang.org) - 型安全性の提供
+- [Vercel](https://vercel.com) - ホスティングプラットフォーム
 
 ---
 
 **開発者**: [@kazujp225](https://github.com/kazujp225)  
 **リポジトリ**: https://github.com/kazujp225/ZENN.git  
-**デモサイト**: http://localhost:3000 (ローカル環境)
+**最終更新**: 2025年1月
+
+## 📞 お問い合わせ
+
+バグ報告や機能リクエストは [Issues](https://github.com/kazujp225/ZENN/issues) までお願いします。
