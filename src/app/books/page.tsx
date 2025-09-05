@@ -295,8 +295,16 @@ export default function BooksPage() {
                       無料
                     </span>
                   )}
-                  <div className="book-card-enhanced__cover">
-                    <Link href={`/books/${book.id}`}>
+                  <div className="book-card-enhanced__cover" style={{ height: '160px' }}>
+                    <Link href={`/books/${book.id}`} style={{
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '3rem',
+                      textDecoration: 'none'
+                    }}>
                       📖
                     </Link>
                   </div>
@@ -500,8 +508,16 @@ export default function BooksPage() {
                         無料
                       </span>
                     )}
-                    <div className="book-card-enhanced__cover">
-                      <Link href={`/books/${book.id}`}>
+                    <div className="book-card-enhanced__cover" style={{ height: '160px' }}>
+                      <Link href={`/books/${book.id}`} style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '3rem',
+                        textDecoration: 'none'
+                      }}>
                         📖
                       </Link>
                     </div>
