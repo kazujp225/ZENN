@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserDropdown } from '@/components/auth/UserDropdown'
 import '@/styles/components/header.css'
+import '@/styles/components/header-centered.css'
 
 export const Header = () => {
   const { user, isLoading } = useAuth()

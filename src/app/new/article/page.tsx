@@ -6,6 +6,7 @@ import { MarkdownEditor } from '@/components/editor/MarkdownEditor'
 import { MarkdownContent } from '@/components/article/MarkdownContent'
 import { Badge } from '@/components/ui/Badge'
 import clsx from 'clsx'
+import { createArticleId, slugify, saveArticle, type Article } from '@/utils/articleStore'
 
 interface ArticleDraft {
   title: string
@@ -114,14 +115,31 @@ export default function NewArticlePage() {
       // TODO: 実際のAPI呼び出し
       await new Promise(resolve => setTimeout(resolve, 2000))
       
-      updateArticle({ published: true })
-      
+      // 記事を保存（ローカルストレージの管理用リスト）
+      const id = createArticleId()
+      const slug = `${slugify(article.title)}-${id.slice(0, 6)}`
+      const now = new Date().toISOString()
+      const saved: Article = {
+        id,
+        slug,
+        title: article.title.trim(),
+        emoji: article.emoji,
+        type: article.type,
+        tags: article.tags,
+        content: article.content,
+        published: true,
+        createdAt: now,
+        updatedAt: now,
+        views: 0,
+        likes: 0,
+      }
+      saveArticle(saved)
+
       // 下書きをクリア
       localStorage.removeItem('article-draft')
       
-      // 記事ページにリダイレクト（仮のslug）
-      const slug = article.title.toLowerCase().replace(/\s+/g, '-')
-      router.push(`/articles/${slug}`)
+      // ダッシュボードの管理画面へ
+      router.push(`/dashboard/articles`)
     } catch (error) {
       console.error('記事の公開に失敗しました:', error)
       alert('記事の公開に失敗しました')

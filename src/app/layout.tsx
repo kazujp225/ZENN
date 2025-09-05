@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Layout } from '@/components/common/Layout'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { EnhancedAuthProvider } from '@/hooks/useEnhancedAuth'
+import { AIAssistant } from '@/components/ai/AIAssistant'
 import '@/styles/globals.css'
 import '@/styles/components/auth.css'
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <AuthProvider>
           <EnhancedAuthProvider>
             <Layout>{children}</Layout>
+            <AIAssistant />
           </EnhancedAuthProvider>
         </AuthProvider>
       </body>

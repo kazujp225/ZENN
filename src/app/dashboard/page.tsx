@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
+import { useEnhancedAuth } from '@/hooks/useEnhancedAuth';
 import { useRouter } from 'next/navigation';
 import '@/styles/pages/dashboard.css';
 
@@ -76,14 +76,21 @@ const notifications = [
 type TabType = 'overview' | 'articles' | 'books' | 'scraps' | 'analytics' | 'earnings';
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user } = useEnhancedAuth();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
-  // ログインチェック
+  // ログインチェックとハッシュナビゲーション
   React.useEffect(() => {
     if (!user) {
       router.push('/');
+      return;
+    }
+
+    // ハッシュからタブを設定
+    const hash = window.location.hash.slice(1);
+    if (hash && ['overview', 'articles', 'books', 'scraps', 'analytics', 'earnings'].includes(hash)) {
+      setActiveTab(hash as TabType);
     }
   }, [user, router]);
 
@@ -115,37 +122,55 @@ export default function DashboardPage() {
           <nav className="dashboard__tab-nav">
             <button 
               className={`dashboard__tab ${activeTab === 'overview' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => setActiveTab('overview')}
+              onClick={() => {
+                setActiveTab('overview');
+                window.location.hash = 'overview';
+              }}
             >
               概要
             </button>
             <button 
               className={`dashboard__tab ${activeTab === 'articles' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => setActiveTab('articles')}
+              onClick={() => {
+                setActiveTab('articles');
+                window.location.hash = 'articles';
+              }}
             >
               記事
             </button>
             <button 
               className={`dashboard__tab ${activeTab === 'books' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => setActiveTab('books')}
+              onClick={() => {
+                setActiveTab('books');
+                window.location.hash = 'books';
+              }}
             >
               本
             </button>
             <button 
               className={`dashboard__tab ${activeTab === 'scraps' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => setActiveTab('scraps')}
+              onClick={() => {
+                setActiveTab('scraps');
+                window.location.hash = 'scraps';
+              }}
             >
               スクラップ
             </button>
             <button 
               className={`dashboard__tab ${activeTab === 'analytics' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => setActiveTab('analytics')}
+              onClick={() => {
+                setActiveTab('analytics');
+                window.location.hash = 'analytics';
+              }}
             >
               分析
             </button>
             <button 
               className={`dashboard__tab ${activeTab === 'earnings' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => setActiveTab('earnings')}
+              onClick={() => {
+                setActiveTab('earnings');
+                window.location.hash = 'earnings';
+              }}
             >
               収益
             </button>

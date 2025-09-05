@@ -3,6 +3,7 @@ import { ArticleCard } from '@/components/cards/ArticleCard'
 import { BookCard } from '@/components/cards/BookCard'
 import { ScrapCard } from '@/components/cards/ScrapCard'
 import { TrendingTabs } from '@/components/features/TrendingTabs'
+import { AIRecommendations } from '@/components/ai/AIRecommendations'
 
 // サンプルデータ
 const trendingArticles = [
@@ -181,6 +182,11 @@ export default function HomePage() {
           trendingArticles={trendingArticles}
           forYouArticles={[]} 
         />
+      </section>
+
+      {/* AI レコメンデーション */}
+      <section className="mb-12">
+        <AIRecommendations maxItems={5} />
       </section>
 
       {/* Ideas記事セクション */}

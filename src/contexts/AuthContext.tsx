@@ -55,11 +55,67 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     // ローカルストレージからユーザー情報を復元
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+    const loadUser = () => {
+      try {
+        // ブラウザ環境のみで実行
+        if (typeof window !== 'undefined') {
+          // まず 'user' キーをチェック (AuthContext用)
+          let storedUser = localStorage.getItem('user');
+          
+          // 'user' キーがなければ 'auth-user' をチェック (EnhancedAuth用)
+          if (!storedUser) {
+            const enhancedAuthUser = localStorage.getItem('auth-user');
+            if (enhancedAuthUser) {
+              // EnhancedAuth形式のユーザーをAuthContext形式に変換
+              const enhancedUser = JSON.parse(enhancedAuthUser);
+              const convertedUser: User = {
+                id: enhancedUser.id,
+                username: enhancedUser.username || enhancedUser.email.split('@')[0],
+                displayName: enhancedUser.name || enhancedUser.username || enhancedUser.email.split('@')[0],
+                email: enhancedUser.email,
+                avatar: enhancedUser.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${enhancedUser.email}`,
+                bio: enhancedUser.bio || '',
+                company: '',
+                location: enhancedUser.location || '',
+                website: enhancedUser.website || '',
+                twitter: '',
+                github: enhancedUser.username || enhancedUser.email.split('@')[0],
+                createdAt: enhancedUser.createdAt || new Date().toISOString(),
+                stats: {
+                  articles: enhancedUser.articlesCount || 0,
+                  books: 0,
+                  scraps: 0,
+                  followers: enhancedUser.followersCount || 0,
+                  following: enhancedUser.followingCount || 0,
+                  totalViews: 0,
+                  totalLikes: 0,
+                },
+                followingIds: [],
+                followerIds: [],
+                likedArticleIds: [],
+                bookmarkedArticleIds: [],
+              };
+              
+              // 変換したユーザーを両方のキーに保存
+              localStorage.setItem('user', JSON.stringify(convertedUser));
+              storedUser = JSON.stringify(convertedUser);
+            }
+          }
+          
+          if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+            console.log('User loaded:', parsedUser);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load user from localStorage:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadUser();
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -134,7 +190,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = useCallback(() => {
     setUser(null);
+    // 両方のキーをクリア
     localStorage.removeItem('user');
+    localStorage.removeItem('auth-user');
+    localStorage.removeItem('auth-session'); // EnhancedAuthのセッションもクリア
   }, []);
 
   const updateProfile = useCallback(async (data: Partial<User>) => {

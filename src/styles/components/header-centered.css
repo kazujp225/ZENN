@@ -1,0 +1,190 @@
+/* ==========================================
+   Centered Header Layout Enhancement
+   ========================================== */
+
+/* Container centering with proper constraints */
+.zenn-header__container {
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+}
+
+@media (min-width: 1440px) {
+  .zenn-header__container {
+    padding: 0 48px !important;
+  }
+}
+
+/* Content layout with balanced spacing */
+.zenn-header__content {
+  display: grid !important;
+  grid-template-columns: 200px 1fr 200px !important;
+  align-items: center !important;
+  height: 60px !important;
+  gap: 32px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+/* Left section - Logo area */
+.zenn-header__left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  justify-self: start !important;
+}
+
+/* Center section - Navigation */
+.zenn-header__nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  flex: 1 !important;
+  padding: 0 !important;
+}
+
+/* Right section - Actions */
+.zenn-header__right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  justify-self: end !important;
+}
+
+/* Navigation link spacing */
+.zenn-header__nav-link {
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+/* Logo sizing and alignment */
+.zenn-header__logo {
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+}
+
+.zenn-header__logo-icon {
+  font-size: 1.75rem !important;
+}
+
+.zenn-header__logo-text {
+  display: inline !important;
+  font-size: 1.5rem !important;
+}
+
+/* Search box adjustment */
+.zenn-header__search {
+  width: 180px !important;
+}
+
+@media (min-width: 1200px) {
+  .zenn-header__search {
+    width: 220px !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .zenn-header__content {
+    grid-template-columns: 180px 1fr 180px !important;
+    gap: 24px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .zenn-header__content {
+    grid-template-columns: auto 1fr auto !important;
+    gap: 16px !important;
+  }
+  
+  .zenn-header__nav {
+    display: none !important;
+  }
+  
+  .zenn-header__left {
+    min-width: auto !important;
+  }
+  
+  .zenn-header__right {
+    min-width: auto !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .zenn-header__container {
+    padding: 0 16px !important;
+  }
+  
+  .zenn-header__content {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+  
+  .zenn-header__logo-text {
+    display: none !important;
+  }
+}
+
+/* Navigation active state enhancement */
+.zenn-header__nav-link--active {
+  background: rgba(37, 99, 235, 0.08) !important;
+  color: var(--color-primary) !important;
+  font-weight: 600 !important;
+}
+
+.zenn-header__nav-link--active::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 24px !important;
+  height: 2px !important;
+  background: var(--color-primary) !important;
+  border-radius: 1px !important;
+}
+
+/* Separator styling */
+.zenn-header__nav-separator {
+  width: 1px !important;
+  height: 20px !important;
+  background: #E5E7EB !important;
+  margin: 0 8px !important;
+  opacity: 0.6 !important;
+}
+
+/* Button alignment */
+.zenn-header__login-btn,
+.zenn-header__post-btn {
+  white-space: nowrap !important;
+  font-size: 14px !important;
+  padding: 8px 20px !important;
+}
+
+/* User avatar centering */
+.zenn-header__user-avatar {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* Mobile menu button alignment */
+.zenn-header__mobile-toggle {
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Ensure header stays centered on scroll */
+.zenn-header--scrolled .zenn-header__container {
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+}

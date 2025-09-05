@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Header } from './Header'
+import { EnhancedHeader } from '@/components/layout/EnhancedHeader'
 import { Footer } from './Footer'
 
 interface LayoutProps {
@@ -13,7 +13,7 @@ export const Layout = ({ children }: LayoutProps) => {
         メインコンテンツへスキップ
       </a>
       
-      <Header />
+      <EnhancedHeader />
       
       <main id="main-content" className="flex-1">
         {children}

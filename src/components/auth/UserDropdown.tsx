@@ -29,10 +29,12 @@ export const UserDropdown: React.FC = () => {
         className="user-dropdown-trigger"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
+        aria-haspopup="menu"
+        aria-label="ユーザーメニューを開く"
       >
         <img 
-          src={user.avatar} 
-          alt={user.displayName}
+          src={user.avatar || '/images/avatar-placeholder.svg'} 
+          alt={user.displayName || user.username}
           className="user-avatar"
         />
       </button>
@@ -42,11 +44,11 @@ export const UserDropdown: React.FC = () => {
           <div className="user-dropdown-header">
             <img 
               src={user.avatar} 
-              alt={user.displayName}
+              alt={user.displayName || user.username}
               className="user-avatar-large"
             />
             <div className="user-info">
-              <div className="user-displayname">{user.displayName}</div>
+              <div className="user-displayname">{user.displayName || user.username}</div>
               <div className="user-username">@{user.username}</div>
             </div>
           </div>
@@ -54,49 +56,37 @@ export const UserDropdown: React.FC = () => {
           <div className="user-dropdown-divider" />
 
           <nav className="user-dropdown-nav">
-            <a href={`/${user.username}`} className="user-dropdown-item">
+            <Link href={`/${user.username}`} className="user-dropdown-item" onClick={() => setIsOpen(false)}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
-              マイページ
-            </a>
+              プロフィール
+            </Link>
             
-            <Link href="/dashboard/articles" className="user-dropdown-item">
+            <Link href="/dashboard" className="user-dropdown-item" onClick={() => setIsOpen(false)}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
               </svg>
-              記事の管理
+              ダッシュボード
             </Link>
 
-            <Link href="/dashboard/books" className="user-dropdown-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-              </svg>
-              本の管理
-            </Link>
-
-            <Link href="/dashboard/scraps" className="user-dropdown-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-              </svg>
-              スクラップの管理
-            </Link>
-
-            <Link href="/settings/profile" className="user-dropdown-item">
+            <Link href="/settings/profile" className="user-dropdown-item" onClick={() => setIsOpen(false)}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v6m0 6v6m4.22-13.22l4.24 4.24M1.54 1.54l4.24 4.24M12 1v6m0 6v6m-4.22-13.22L3.54 6.22M20.46 20.46l-4.24-4.24M12 7v10m5-5H7"/>
+                <path d="M12 1v6m0 6v6m6-12h6M6 12H0m16.24-4.24l-4.24 4.24m-8 0L2.76 4.76m14.48 14.48l-4.24-4.24m-8 0l-6.24 6.24"/>
               </svg>
               設定
             </Link>
+
           </nav>
 
           <div className="user-dropdown-divider" />
-
-          <button onClick={logout} className="user-dropdown-item user-dropdown-logout">
+          
+          <button onClick={() => { logout(); setIsOpen(false); }} className="user-dropdown-item user-dropdown-logout">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
               <polyline points="16 17 21 12 16 7"/>

@@ -2,13 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import '@/styles/pages/settings.css';
 
 export default function ProfileSettingsPage() {
   const { user, updateProfile, isLoading } = useAuth();
-  const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   
@@ -25,10 +22,6 @@ export default function ProfileSettingsPage() {
   });
 
   useEffect(() => {
-    if (!user && !isLoading) {
-      router.push('/');
-    }
-    
     if (user) {
       setFormData({
         displayName: user.displayName || '',
@@ -42,7 +35,7 @@ export default function ProfileSettingsPage() {
         github: user.github || '',
       });
     }
-  }, [user, isLoading, router]);
+  }, [user]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -77,269 +70,290 @@ export default function ProfileSettingsPage() {
     await updateProfile({ avatar: avatarUrl });
   };
 
+  if (isLoading) {
+    return (
+      <div className="settings-content">
+        <div className="settings-content__header">
+          <h1 className="settings-content__title">読み込み中...</h1>
+        </div>
+      </div>
+    );
+  }
+
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="settings-content">
+        <div className="settings-content__header">
+          <h1 className="settings-content__title">ユーザー情報が見つかりません</h1>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="settings">
-      <div className="settings__container">
-        <div className="settings__sidebar">
-          <nav className="settings__nav">
-            <Link href="/settings/profile" className="settings__nav-item settings__nav-item--active">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-              プロフィール
-            </Link>
-            <Link href="/settings/account" className="settings__nav-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-                <path d="M12 6v6l4 2"/>
-              </svg>
-              アカウント
-            </Link>
-            <Link href="/settings/notifications" className="settings__nav-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-              </svg>
-              通知設定
-            </Link>
-            <Link href="/settings/privacy" className="settings__nav-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-              </svg>
-              プライバシー
-            </Link>
-            <Link href="/settings/earnings" className="settings__nav-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="12" y1="1" x2="12" y2="23"/>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-              </svg>
-              収益設定
-            </Link>
-          </nav>
+    <div className="settings-content">
+      <div className="settings-content__header">
+        <h1 className="settings-content__title">プロフィール設定</h1>
+        <p className="settings-content__description">
+          公開プロフィールの情報を編集します
+        </p>
+      </div>
+
+      {successMessage && (
+        <div className="settings-message settings-message--success">
+          {successMessage}
         </div>
+      )}
 
-        <div className="settings__content">
-          <h1 className="settings__title">プロフィール設定</h1>
-
-          {successMessage && (
-            <div className="settings__success">
-              {successMessage}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="settings__form">
-            {/* アバター設定 */}
-            <div className="settings__avatar-section">
-              <img 
-                src={user.avatar} 
-                alt={user.displayName}
-                className="settings__avatar"
-              />
-              <div className="settings__avatar-actions">
-                <label htmlFor="avatar-upload" className="settings__avatar-btn">
-                  画像を変更
-                  <input 
-                    type="file" 
-                    id="avatar-upload"
-                    accept="image/*"
-                    onChange={handleAvatarChange}
-                    style={{ display: 'none' }}
-                  />
-                </label>
-                <button type="button" className="settings__avatar-remove">
-                  削除
-                </button>
-              </div>
-            </div>
-
-            {/* 基本情報 */}
-            <div className="settings__group">
-              <h2 className="settings__group-title">基本情報</h2>
-              
-              <div className="settings__field">
-                <label htmlFor="displayName">表示名</label>
-                <input
-                  type="text"
-                  id="displayName"
-                  name="displayName"
-                  value={formData.displayName}
-                  onChange={handleChange}
-                  required
+      <form onSubmit={handleSubmit}>
+        {/* アバター */}
+        <div className="settings-section">
+          <h2 className="settings-section__title">プロフィール画像</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            <img 
+              src={user.avatar || '/images/avatar-placeholder.svg'} 
+              alt={user.displayName || user.username}
+              style={{
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                border: '3px solid #e5e7eb'
+              }}
+            />
+            <div>
+              <label className="settings-button settings-button--primary" style={{ cursor: 'pointer' }}>
+                画像を変更
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={handleAvatarChange}
+                  style={{ display: 'none' }}
                 />
-              </div>
-
-              <div className="settings__field">
-                <label htmlFor="username">ユーザー名</label>
-                <div className="settings__input-group">
-                  <span className="settings__input-prefix">@</span>
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    pattern="[a-zA-Z0-9_]+"
-                    required
-                  />
-                </div>
-                <p className="settings__help">英数字とアンダースコアのみ使用可能</p>
-              </div>
-
-              <div className="settings__field">
-                <label htmlFor="email">メールアドレス</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="settings__field">
-                <label htmlFor="bio">自己紹介</label>
-                <textarea
-                  id="bio"
-                  name="bio"
-                  value={formData.bio}
-                  onChange={handleChange}
-                  rows={4}
-                  placeholder="あなたについて教えてください"
-                />
-                <p className="settings__help">{formData.bio.length}/160</p>
-              </div>
-            </div>
-
-            {/* 追加情報 */}
-            <div className="settings__group">
-              <h2 className="settings__group-title">追加情報</h2>
-              
-              <div className="settings__field">
-                <label htmlFor="company">会社・組織</label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleChange}
-                  placeholder="例: Tech Company Inc."
-                />
-              </div>
-
-              <div className="settings__field">
-                <label htmlFor="location">場所</label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  placeholder="例: Tokyo, Japan"
-                />
-              </div>
-
-              <div className="settings__field">
-                <label htmlFor="website">ウェブサイト</label>
-                <input
-                  type="url"
-                  id="website"
-                  name="website"
-                  value={formData.website}
-                  onChange={handleChange}
-                  placeholder="https://example.com"
-                />
-              </div>
-            </div>
-
-            {/* ソーシャルアカウント */}
-            <div className="settings__group">
-              <h2 className="settings__group-title">ソーシャルアカウント</h2>
-              
-              <div className="settings__field">
-                <label htmlFor="twitter">Twitter</label>
-                <div className="settings__input-group">
-                  <span className="settings__input-prefix">@</span>
-                  <input
-                    type="text"
-                    id="twitter"
-                    name="twitter"
-                    value={formData.twitter}
-                    onChange={handleChange}
-                    placeholder="username"
-                  />
-                </div>
-              </div>
-
-              <div className="settings__field">
-                <label htmlFor="github">GitHub</label>
-                <div className="settings__input-group">
-                  <span className="settings__input-prefix">@</span>
-                  <input
-                    type="text"
-                    id="github"
-                    name="github"
-                    value={formData.github}
-                    onChange={handleChange}
-                    placeholder="username"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 統計情報 */}
-            <div className="settings__group">
-              <h2 className="settings__group-title">統計情報</h2>
-              <div className="settings__stats">
-                <div className="settings__stat">
-                  <span className="settings__stat-label">記事数</span>
-                  <span className="settings__stat-value">{user.stats.articles}</span>
-                </div>
-                <div className="settings__stat">
-                  <span className="settings__stat-label">本</span>
-                  <span className="settings__stat-value">{user.stats.books}</span>
-                </div>
-                <div className="settings__stat">
-                  <span className="settings__stat-label">スクラップ</span>
-                  <span className="settings__stat-value">{user.stats.scraps}</span>
-                </div>
-                <div className="settings__stat">
-                  <span className="settings__stat-label">フォロワー</span>
-                  <span className="settings__stat-value">{user.stats.followers}</span>
-                </div>
-                <div className="settings__stat">
-                  <span className="settings__stat-label">総閲覧数</span>
-                  <span className="settings__stat-value">{user.stats.totalViews.toLocaleString()}</span>
-                </div>
-                <div className="settings__stat">
-                  <span className="settings__stat-label">総いいね</span>
-                  <span className="settings__stat-value">{user.stats.totalLikes}</span>
-                </div>
-              </div>
-              <p className="settings__help">
-                アカウント作成日: {new Date(user.createdAt).toLocaleDateString('ja-JP')}
+              </label>
+              <p className="settings-field__help" style={{ marginTop: '8px' }}>
+                JPG、PNG、GIF形式。最大5MBまで。
               </p>
             </div>
-
-            {/* 保存ボタン */}
-            <div className="settings__actions">
-              <button 
-                type="submit" 
-                className="settings__submit"
-                disabled={isSaving}
-              >
-                {isSaving ? '保存中...' : '変更を保存'}
-              </button>
-            </div>
-          </form>
+          </div>
         </div>
-      </div>
+
+        {/* 基本情報 */}
+        <div className="settings-section">
+          <h2 className="settings-section__title">基本情報</h2>
+          
+          <div className="settings-field">
+            <label htmlFor="displayName" className="settings-field__label">
+              表示名
+            </label>
+            <input
+              type="text"
+              id="displayName"
+              name="displayName"
+              value={formData.displayName}
+              onChange={handleChange}
+              className="settings-field__input"
+              placeholder="山田 太郎"
+            />
+            <p className="settings-field__help">
+              記事やコメントに表示される名前です
+            </p>
+          </div>
+
+          <div className="settings-field">
+            <label htmlFor="username" className="settings-field__label">
+              ユーザー名
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #e5e7eb', borderRadius: '6px' }}>
+              <span style={{ padding: '10px 12px', background: '#f3f4f6', borderRight: '1px solid #e5e7eb' }}>
+                @
+              </span>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                style={{ flex: 1, padding: '10px 12px', border: 'none', outline: 'none' }}
+                placeholder="username"
+              />
+            </div>
+            <p className="settings-field__help">
+              URL: https://zenn.dev/{formData.username || 'username'}
+            </p>
+          </div>
+
+          <div className="settings-field">
+            <label htmlFor="email" className="settings-field__label">
+              メールアドレス
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="settings-field__input"
+              disabled
+            />
+            <p className="settings-field__help">
+              メールアドレスは他のユーザーには公開されません
+            </p>
+          </div>
+
+          <div className="settings-field">
+            <label htmlFor="bio" className="settings-field__label">
+              自己紹介
+            </label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
+              className="settings-field__textarea"
+              rows={4}
+              placeholder="フロントエンドエンジニアです。React/Next.jsを使った開発が得意です。"
+            />
+            <p className="settings-field__help">
+              最大160文字まで
+            </p>
+          </div>
+        </div>
+
+        {/* 詳細情報 */}
+        <div className="settings-section">
+          <h2 className="settings-section__title">詳細情報</h2>
+          
+          <div className="settings-field">
+            <label htmlFor="company" className="settings-field__label">
+              会社名
+            </label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+              className="settings-field__input"
+              placeholder="株式会社Example"
+            />
+          </div>
+
+          <div className="settings-field">
+            <label htmlFor="location" className="settings-field__label">
+              所在地
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              className="settings-field__input"
+              placeholder="Tokyo, Japan"
+            />
+          </div>
+
+          <div className="settings-field">
+            <label htmlFor="website" className="settings-field__label">
+              ウェブサイト
+            </label>
+            <input
+              type="url"
+              id="website"
+              name="website"
+              value={formData.website}
+              onChange={handleChange}
+              className="settings-field__input"
+              placeholder="https://example.com"
+            />
+          </div>
+        </div>
+
+        {/* ソーシャルリンク */}
+        <div className="settings-section">
+          <h2 className="settings-section__title">ソーシャルリンク</h2>
+          
+          <div className="settings-field">
+            <label htmlFor="twitter" className="settings-field__label">
+              Twitter
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #e5e7eb', borderRadius: '6px' }}>
+              <span style={{ padding: '10px 12px', background: '#f3f4f6', borderRight: '1px solid #e5e7eb', fontSize: '14px' }}>
+                twitter.com/
+              </span>
+              <input
+                type="text"
+                id="twitter"
+                name="twitter"
+                value={formData.twitter}
+                onChange={handleChange}
+                style={{ flex: 1, padding: '10px 12px', border: 'none', outline: 'none' }}
+                placeholder="username"
+              />
+            </div>
+          </div>
+
+          <div className="settings-field">
+            <label htmlFor="github" className="settings-field__label">
+              GitHub
+            </label>
+            <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #e5e7eb', borderRadius: '6px' }}>
+              <span style={{ padding: '10px 12px', background: '#f3f4f6', borderRight: '1px solid #e5e7eb', fontSize: '14px' }}>
+                github.com/
+              </span>
+              <input
+                type="text"
+                id="github"
+                name="github"
+                value={formData.github}
+                onChange={handleChange}
+                style={{ flex: 1, padding: '10px 12px', border: 'none', outline: 'none' }}
+                placeholder="username"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* アカウント統計 */}
+        <div className="settings-section">
+          <h2 className="settings-section__title">アカウント統計</h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+            gap: '16px',
+            padding: '20px',
+            background: '#f9fafb',
+            borderRadius: '8px'
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{user.stats?.articles || 0}</div>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>記事</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{user.stats?.followers || 0}</div>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>フォロワー</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{user.stats?.following || 0}</div>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>フォロー中</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{user.stats?.totalLikes || 0}</div>
+              <div style={{ fontSize: '14px', color: '#6b7280' }}>いいね</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="settings-form__actions">
+          <button
+            type="submit"
+            disabled={isSaving}
+            className="settings-button settings-button--primary"
+          >
+            {isSaving ? '保存中...' : '変更を保存'}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

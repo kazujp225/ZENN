@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -15,7 +16,7 @@ interface HeaderProps {
 export function EnhancedHeader({ className }: HeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { user, logout, isLoading } = useEnhancedAuth()
+  const { user, logout, isLoading, login } = useEnhancedAuth()
   const { query, setQuery, suggestions, getSuggestions } = useEnhancedSearch()
   
   const [showUserMenu, setShowUserMenu] = useState(false)
@@ -25,16 +26,36 @@ export function EnhancedHeader({ className }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState('')
   
   const userMenuRef = useRef<HTMLDivElement>(null)
+  const userDropdownRef = useRef<HTMLDivElement>(null)
+  const userTriggerRef = useRef<HTMLButtonElement>(null)
+  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 })
   const searchRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  // メニューの外側クリック検知
+  const handleDemoLogin = useCallback(async () => {
+    if (isLoading) return
+    try {
+      await login({ email: 'user@example.com', password: 'password' })
+      setShowUserMenu(false)
+      router.push('/')
+    } catch (e) {
+      console.error('デモログイン失敗', e)
+    }
+  }, [isLoading, login, router])
+
+  // メニューの外側クリック検知（ポータル対応）
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node
+      const outsideUser =
+        userMenuRef.current && !userMenuRef.current.contains(target) &&
+        userDropdownRef.current && !userDropdownRef.current.contains(target)
+
+      if (outsideUser) {
         setShowUserMenu(false)
       }
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+
+      if (searchRef.current && !searchRef.current.contains(target)) {
         setShowSearchSuggestions(false)
       }
     }
@@ -42,6 +63,47 @@ export function EnhancedHeader({ className }: HeaderProps) {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  // ユーザードロップダウンの位置計算（はみ出し防止）
+  const updateMenuPosition = useCallback(() => {
+    const trigger = userTriggerRef.current
+    if (!trigger) return
+    const rect = trigger.getBoundingClientRect()
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
+
+    // 実測値を優先（未計測時はデフォルト幅）
+    const measured = userDropdownRef.current?.getBoundingClientRect()
+    const menuWidth = measured?.width || 256 // w-64 = 16rem ≒ 256px
+    const menuHeightEstimate = measured?.height || 380
+
+    // 水平方向: アイコンの中心に合わせて中央揃え
+    let left = rect.left + rect.width / 2 - menuWidth / 2
+    // 横はみ出し防止（8px マージン）
+    left = Math.max(8, Math.min(viewportWidth - menuWidth - 8, left))
+
+    // 垂直方向: 基本は下に出す、下に収まらない場合は上にフリップ
+    let top = rect.bottom + 8
+    if (top + menuHeightEstimate > viewportHeight - 8) {
+      top = Math.max(8, rect.top - menuHeightEstimate - 8)
+    }
+    setMenuPosition({ top, left })
+  }, [])
+
+  useEffect(() => {
+    if (!showUserMenu) return
+    // 初回レンダー後に実測で再計算
+    const raf = requestAnimationFrame(() => updateMenuPosition())
+
+    const handler = () => updateMenuPosition()
+    window.addEventListener('resize', handler)
+    window.addEventListener('scroll', handler, true)
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener('resize', handler)
+      window.removeEventListener('scroll', handler, true)
+    }
+  }, [showUserMenu, updateMenuPosition])
 
   // キーボードショートカット
   useEffect(() => {
@@ -280,6 +342,7 @@ export function EnhancedHeader({ className }: HeaderProps) {
               {user ? (
                 <div className="relative" ref={userMenuRef}>
                   <button
+                    ref={userTriggerRef}
                     onClick={() => setShowUserMenu(!showUserMenu)}
                     className="flex items-center space-x-2 p-1 rounded-lg hover:bg-gray-100 transition-colors"
                   >
@@ -309,8 +372,19 @@ export function EnhancedHeader({ className }: HeaderProps) {
                   </button>
 
                   {/* ユーザードロップダウンメニュー */}
-                  {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  {showUserMenu && createPortal(
+                    <div
+                      ref={userDropdownRef}
+                      style={{
+                        position: 'fixed',
+                        top: `${menuPosition.top}px`,
+                        left: `${menuPosition.left}px`,
+                        zIndex: 10000,
+                        maxHeight: `min(70vh, ${Math.max(200, window.innerHeight - menuPosition.top - 16)}px)`,
+                        overflowY: 'auto'
+                      }}
+                      className="w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
+                    >
                       {/* ユーザー情報 */}
                       <div className="px-4 py-3 border-b border-gray-100">
                         <div className="flex items-center space-x-3">
@@ -365,7 +439,7 @@ export function EnhancedHeader({ className }: HeaderProps) {
                           ダッシュボード
                         </Link>
                         <Link
-                          href="/my/articles"
+                          href="/dashboard/articles"
                           className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                           onClick={() => setShowUserMenu(false)}
                         >
@@ -399,16 +473,27 @@ export function EnhancedHeader({ className }: HeaderProps) {
                           {isLoading ? 'ログアウト中...' : 'ログアウト'}
                         </button>
                       </div>
-                    </div>
+                    </div>,
+                    document.body
                   )}
                 </div>
               ) : (
-                <Link
-                  href="/login"
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  ログイン
-                </Link>
+                <div className="flex items-center space-x-2">
+                  <Link
+                    href="/login"
+                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    ログイン
+                  </Link>
+                  <button
+                    onClick={handleDemoLogin}
+                    disabled={isLoading}
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    title="デモ用のワンクリックログイン"
+                  >
+                    デモログイン
+                  </button>
+                </div>
               )}
 
               {/* モバイルメニューボタン */}

@@ -233,7 +233,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
     }, 5 * 60 * 1000) // 5分間隔
   }, [user, session])
 
-  // 初期化
+  // 初期化（ストレージ復元のみ）
   useEffect(() => {
     const initAuth = async () => {
       try {
@@ -250,8 +250,6 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
           if (new Date(session.expiresAt) > new Date()) {
             setUser(user)
             setSession(session)
-            scheduleTokenRefresh(session.expiresAt)
-            startHeartbeat()
             
             // セッション検証API呼び出し（実環境では必須）
             // await validateSession(session.token)
@@ -292,7 +290,28 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
         clearInterval(heartbeatIntervalRef.current)
       }
     }
-  }, [scheduleTokenRefresh, startHeartbeat])
+  }, [])
+
+  // セッション期限に応じたトークン更新予約
+  useEffect(() => {
+    if (session?.expiresAt) {
+      scheduleTokenRefresh(session.expiresAt)
+    }
+    // scheduleTokenRefresh は安定（依存なし）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.expiresAt])
+
+  // ユーザーとセッションが揃ったらハートビート開始/停止
+  useEffect(() => {
+    if (user && session) {
+      startHeartbeat()
+    } else if (heartbeatIntervalRef.current) {
+      clearInterval(heartbeatIntervalRef.current)
+    }
+    // startHeartbeat は user/session に依存して再生成されるが、
+    // この効果は user/session の変化で十分に再実行される
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, session])
 
   // レート制限チェック
   const checkRateLimit = useCallback((email: string): boolean => {
