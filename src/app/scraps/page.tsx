@@ -282,7 +282,7 @@ export default function ScrapsPage() {
                   </div>
                   <div className="scraps-trending__topic-activity">
                     <span>最新: 2時間前</span>
-                    <span>参加者: {Math.floor(Math.random() * 20) + 5}人</span>
+                    <span>参加者: {15 + index * 3}人</span>
                   </div>
                 </div>
               ))}

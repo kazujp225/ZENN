@@ -33,18 +33,21 @@ const getTopicIcon = (topic: string) => {
 const getTopicData = (topic: string) => {
   const decodedTopic = decodeURIComponent(topic)
   
+  // 固定値を使用してhydrationエラーを回避
+  const hashCode = decodedTopic.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  
   return {
     name: decodedTopic,
     icon: getTopicIcon(decodedTopic),
     description: getTopicDescription(decodedTopic),
-    followersCount: Math.floor(Math.random() * 50000) + 10000,
-    articlesCount: Math.floor(Math.random() * 5000) + 1000,
-    booksCount: Math.floor(Math.random() * 100) + 20,
-    scrapsCount: Math.floor(Math.random() * 1000) + 200,
-    weeklyGrowth: Math.floor(Math.random() * 20) + 5,
-    monthlyViews: Math.floor(Math.random() * 100000) + 50000,
-    activeAuthors: Math.floor(Math.random() * 500) + 100,
-    avgEngagement: (Math.random() * 5 + 3).toFixed(1),
+    followersCount: 10000 + (hashCode * 123) % 40000,
+    articlesCount: 1000 + (hashCode * 456) % 4000,
+    booksCount: 20 + (hashCode * 789) % 80,
+    scrapsCount: 200 + (hashCode * 321) % 800,
+    weeklyGrowth: 5 + (hashCode % 15),
+    monthlyViews: 50000 + (hashCode * 654) % 50000,
+    activeAuthors: 100 + (hashCode * 987) % 400,
+    avgEngagement: ((hashCode % 50) / 10 + 3).toFixed(1),
     isFollowing: false,
     relatedTopics: getRelatedTopics(decodedTopic),
     trendingAuthors: getTrendingAuthors(decodedTopic)
