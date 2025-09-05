@@ -295,24 +295,29 @@ export default function BooksPage() {
                       無料
                     </span>
                   )}
-                  <Link href={`/books/${book.id}`}>
-                    <div className="book-card-enhanced__cover">
+                  <div className="book-card-enhanced__cover">
+                    <Link href={`/books/${book.id}`}>
                       📖
+                    </Link>
+                  </div>
+                  <div className="book-card-enhanced__content">
+                    <h3 className="book-card-enhanced__title">
+                      <Link href={`/books/${book.id}`}>
+                        {book.title}
+                      </Link>
+                    </h3>
+                    <div 
+                      className="book-card-enhanced__author"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        window.location.href = `/${book.author.username}`
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
+                      <span>{book.author.name}</span>
                     </div>
-                    <div className="book-card-enhanced__content">
-                      <h3 className="book-card-enhanced__title">{book.title}</h3>
-                      <div 
-                        className="book-card-enhanced__author"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          window.location.href = `/${book.author.username}`
-                        }}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
-                        <span>{book.author.name}</span>
-                      </div>
                       <div className="book-card-enhanced__meta">
                         <span className="book-card-enhanced__pages">
                           📄 {book.totalPages}ページ
@@ -344,7 +349,6 @@ export default function BooksPage() {
                         </span>
                       </div>
                     </div>
-                  </Link>
                 </article>
               ))}
             </div>
@@ -496,16 +500,21 @@ export default function BooksPage() {
                         無料
                       </span>
                     )}
-                    <Link href={`/books/${book.id}`}>
-                      <div className="book-card-enhanced__cover">
+                    <div className="book-card-enhanced__cover">
+                      <Link href={`/books/${book.id}`}>
                         📖
-                      </div>
-                      <div className="book-card-enhanced__content">
-                        <h3 className="book-card-enhanced__title">{book.title}</h3>
-                        <Link href={`/${book.author.username}`} className="book-card-enhanced__author">
-                          <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
-                          <span>{book.author.name}</span>
+                      </Link>
+                    </div>
+                    <div className="book-card-enhanced__content">
+                      <h3 className="book-card-enhanced__title">
+                        <Link href={`/books/${book.id}`}>
+                          {book.title}
                         </Link>
+                      </h3>
+                      <Link href={`/${book.author.username}`} className="book-card-enhanced__author">
+                        <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
+                        <span>{book.author.name}</span>
+                      </Link>
                         <div className="book-card-enhanced__meta">
                           <span className="book-card-enhanced__pages">
                             📄 {book.totalPages}ページ
@@ -537,7 +546,6 @@ export default function BooksPage() {
                           </span>
                         </div>
                       </div>
-                    </Link>
                   </article>
                 ))}
               </div>
