@@ -7,6 +7,8 @@ import { ServiceWorkerRegister } from './service-worker-register'
 import '@/styles/globals.css'
 import '@/styles/components/auth.css'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Zenn Clone - エンジニアのための知識共有コミュニティ',
   description: 'エンジニアが知識を共有するためのプラットフォーム。テック記事、アイデア、本、スクラップを投稿・閲覧できます。',

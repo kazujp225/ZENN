@@ -17,6 +17,9 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  // Disable static generation to fix useSearchParams prerendering issues
+  output: 'standalone',
+  trailingSlash: false,
 }
 
 module.exports = nextConfig

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 export type SearchType = 'all' | 'articles' | 'books' | 'scraps'
 export type SortBy = 'newest' | 'oldest' | 'popular' | 'relevant'
