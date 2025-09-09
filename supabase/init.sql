@@ -9,6 +9,9 @@ CREATE TABLE IF NOT EXISTS users (
   display_name TEXT,
   avatar_url TEXT,
   bio TEXT,
+  website_url TEXT,
+  twitter_username TEXT,
+  github_username TEXT,
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -21,9 +24,9 @@ CREATE TABLE IF NOT EXISTS articles (
   content TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
   emoji TEXT DEFAULT '📝',
-  author_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  is_published BOOLEAN DEFAULT false,
-  views_count INTEGER DEFAULT 0,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  published BOOLEAN DEFAULT false,
+  type VARCHAR(50) DEFAULT 'tech',
   likes_count INTEGER DEFAULT 0,
   comments_count INTEGER DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -40,12 +43,86 @@ CREATE TABLE IF NOT EXISTS topics (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- 本テーブル
+CREATE TABLE IF NOT EXISTS books (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  description TEXT,
+  slug TEXT UNIQUE NOT NULL,
+  emoji TEXT DEFAULT '📚',
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  published BOOLEAN DEFAULT false,
+  price INTEGER DEFAULT 0,
+  is_free BOOLEAN DEFAULT true,
+  likes_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- スクラップテーブル
+CREATE TABLE IF NOT EXISTS scraps (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  description TEXT,
+  slug TEXT UNIQUE NOT NULL,
+  emoji TEXT DEFAULT '💭',
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  is_public BOOLEAN DEFAULT true,
+  comments_count INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- 記事トピック関連テーブル
 CREATE TABLE IF NOT EXISTS article_topics (
   article_id UUID REFERENCES articles(id) ON DELETE CASCADE,
   topic_id UUID REFERENCES topics(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   PRIMARY KEY (article_id, topic_id)
+);
+
+-- いいねテーブル
+CREATE TABLE IF NOT EXISTS likes (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  target_id UUID NOT NULL,
+  target_type VARCHAR(50) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, target_id, target_type)
+);
+
+-- コメントテーブル
+CREATE TABLE IF NOT EXISTS article_comments (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  article_id UUID REFERENCES articles(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  content TEXT NOT NULL,
+  parent_id UUID REFERENCES article_comments(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- フォロー関係テーブル
+CREATE TABLE IF NOT EXISTS follows (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  follower_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  following_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(follower_id, following_id)
+);
+
+-- 通知テーブル
+CREATE TABLE IF NOT EXISTS notifications (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  type VARCHAR(50) NOT NULL,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  entity_id UUID,
+  entity_type VARCHAR(50),
+  action_url TEXT,
+  is_read BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- コメントテーブル

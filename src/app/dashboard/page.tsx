@@ -127,8 +127,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="dashboard">
-        <div className="dashboard__container">
+      <div className="dashboard-page">
+        <div className="dashboard-content__inner">
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">ダッシュボードを読み込み中...</p>
@@ -139,13 +139,19 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-page">
       {/* Dashboard Header */}
-      <div className="dashboard__header">
-        <div className="dashboard__container">
-          <h1 className="dashboard__title">ダッシュボード</h1>
-          <div className="dashboard__actions">
-            <Link href="/new/article" className="dashboard__new-btn">
+      <div className="dashboard-header">
+        <div className="dashboard-header__inner">
+          <div className="dashboard-header__content">
+            <div className="dashboard-header__main">
+              <h1 className="dashboard-header__title">
+                <span className="dashboard-header__title-icon">📊</span>
+                ダッシュボード
+              </h1>
+              <p className="dashboard-header__description">投稿した記事やスクラップを管理できます</p>
+            </div>
+            <Link href="/new/article" className="dashboard-header__action">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="12" y1="5" x2="12" y2="19"/>
                 <line x1="5" y1="12" x2="19" y2="12"/>
@@ -156,133 +162,147 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="dashboard__tabs">
-        <div className="dashboard__container">
-          <nav className="dashboard__tab-nav">
-            <button 
-              className={`dashboard__tab ${activeTab === 'overview' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => {
-                setActiveTab('overview');
-                window.location.hash = 'overview';
-              }}
-            >
-              概要
-            </button>
-            <button 
-              className={`dashboard__tab ${activeTab === 'articles' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => {
-                setActiveTab('articles');
-                window.location.hash = 'articles';
-              }}
-            >
-              記事
-            </button>
-            <button 
-              className={`dashboard__tab ${activeTab === 'books' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => {
-                setActiveTab('books');
-                window.location.hash = 'books';
-              }}
-            >
-              本
-            </button>
-            <button 
-              className={`dashboard__tab ${activeTab === 'scraps' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => {
-                setActiveTab('scraps');
-                window.location.hash = 'scraps';
-              }}
-            >
-              スクラップ
-            </button>
-            <button 
-              className={`dashboard__tab ${activeTab === 'analytics' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => {
-                setActiveTab('analytics');
-                window.location.hash = 'analytics';
-              }}
-            >
-              分析
-            </button>
-            <button 
-              className={`dashboard__tab ${activeTab === 'earnings' ? 'dashboard__tab--active' : ''}`}
-              onClick={() => {
-                setActiveTab('earnings');
-                window.location.hash = 'earnings';
-              }}
-            >
-              収益
-            </button>
-          </nav>
+      {/* Filter Bar */}
+      <div className="dashboard-filter">
+        <div className="dashboard-filter__inner">
+          <div className="dashboard-filter__left">
+            <div className="dashboard-filter__tabs">
+              <button 
+                className={`dashboard-filter__tab ${activeTab === 'overview' ? 'dashboard-filter__tab--active' : ''}`}
+                onClick={() => {
+                  setActiveTab('overview');
+                  window.location.hash = 'overview';
+                }}
+              >
+                <span className="dashboard-filter__tab-icon">📋</span>
+                概要
+              </button>
+              <button 
+                className={`dashboard-filter__tab ${activeTab === 'articles' ? 'dashboard-filter__tab--active' : ''}`}
+                onClick={() => {
+                  setActiveTab('articles');
+                  window.location.hash = 'articles';
+                }}
+              >
+                <span className="dashboard-filter__tab-icon">📝</span>
+                記事
+                <span className="dashboard-filter__tab-count">{articles.length}</span>
+              </button>
+              <button 
+                className={`dashboard-filter__tab ${activeTab === 'books' ? 'dashboard-filter__tab--active' : ''}`}
+                onClick={() => {
+                  setActiveTab('books');
+                  window.location.hash = 'books';
+                }}
+              >
+                <span className="dashboard-filter__tab-icon">📚</span>
+                本
+                <span className="dashboard-filter__tab-count">{books.length}</span>
+              </button>
+              <button 
+                className={`dashboard-filter__tab ${activeTab === 'scraps' ? 'dashboard-filter__tab--active' : ''}`}
+                onClick={() => {
+                  setActiveTab('scraps');
+                  window.location.hash = 'scraps';
+                }}
+              >
+                <span className="dashboard-filter__tab-icon">💭</span>
+                スクラップ
+                <span className="dashboard-filter__tab-count">{scraps.length}</span>
+              </button>
+              <button 
+                className={`dashboard-filter__tab ${activeTab === 'analytics' ? 'dashboard-filter__tab--active' : ''}`}
+                onClick={() => {
+                  setActiveTab('analytics');
+                  window.location.hash = 'analytics';
+                }}
+              >
+                <span className="dashboard-filter__tab-icon">📊</span>
+                分析
+              </button>
+              <button 
+                className={`dashboard-filter__tab ${activeTab === 'earnings' ? 'dashboard-filter__tab--active' : ''}`}
+                onClick={() => {
+                  setActiveTab('earnings');
+                  window.location.hash = 'earnings';
+                }}
+              >
+                <span className="dashboard-filter__tab-icon">💰</span>
+                収益
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Tab Content */}
-      <div className="dashboard__content">
-        <div className="dashboard__container">
+      <div className="dashboard-content">
+        <div className="dashboard-content__inner">
           {activeTab === 'overview' && (
             <div className="dashboard__overview">
               {/* Stats Cards */}
-              <div className="dashboard__stats">
-                <div className="dashboard__stat-card">
-                  <div className="dashboard__stat-icon dashboard__stat-icon--views">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                      <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                  </div>
-                  <div className="dashboard__stat-content">
-                    <div className="dashboard__stat-label">総閲覧数</div>
-                    <div className="dashboard__stat-value">{dashboardStats.totalViews.toLocaleString()}</div>
-                    <div className="dashboard__stat-change dashboard__stat-change--up">
-                      +{dashboardStats.monthlyGrowth}%
+              <div className="dashboard-stats">
+                <div className="dashboard-stats__inner">
+                  <div className="dashboard-stats__grid">
+                    <div className="dashboard-stat-card">
+                      <div className="dashboard-stat-card__icon dashboard-stat-card__icon--primary">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                          <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                      </div>
+                      <div className="dashboard-stat-card__content">
+                        <div className="dashboard-stat-card__value">{dashboardStats.totalViews.toLocaleString()}</div>
+                        <div className="dashboard-stat-card__label">総閲覧数</div>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div className="dashboard__stat-card">
-                  <div className="dashboard__stat-icon dashboard__stat-icon--likes">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                    </svg>
-                  </div>
-                  <div className="dashboard__stat-content">
-                    <div className="dashboard__stat-label">総いいね</div>
-                    <div className="dashboard__stat-value">{dashboardStats.totalLikes.toLocaleString()}</div>
-                  </div>
-                </div>
+                    <div className="dashboard-stat-card">
+                      <div className="dashboard-stat-card__icon dashboard-stat-card__icon--success">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                      </div>
+                      <div className="dashboard-stat-card__content">
+                        <div className="dashboard-stat-card__value">{dashboardStats.totalLikes.toLocaleString()}</div>
+                        <div className="dashboard-stat-card__label">総いいね</div>
+                      </div>
+                    </div>
 
-                <div className="dashboard__stat-card">
-                  <div className="dashboard__stat-icon dashboard__stat-icon--comments">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-                    </svg>
-                  </div>
-                  <div className="dashboard__stat-content">
-                    <div className="dashboard__stat-label">総コメント</div>
-                    <div className="dashboard__stat-value">{dashboardStats.totalComments}</div>
-                  </div>
-                </div>
+                    <div className="dashboard-stat-card">
+                      <div className="dashboard-stat-card__icon dashboard-stat-card__icon--warning">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                        </svg>
+                      </div>
+                      <div className="dashboard-stat-card__content">
+                        <div className="dashboard-stat-card__value">{dashboardStats.totalComments}</div>
+                        <div className="dashboard-stat-card__label">総コメント</div>
+                      </div>
+                    </div>
 
-                <div className="dashboard__stat-card">
-                  <div className="dashboard__stat-icon dashboard__stat-icon--earnings">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="12" y1="1" x2="12" y2="23"/>
-                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                    </svg>
-                  </div>
-                  <div className="dashboard__stat-content">
-                    <div className="dashboard__stat-label">総収益</div>
-                    <div className="dashboard__stat-value">¥{dashboardStats.totalEarnings.toLocaleString()}</div>
+                    <div className="dashboard-stat-card">
+                      <div className="dashboard-stat-card__icon dashboard-stat-card__icon--info">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <line x1="12" y1="1" x2="12" y2="23"/>
+                          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                      </div>
+                      <div className="dashboard-stat-card__content">
+                        <div className="dashboard-stat-card__value">¥{dashboardStats.totalEarnings.toLocaleString()}</div>
+                        <div className="dashboard-stat-card__label">総収益</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Recent Activity */}
-              <div className="dashboard__grid">
-                <div className="dashboard__section">
-                  <h2 className="dashboard__section-title">最近の記事</h2>
+              <div className="dashboard-grid">
+                <div className="dashboard-card">
+                  <div className="dashboard-card__header">
+                    <h2>最近の記事</h2>
+                  </div>
                   <div className="dashboard__article-list">
                     {articles.slice(0, 3).map((article: any) => (
                       <div key={article.id} className="dashboard__article-item">
@@ -293,7 +313,7 @@ export default function DashboardPage() {
                             </Link>
                           </h3>
                           <div className="dashboard__article-meta">
-                            <span className={`dashboard__article-status dashboard__article-status--${article.published_at ? 'published' : 'draft'}`}>
+                            <span className={`dashboard-badge dashboard-badge--${article.published_at ? 'success' : 'warning'}`}>
                               {article.published_at ? '公開済み' : '下書き'}
                             </span>
                             {article.published_at && (
@@ -301,20 +321,22 @@ export default function DashboardPage() {
                             )}
                           </div>
                         </div>
-                        <div className="dashboard__article-stats">
-                          <span>👁 {Math.floor(Math.random() * 5000).toLocaleString()}</span>
-                          <span>❤️ {article.likes_count}</span>
-                          <span>💬 {article.comments_count}</span>
+                        <div className="dashboard-table__stats">
+                          <div className="dashboard-table__stat">👁 {Math.floor(Math.random() * 5000).toLocaleString()}</div>
+                          <div className="dashboard-table__stat">❤️ {article.likes_count}</div>
+                          <div className="dashboard-table__stat">💬 {article.comments_count}</div>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="dashboard__section">
-                  <h2 className="dashboard__section-title">通知</h2>
+                <div className="dashboard-card">
+                  <div className="dashboard-card__header">
+                    <h2>通知</h2>
+                  </div>
                   <div className="dashboard__notification-list">
-                    {notifications.map((notification: any) => (
+                    {notifications.length > 0 ? notifications.map((notification: any) => (
                       <div 
                         key={notification.id} 
                         className={`dashboard__notification ${!notification.read ? 'dashboard__notification--unread' : ''}`}
@@ -332,30 +354,37 @@ export default function DashboardPage() {
                           <span className="dashboard__notification-time">{notification.time}</span>
                         </div>
                       </div>
-                    ))}
+                    )) : (
+                      <div className="dashboard-empty">
+                        <div className="dashboard-empty__icon">🔔</div>
+                        <p className="dashboard-empty__text">通知はありません</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
               {/* Quick Actions */}
-              <div className="dashboard__quick-actions">
-                <h2 className="dashboard__section-title">クイックアクション</h2>
-                <div className="dashboard__action-grid">
-                  <Link href="/new/article" className="dashboard__action-card">
-                    <div className="dashboard__action-icon">📝</div>
-                    <div className="dashboard__action-label">記事を書く</div>
+              <div className="dashboard-card" style={{marginTop: '2rem'}}>
+                <div className="dashboard-card__header">
+                  <h2>クイックアクション</h2>
+                </div>
+                <div className="dashboard-grid" style={{gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))'}}>
+                  <Link href="/new/article" className="dashboard-card dashboard-card:hover">
+                    <div className="dashboard-card__emoji">📝</div>
+                    <div className="dashboard-card__title">記事を書く</div>
                   </Link>
-                  <Link href="/new/book" className="dashboard__action-card">
-                    <div className="dashboard__action-icon">📚</div>
-                    <div className="dashboard__action-label">本を作成</div>
+                  <Link href="/new/book" className="dashboard-card dashboard-card:hover">
+                    <div className="dashboard-card__emoji">📚</div>
+                    <div className="dashboard-card__title">本を作成</div>
                   </Link>
-                  <Link href="/new/scrap" className="dashboard__action-card">
-                    <div className="dashboard__action-icon">💭</div>
-                    <div className="dashboard__action-label">スクラップ作成</div>
+                  <Link href="/new/scrap" className="dashboard-card dashboard-card:hover">
+                    <div className="dashboard-card__emoji">💭</div>
+                    <div className="dashboard-card__title">スクラップ作成</div>
                   </Link>
-                  <Link href="/settings/profile" className="dashboard__action-card">
-                    <div className="dashboard__action-icon">⚙️</div>
-                    <div className="dashboard__action-label">設定</div>
+                  <Link href="/settings/profile" className="dashboard-card dashboard-card:hover">
+                    <div className="dashboard-card__emoji">⚙️</div>
+                    <div className="dashboard-card__title">設定</div>
                   </Link>
                 </div>
               </div>
@@ -364,57 +393,121 @@ export default function DashboardPage() {
 
           {activeTab === 'articles' && (
             <div className="dashboard__articles">
-              <div className="dashboard__toolbar">
-                <input 
-                  type="text" 
-                  placeholder="記事を検索..." 
-                  className="dashboard__search"
-                />
-                <select className="dashboard__filter">
-                  <option value="all">すべて</option>
-                  <option value="published">公開済み</option>
-                  <option value="draft">下書き</option>
-                </select>
-                <Link href="/new/article" className="dashboard__toolbar-btn">
-                  新規作成
-                </Link>
+              <div className="dashboard-filter">
+                <div className="dashboard-filter__inner">
+                  <div className="dashboard-filter__left">
+                    <div className="dashboard-filter__search">
+                      <svg className="dashboard-filter__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                      </svg>
+                      <input 
+                        type="text" 
+                        placeholder="記事を検索..." 
+                        className="dashboard-filter__search-input"
+                      />
+                    </div>
+                  </div>
+                  <div className="dashboard-filter__right">
+                    <select className="dashboard-filter__sort">
+                      <option value="all">すべて</option>
+                      <option value="published">公開済み</option>
+                      <option value="draft">下書き</option>
+                    </select>
+                    <Link href="/new/article" className="dashboard-empty__button">
+                      新規作成
+                    </Link>
+                  </div>
+                </div>
               </div>
               
-              <div className="dashboard__table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>タイトル</th>
-                      <th>ステータス</th>
-                      <th>公開日</th>
-                      <th>閲覧数</th>
-                      <th>いいね</th>
-                      <th>操作</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {articles.map((article: any) => (
-                      <tr key={article.id}>
-                        <td>{article.title}</td>
-                        <td>
-                          <span className={`dashboard__badge dashboard__badge--${article.published_at ? 'published' : 'draft'}`}>
-                            {article.published_at ? '公開済み' : '下書き'}
-                          </span>
-                        </td>
-                        <td>{article.published_at ? new Date(article.published_at).toLocaleDateString('ja-JP') : '-'}</td>
-                        <td>{Math.floor(Math.random() * 5000).toLocaleString()}</td>
-                        <td>{article.likes_count}</td>
-                        <td>
-                          <div className="dashboard__table-actions">
-                            <Link href={`/articles/${article.slug || article.id}/edit`} className="dashboard__table-btn">編集</Link>
-                            <button className="dashboard__table-btn dashboard__table-btn--danger">削除</button>
-                          </div>
-                        </td>
+              {articles.length > 0 ? (
+                <div className="dashboard-table">
+                  <table className="dashboard-table__table">
+                    <thead className="dashboard-table__header">
+                      <tr>
+                        <th className="dashboard-table__th dashboard-table__th--main">タイトル</th>
+                        <th className="dashboard-table__th dashboard-table__th--status">ステータス</th>
+                        <th className="dashboard-table__th dashboard-table__th--date">公開日</th>
+                        <th className="dashboard-table__th dashboard-table__th--stats">統計</th>
+                        <th className="dashboard-table__th dashboard-table__th--actions">操作</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {articles.map((article: any) => (
+                        <tr key={article.id} className="dashboard-table__row">
+                          <td className="dashboard-table__td dashboard-table__td--main">
+                            <div className="dashboard-table__article">
+                              <div className="dashboard-table__emoji">{article.emoji || '📝'}</div>
+                              <div className="dashboard-table__info">
+                                <Link href={`/articles/${article.slug || article.id}/edit`} className="dashboard-table__title">
+                                  {article.title}
+                                </Link>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="dashboard-table__td dashboard-table__td--status">
+                            <span className={`dashboard-badge dashboard-badge--${article.published_at ? 'success' : 'warning'}`}>
+                              <span className="dashboard-badge__dot"></span>
+                              {article.published_at ? '公開済み' : '下書き'}
+                            </span>
+                          </td>
+                          <td className="dashboard-table__td dashboard-table__td--date">
+                            <span className="dashboard-table__date">
+                              {article.published_at ? new Date(article.published_at).toLocaleDateString('ja-JP') : '-'}
+                            </span>
+                          </td>
+                          <td className="dashboard-table__td dashboard-table__td--stats">
+                            <div className="dashboard-table__stats">
+                              <div className="dashboard-table__stat">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                  <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                {Math.floor(Math.random() * 5000).toLocaleString()}
+                              </div>
+                              <div className="dashboard-table__stat">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                </svg>
+                                {article.likes_count}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="dashboard-table__td dashboard-table__td--actions">
+                            <div className="dashboard-table__actions">
+                              <Link href={`/articles/${article.slug || article.id}/edit`} className="dashboard-table__action dashboard-table__action--edit">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                                </svg>
+                              </Link>
+                              <button className="dashboard-table__action dashboard-table__action--delete">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <polyline points="3,6 5,6 21,6"/>
+                                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                </svg>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <div className="dashboard-empty">
+                  <div className="dashboard-empty__icon">📝</div>
+                  <h3 className="dashboard-empty__title">記事がありません</h3>
+                  <p className="dashboard-empty__text">最初の記事を書いてみましょう。</p>
+                  <Link href="/new/article" className="dashboard-empty__button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    記事を書く
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 
