@@ -50,12 +50,30 @@ export default function SignupPage() {
     setIsLoading(true)
 
     try {
-      // ここで実際の登録処理を行う（今回はダミー）
-      // 登録後、自動的にログイン
+      // 登録API呼び出し
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          username: formData.username,
+          displayName: formData.name
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || '登録に失敗しました')
+      }
+
+      // 登録成功後、自動的にログイン
       await login({ email: formData.email, password: formData.password })
       router.push('/')
     } catch (err) {
-      setError('登録に失敗しました。もう一度お試しください。')
+      setError(err instanceof Error ? err.message : '登録に失敗しました。もう一度お試しください。')
     } finally {
       setIsLoading(false)
     }

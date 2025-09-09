@@ -215,6 +215,18 @@ CREATE POLICY "Comments are viewable by everyone" ON article_comments
 CREATE POLICY "Authenticated users can comment" ON article_comments
   FOR INSERT WITH CHECK (true);
 
+-- Likes: 誰でも閲覧可能
+CREATE POLICY "Likes are viewable by everyone" ON likes
+  FOR SELECT USING (true);
+
+-- Likes: 認証ユーザーはいいね可能
+CREATE POLICY "Authenticated users can like" ON likes
+  FOR INSERT WITH CHECK (true);
+
+-- Likes: 自分のいいねは削除可能
+CREATE POLICY "Users can delete own likes" ON likes
+  FOR DELETE USING (auth.uid()::text = user_id::text);
+
 -- サンプルデータの挿入（オプション）
 
 -- テストユーザー
@@ -231,3 +243,22 @@ INSERT INTO topics (name, slug, description) VALUES
   ('Supabase', 'supabase', 'Supabaseに関する記事'),
   ('Web開発', 'web-dev', 'Web開発全般に関する記事')
 ON CONFLICT (name) DO NOTHING;
+
+-- RPC関数: いいね数のインクリメント/デクリメント
+CREATE OR REPLACE FUNCTION increment_likes_count(table_name TEXT, row_id UUID, increment_by INTEGER)
+RETURNS void AS $$
+BEGIN
+  CASE table_name
+    WHEN 'articles' THEN
+      UPDATE articles SET likes_count = likes_count + increment_by WHERE id = row_id;
+    WHEN 'books' THEN
+      UPDATE books SET likes_count = likes_count + increment_by WHERE id = row_id;
+    WHEN 'scraps' THEN
+      UPDATE scraps SET likes_count = likes_count + increment_by WHERE id = row_id;
+    WHEN 'article_comments' THEN
+      UPDATE article_comments SET likes_count = likes_count + increment_by WHERE id = row_id;
+    ELSE
+      RAISE EXCEPTION 'Invalid table name: %', table_name;
+  END CASE;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

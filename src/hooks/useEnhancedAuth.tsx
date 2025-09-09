@@ -377,105 +377,74 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
     try {
       const deviceInfo = getDeviceInfo()
       
-      // API呼び出しシミュレーション
-      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000))
-
-      // デモ用認証
-      const demoCredentials = [
-        { email: 'user@example.com', password: 'password', role: 'user' },
-        { email: 'pro@example.com', password: 'password', role: 'pro' },
-        { email: 'admin@example.com', password: 'password', role: 'admin' }
-      ]
-      
-      const matchedUser = demoCredentials.find(cred => cred.email === email && cred.password === password)
-      
-      if (matchedUser || (email === 'test@example.com' && password === 'Password123!')) {
-        const role = matchedUser?.role || 'user'
-        
-        const userProfiles = {
-          user: {
-            id: '1',
-            username: 'user_sample',
-            name: '一般ユーザー',
-            bio: 'Zennで技術記事を読んで学習しています',
-            followersCount: 50,
-            followingCount: 120,
-            articlesCount: 3,
-            subscription: { tier: 'free' as const }
-          },
-          pro: {
-            id: '2',
-            username: 'pro_developer',
-            name: 'プロ開発者',
-            bio: '現役エンジニア。React/TypeScript/Node.jsの記事を投稿しています',
-            followersCount: 500,
-            followingCount: 200,
-            articlesCount: 45,
-            subscription: {
-              tier: 'pro' as const,
-              expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-            }
-          },
-          admin: {
-            id: '3',
-            username: 'admin_master',
-            name: '管理者',
-            bio: 'Zennプラットフォームの管理者です',
-            followersCount: 5000,
-            followingCount: 100,
-            articlesCount: 200,
-            subscription: {
-              tier: 'premium' as const,
-              expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
-            }
-          }
-        }
-        
-        const userProfile = userProfiles[role as keyof typeof userProfiles] || userProfiles.user
-        
-        const mockUser: User = {
-          ...userProfile,
+      // 実際のAPIを呼び出し
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           email,
-          avatar: '/images/avatar-placeholder.svg',
-          website: 'https://example.com',
-          location: '東京, Japan',
-          createdAt: '2023-01-01T00:00:00Z',
-          emailVerified: true,
-          twoFactorEnabled: false,
-          lastActiveAt: new Date().toISOString(),
-          provider: 'email',
-          permissions: role === 'admin' ? ['read', 'write', 'comment', 'moderate', 'admin'] : ['read', 'write', 'comment']
-        }
-        
-        const mockSession: AuthSession = {
-          token: 'mock-jwt-token-' + Date.now(),
-          refreshToken: 'mock-refresh-token-' + Date.now(),
-          expiresAt: new Date(Date.now() + (rememberMe ? 30 : 1) * 24 * 60 * 60 * 1000).toISOString(),
-          device: deviceInfo.device,
-          ipAddress: '192.168.1.1',
-          createdAt: new Date().toISOString()
-        }
-        
-        setUser(mockUser)
-        setSession(mockSession)
-        saveAuthData(mockUser, mockSession)
-        scheduleTokenRefresh(mockSession.expiresAt)
-        startHeartbeat()
-        recordLoginAttempt(email, true)
-        
-        // 成功時の追加セキュリティ処理
-        console.log('ログイン成功:', {
-          userId: mockUser.id,
-          device: deviceInfo.device,
-          timestamp: new Date().toISOString()
-        })
-      } else {
+          password
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
         recordLoginAttempt(email, false)
-        throw new Error('メールアドレスまたはパスワードが正しくありません')
+        throw new Error(errorData.error || 'ログインに失敗しました')
       }
+
+      const { user: apiUser, message } = await response.json()
+      recordLoginAttempt(email, true)
+
+      // APIレスポンスをフロントエンド用のUser型に変換
+      const transformedUser: User = {
+        id: apiUser.id,
+        username: apiUser.user_metadata?.username || apiUser.email.split('@')[0],
+        name: apiUser.user_metadata?.full_name || apiUser.email.split('@')[0],
+        email: apiUser.email,
+        avatar: apiUser.user_metadata?.avatar_url || '/images/avatar-placeholder.svg',
+        bio: apiUser.user_metadata?.bio || '',
+        website: apiUser.user_metadata?.website || '',
+        location: apiUser.user_metadata?.location || '',
+        followersCount: 0,
+        followingCount: 0,
+        articlesCount: 0,
+        createdAt: apiUser.created_at,
+        emailVerified: apiUser.email_confirmed_at !== null,
+        twoFactorEnabled: false,
+        lastActiveAt: new Date().toISOString(),
+        provider: 'email',
+        permissions: ['read', 'write', 'comment']
+      }
+      
+      const mockSession: AuthSession = {
+        token: 'supabase-session-' + Date.now(),
+        refreshToken: 'supabase-refresh-' + Date.now(),
+        expiresAt: new Date(Date.now() + (rememberMe ? 30 : 1) * 24 * 60 * 60 * 1000).toISOString(),
+        device: deviceInfo.device,
+        ipAddress: '192.168.1.1',
+        createdAt: new Date().toISOString()
+      }
+      
+      setUser(transformedUser)
+      setSession(mockSession)
+      saveAuthData(transformedUser, mockSession)
+      scheduleTokenRefresh(mockSession.expiresAt)
+      startHeartbeat()
+      
+      console.log('ログイン成功:', {
+        userId: transformedUser.id,
+        device: deviceInfo.device,
+        timestamp: new Date().toISOString()
+      })
     } catch (error) {
+      if (error instanceof Error) {
+        throw error
+      }
       recordLoginAttempt(email, false)
-      throw error
+      throw new Error('ログインに失敗しました')
     } finally {
       setIsLoading(false)
     }
