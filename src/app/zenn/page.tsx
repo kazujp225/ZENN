@@ -170,7 +170,7 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {trendingArticles.length > 0 ? (
+          {trendingArticles && trendingArticles.length > 0 ? (
             trendingArticles.map(article => (
               <ArticleCard key={article.id} article={article} />
             ))
@@ -192,7 +192,7 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {ideaArticles.length > 0 ? (
+          {ideaArticles && ideaArticles.length > 0 ? (
             ideaArticles.map(article => (
               <ArticleCard key={article.id} article={article} />
             ))
@@ -214,7 +214,7 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {featuredBooks.length > 0 ? (
+          {featuredBooks && featuredBooks.length > 0 ? (
             featuredBooks.map(book => (
               <BookCard key={book.id} {...book} />
             ))
@@ -236,7 +236,7 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {recentScraps.length > 0 ? (
+          {recentScraps && recentScraps.length > 0 ? (
             recentScraps.map(scrap => (
               <ScrapCard key={scrap.id} {...scrap} />
             ))
