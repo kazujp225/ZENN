@@ -18,6 +18,7 @@ model User {
   id              String    @id @default(uuid())
   email           String    @unique
   username        String    @unique
+  password        String?   // Nullable for OAuth users
   displayName     String
   bio             String?
   avatarUrl       String?
@@ -27,6 +28,7 @@ model User {
   company         String?
   location        String?
   
+  role            String    @default("USER") // USER, MODERATOR, ADMIN
   emailVerified   DateTime?
   isActive        Boolean   @default(true)
   
@@ -39,6 +41,7 @@ model User {
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   // Relations
   articles        Article[]
@@ -51,9 +54,86 @@ model User {
   following       Follow[]  @relation("Follower")
   bookmarks       Bookmark[]
   notifications   Notification[]
+  sessions        Session[]
+  authProviders   AuthProvider[]
+  purchases       Purchase[]
   
   @@index([username])
   @@index([email])
+}
+
+// ========================================
+// Authentication & Security
+// ========================================
+
+model Session {
+  id              String    @id @default(uuid())
+  userId          String
+  token           String    @unique
+  
+  ipAddress       String?
+  userAgent       String?
+  lastActivity    DateTime  @default(now())
+  expiresAt       DateTime
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+model PasswordReset {
+  id              String    @id @default(uuid())
+  email           String
+  token           String    @unique
+  
+  used            Boolean   @default(false)
+  expiresAt       DateTime
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([email])
+  @@index([token])
+}
+
+model EmailVerification {
+  id              String    @id @default(uuid())
+  email           String
+  token           String    @unique
+  
+  verified        Boolean   @default(false)
+  verifiedAt      DateTime?
+  expiresAt       DateTime
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([email])
+  @@index([token])
+}
+
+model AuthProvider {
+  id              String    @id @default(uuid())
+  userId          String
+  
+  provider        String    // github, google, twitter
+  providerId      String
+  accessToken     String?
+  refreshToken    String?
+  tokenExpiresAt  DateTime?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+  
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([provider, providerId])
+  @@index([userId])
 }
 
 // ========================================
@@ -83,8 +163,12 @@ model Article {
   likesCount      Int       @default(0)
   commentsCount   Int       @default(0)
   
+  isDeleted       Boolean   @default(false)
+  lastEditedAt    DateTime?
+  
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   author          User      @relation(fields: [authorId], references: [id])
   comments        Comment[]
@@ -95,6 +179,9 @@ model Article {
   @@index([authorId])
   @@index([slug])
   @@index([status])
+  @@index([publishedAt])
+  @@index([viewsCount])
+  @@index([isDeleted])
 }
 
 model Book {
@@ -114,8 +201,11 @@ model Book {
   purchaseCount   Int       @default(0)
   likesCount      Int       @default(0)
   
+  isDeleted       Boolean   @default(false)
+  
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   author          User      @relation(fields: [authorId], references: [id])
   chapters        Chapter[]
@@ -126,6 +216,9 @@ model Book {
   
   @@index([authorId])
   @@index([slug])
+  @@index([status])
+  @@index([publishedAt])
+  @@index([isDeleted])
 }
 
 model Chapter {
@@ -141,6 +234,7 @@ model Chapter {
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   book            Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
   
@@ -161,12 +255,17 @@ model Scrap {
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   author          User      @relation(fields: [authorId], references: [id])
   posts           ScrapPost[]
   tags            ScrapTag[]
+  bookmarks       Bookmark[]
+  likes           Like[]
   
   @@index([authorId])
+  @@index([isPublic])
+  @@index([createdAt])
 }
 
 model ScrapPost {
@@ -179,6 +278,7 @@ model ScrapPost {
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   scrap           Scrap     @relation(fields: [scrapId], references: [id], onDelete: Cascade)
   author          User      @relation(fields: [authorId], references: [id])
@@ -201,9 +301,12 @@ model Like {
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   article         Article?  @relation(fields: [targetId], references: [id], onDelete: Cascade)
   book            Book?     @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  scrap           Scrap?    @relation(fields: [targetId], references: [id], onDelete: Cascade)
+  comment         Comment?  @relation(fields: [targetId], references: [id], onDelete: Cascade)
   
   @@unique([userId, targetType, targetId])
   @@index([targetType, targetId])
+  @@index([userId])
 }
 
 model Comment {
@@ -218,17 +321,22 @@ model Comment {
   contentHtml     String?
   
   likesCount      Int       @default(0)
+  isDeleted       Boolean   @default(false)
+  editedAt        DateTime?
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   author          User      @relation(fields: [authorId], references: [id])
   article         Article?  @relation(fields: [articleId], references: [id], onDelete: Cascade)
   parent          Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   replies         Comment[] @relation("CommentReplies")
+  likes           Like[]
   
   @@index([articleId])
   @@index([parentId])
+  @@index([authorId])
 }
 
 model Follow {
@@ -242,6 +350,8 @@ model Follow {
   following       User      @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
   
   @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
 }
 
 model Bookmark {
@@ -259,8 +369,12 @@ model Bookmark {
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   article         Article?  @relation(fields: [articleId], references: [id], onDelete: Cascade)
   book            Book?     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  scrap           Scrap?    @relation(fields: [scrapId], references: [id], onDelete: Cascade)
   
   @@index([userId])
+  @@index([articleId])
+  @@index([bookId])
+  @@index([scrapId])
 }
 
 model Notification {
@@ -280,6 +394,7 @@ model Notification {
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@index([userId, isRead])
+  @@index([createdAt])
 }
 
 // ========================================
@@ -299,12 +414,15 @@ model Tag {
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
   
   articles        ArticleTag[]
   books           BookTag[]
   scraps          ScrapTag[]
   
   @@index([slug])
+  @@index([articlesCount])
+  @@index([booksCount])
 }
 
 model ArticleTag {
@@ -352,7 +470,130 @@ model Purchase {
   price           Int
   purchasedAt     DateTime  @default(now())
   
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   book            Book      @relation(fields: [bookId], references: [id])
   
   @@unique([userId, bookId])
+  @@index([userId])
+  @@index([bookId])
+}
+
+// ========================================
+// Audit & Analytics
+// ========================================
+
+model AuditLog {
+  id              String    @id @default(uuid())
+  userId          String?
+  
+  action          String    // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
+  entityType      String?   // ARTICLE, BOOK, USER, etc.
+  entityId        String?
+  
+  oldData         String?   // JSON string
+  newData         String?   // JSON string
+  
+  ipAddress       String?
+  userAgent       String?
+  metadata        String?   // JSON string
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model ArticleRevision {
+  id              String    @id @default(uuid())
+  articleId       String
+  userId          String
+  
+  version         Int
+  title           String
+  content         String
+  contentHtml     String?
+  
+  changeMessage   String?
+  
+  createdAt       DateTime  @default(now())
+  
+  @@unique([articleId, version])
+  @@index([articleId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Analytics {
+  id              String    @id @default(uuid())
+  
+  eventType       String    // PAGE_VIEW, ARTICLE_READ, BOOK_PURCHASE
+  targetType      String?   // ARTICLE, BOOK, USER
+  targetId        String?
+  
+  userId          String?
+  sessionId       String?
+  
+  referrer        String?
+  path            String?
+  ipAddress       String?
+  userAgent       String?
+  country         String?
+  
+  metadata        String?   // JSON string
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([eventType])
+  @@index([targetType, targetId])
+  @@index([userId])
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+// ========================================
+// API Management
+// ========================================
+
+model ApiKey {
+  id              String    @id @default(uuid())
+  userId          String
+  
+  name            String
+  key             String    @unique
+  
+  permissions     String?   // JSON array of permissions
+  rateLimit       Int       @default(1000)
+  
+  lastUsedAt      DateTime?
+  expiresAt       DateTime?
+  
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([key])
+  @@index([isActive])
+}
+
+model RefreshToken {
+  id              String    @id @default(uuid())
+  userId          String
+  
+  token           String    @unique
+  family          String    // Token family for rotation
+  
+  isRevoked       Boolean   @default(false)
+  revokedAt       DateTime?
+  
+  expiresAt       DateTime
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([token])
+  @@index([family])
 }
