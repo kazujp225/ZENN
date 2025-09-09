@@ -1,141 +1,72 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ScrapCard } from '@/components/cards/ScrapCard'
 import { Tabs } from '@/components/ui/Tabs'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { PageProvider } from '@/providers/EnhancedAppProvider'
 import Link from 'next/link'
+import { scrapsApi, topicsApi } from '@/lib/api'
+import type { Scrap, Topic } from '@/lib/api'
 import '@/styles/pages/scraps.css'
 
-// サンプルデータ
-const getAllScraps = () => {
-  return [
-    {
-      id: 'scrap1',
-      title: 'Next.js 14でのSSGとISRの使い分けについて',
-      author: {
-        username: 'developer1',
-        name: '田中太郎',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      publishedAt: '2025-01-15T10:00:00Z',
-      updatedAt: '2025-01-15T15:30:00Z',
-      commentsCount: 8,
-      isOpen: false,
-      emoji: '💭',
-      excerpt: 'Next.js 14でSSGとISRをどう使い分けるか、実際のプロジェクトでの経験をもとに考察してみました...',
-      tags: ['Next.js', 'SSG', 'ISR'],
-      participantsCount: 5
-    },
-    {
-      id: 'scrap2',
-      title: 'Rust vs Go - バックエンド開発での選択基準',
-      author: {
-        username: 'backenddev',
-        name: '高橋健太',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      publishedAt: '2025-01-14T09:00:00Z',
-      updatedAt: '2025-01-16T09:00:00Z',
-      commentsCount: 15,
-      isOpen: true,
-      emoji: '🤔',
-      excerpt: 'RustとGoのどちらを選ぶべきか。パフォーマンス、開発効率、エコシステムの観点から比較...',
-      tags: ['Rust', 'Go', 'Backend'],
-      participantsCount: 8
-    },
-    {
-      id: 'scrap3',
-      title: 'フロントエンドのテスト戦略について語り合う',
-      author: {
-        username: 'testmaster',
-        name: '山田次郎',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      publishedAt: '2025-01-13T14:00:00Z',
-      updatedAt: '2025-01-15T11:00:00Z',
-      commentsCount: 12,
-      isOpen: true,
-      emoji: '🧪',
-      excerpt: 'Jest、Testing Library、Playwrightなど、どのツールをどう組み合わせるか...',
-      tags: ['Testing', 'Frontend', 'Jest'],
-      participantsCount: 6
-    },
-    {
-      id: 'scrap4',
-      title: 'TypeScriptの strictモードは本当に必要か？',
-      author: {
-        username: 'tsexpert',
-        name: '佐藤花子',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      publishedAt: '2025-01-12T10:00:00Z',
-      updatedAt: '2025-01-12T18:00:00Z',
-      commentsCount: 24,
-      isOpen: false,
-      emoji: '📘',
-      excerpt: 'strictモードのメリット・デメリットと、プロジェクトでの導入タイミングについて議論...',
-      tags: ['TypeScript', 'JavaScript'],
-      participantsCount: 10
-    },
-    {
-      id: 'scrap5',
-      title: 'AIツールをコーディングにどう活用している？',
-      author: {
-        username: 'aidev',
-        name: '伊藤真理',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      publishedAt: '2025-01-11T15:00:00Z',
-      updatedAt: '2025-01-14T20:00:00Z',
-      commentsCount: 32,
-      isOpen: true,
-      emoji: '🤖',
-      excerpt: 'GitHub Copilot、ChatGPT、Cursor...みんなはどのAIツールを使ってる？',
-      tags: ['AI', 'DX', 'Productivity'],
-      participantsCount: 15
-    },
-    {
-      id: 'scrap6',
-      title: 'マイクロサービス vs モノリス - 2025年の選択',
-      author: {
-        username: 'architect',
-        name: '中村優',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      publishedAt: '2025-01-10T11:00:00Z',
-      updatedAt: '2025-01-10T11:00:00Z',
-      commentsCount: 18,
-      isOpen: true,
-      emoji: '🏗️',
-      excerpt: 'スタートアップや中規模プロジェクトでのアーキテクチャ選択について...',
-      tags: ['Architecture', 'Microservices', 'Backend'],
-      participantsCount: 9
-    }
-  ]
-}
-
 export default function ScrapsPage() {
+  const [scraps, setScraps] = useState<Scrap[]>([])
+  const [topics, setTopics] = useState<Topic[]>([])
   const [activeTab, setActiveTab] = useState('active')
   const [sortBy, setSortBy] = useState<'new' | 'active' | 'popular'>('active')
   const [statusFilter, setStatusFilter] = useState<'all' | 'open' | 'closed'>('all')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  
-  const scraps = getAllScraps()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+
+  useEffect(() => {
+    fetchScraps()
+    fetchTopics()
+  }, [statusFilter, searchQuery])
+
+  const fetchScraps = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      let result
+      
+      if (searchQuery.trim()) {
+        result = await scrapsApi.searchScraps(searchQuery, 20, 0)
+      } else if (statusFilter === 'open') {
+        result = await scrapsApi.getOpenScraps(20, 0)
+      } else if (statusFilter === 'closed') {
+        result = await scrapsApi.getClosedScraps(20, 0)
+      } else {
+        result = await scrapsApi.getScraps(20, 0)
+      }
+
+      setScraps(result.data || [])
+    } catch (err: any) {
+      console.error('スクラップ取得エラー:', err)
+      setError(err.message || 'スクラップの取得に失敗しました')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchTopics = async () => {
+    try {
+      const { data } = await topicsApi.getPopularTopics(10)
+      setTopics(data || [])
+    } catch (err: any) {
+      console.error('トピック取得エラー:', err)
+    }
+  }
   
   // フィルタリング
   let filteredScraps = scraps
-  if (statusFilter === 'open') {
-    filteredScraps = filteredScraps.filter(s => s.isOpen)
-  } else if (statusFilter === 'closed') {
-    filteredScraps = filteredScraps.filter(s => !s.isOpen)
-  }
-  
   if (selectedTags.length > 0) {
     filteredScraps = filteredScraps.filter(s => 
-      selectedTags.some(tag => s.tags.includes(tag))
+      s.topics && selectedTags.some(tag => s.topics.includes(tag))
     )
   }
   
@@ -143,17 +74,17 @@ export default function ScrapsPage() {
   const sortedScraps = [...filteredScraps].sort((a, b) => {
     switch (sortBy) {
       case 'new':
-        return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       case 'active':
-        return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
       case 'popular':
       default:
-        return b.commentsCount - a.commentsCount
+        return b.comments_count - a.comments_count
     }
   })
   
   // 全タグを取得
-  const allTags = Array.from(new Set(scraps.flatMap(s => s.tags)))
+  const allTags = topics.map(t => t.display_name || t.name)
   
   // トレンディングトピックス
   const trendingTopics = [
@@ -412,6 +343,17 @@ export default function ScrapsPage() {
               </select>
             </div>
             
+            {/* Search Bar */}
+            <div className="scraps-search-bar mb-4">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="スクラップを検索..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
             {/* Results Header */}
             <div className="scraps-results-header">
               <p className="scraps-results-count">
@@ -432,23 +374,41 @@ export default function ScrapsPage() {
                 </button>
               )}
             </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                <h3 className="font-semibold text-red-800 mb-2">エラー</h3>
+                <p className="text-red-700">{error}</p>
+                <button 
+                  onClick={fetchScraps}
+                  className="mt-2 text-red-600 hover:text-red-800 text-sm"
+                >
+                  再試行
+                </button>
+              </div>
+            )}
             
             {/* Scraps List */}
-            {sortedScraps.length > 0 ? (
+            {loading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-600">スクラップを読み込み中...</p>
+              </div>
+            ) : sortedScraps.length > 0 ? (
               <div className="scraps-list">
                 {sortedScraps.map(scrap => (
                   <article key={scrap.id} className="scrap-card-enhanced">
                     <div className="scrap-card-enhanced__header">
                       <div className="scrap-card-enhanced__title-section">
-                        <Link href={`/scraps/${scrap.id}`} className="scrap-card-enhanced__title">
-                          <span className="scrap-card-enhanced__emoji">{scrap.emoji}</span>
+                        <Link href={`/scraps/${scrap.slug || scrap.id}`} className="scrap-card-enhanced__title">
+                          <span className="scrap-card-enhanced__emoji">{scrap.emoji || '💭'}</span>
                           <span>{scrap.title}</span>
                         </Link>
                       </div>
                       <span className={`scrap-card-enhanced__status ${
-                        scrap.isOpen ? 'scrap-card-enhanced__status--open' : 'scrap-card-enhanced__status--closed'
+                        !scrap.closed ? 'scrap-card-enhanced__status--open' : 'scrap-card-enhanced__status--closed'
                       }`}>
-                        {scrap.isOpen ? 'OPEN' : 'CLOSED'}
+                        {!scrap.closed ? 'OPEN' : 'CLOSED'}
                       </span>
                     </div>
 
@@ -458,53 +418,61 @@ export default function ScrapsPage() {
                         onClick={(e) => {
                           e.preventDefault()
                           e.stopPropagation()
-                          window.location.href = `/${scrap.author.username}`
+                          window.location.href = `/${scrap.user?.username || 'unknown'}`
                         }}
                         style={{ cursor: 'pointer' }}
                       >
-                        <img src={scrap.author.avatar} alt={scrap.author.name} className="scrap-card-enhanced__author-avatar" />
-                        <span>{scrap.author.name}</span>
+                        <img 
+                          src={scrap.user?.avatar_url || '/images/avatar-placeholder.svg'} 
+                          alt={scrap.user?.display_name || scrap.user?.username || 'Unknown'} 
+                          className="scrap-card-enhanced__author-avatar" 
+                        />
+                        <span>{scrap.user?.display_name || scrap.user?.username || 'Unknown'}</span>
                       </div>
                       <span className="scrap-card-enhanced__date">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                           <circle cx="7" cy="7" r="5.5" stroke="currentColor"/>
                           <path d="M7 3.5V7L9.5 8.5" stroke="currentColor" strokeLinecap="round"/>
                         </svg>
-                        最終更新: {new Date(scrap.updatedAt).toLocaleDateString('ja-JP')}
+                        最終更新: {new Date(scrap.updated_at).toLocaleDateString('ja-JP')}
                       </span>
                     </div>
 
-                    <p className="scrap-card-enhanced__excerpt">{scrap.excerpt}</p>
+                    <p className="scrap-card-enhanced__excerpt">
+                      {scrap.content.substring(0, 150)}...
+                    </p>
 
-                    <div className="scrap-card-enhanced__tags">
-                      {scrap.tags.map(tag => (
-                        <span key={tag} className="scrap-card-enhanced__tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    {scrap.topics && scrap.topics.length > 0 && (
+                      <div className="scrap-card-enhanced__tags">
+                        {scrap.topics.map(topic => (
+                          <span key={topic} className="scrap-card-enhanced__tag">
+                            {topic}
+                          </span>
+                        ))}
+                      </div>
+                    )}
 
                     <div className="scrap-card-enhanced__footer">
                       <div className="scrap-card-enhanced__stats">
                         <span className="scrap-card-enhanced__stat">
                           <span className="scrap-card-enhanced__stat-icon">💬</span>
-                          {scrap.commentsCount} コメント
+                          {scrap.comments_count} コメント
                         </span>
                         <span className="scrap-card-enhanced__stat">
                           <span className="scrap-card-enhanced__stat-icon">👥</span>
-                          {scrap.participantsCount} 参加者
+                          {Math.max(1, Math.floor(scrap.comments_count / 3))} 参加者
                         </span>
                       </div>
                       <div className="scrap-card-enhanced__participants">
                         <div className="scrap-card-enhanced__participants-avatars">
-                          {[...Array(Math.min(scrap.participantsCount, 3))].map((_, i) => (
+                          {[...Array(Math.min(Math.max(1, Math.floor(scrap.comments_count / 3)), 3))].map((_, i) => (
                             <div key={i} className="scrap-card-enhanced__participant-avatar">
                               {i + 1}
                             </div>
                           ))}
-                          {scrap.participantsCount > 3 && (
+                          {Math.floor(scrap.comments_count / 3) > 3 && (
                             <div className="scrap-card-enhanced__participant-avatar">
-                              +{scrap.participantsCount - 3}
+                              +{Math.floor(scrap.comments_count / 3) - 3}
                             </div>
                           )}
                         </div>

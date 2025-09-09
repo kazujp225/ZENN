@@ -1,597 +1,263 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BookCard } from '@/components/cards/BookCard'
 import { Tabs } from '@/components/ui/Tabs'
 import { Button } from '@/components/ui/Button'
 import { PageProvider } from '@/providers/EnhancedAppProvider'
 import Link from 'next/link'
+import { booksApi } from '@/lib/api'
+import type { Book } from '@/lib/api'
 import '@/styles/pages/books.css'
 
-// サンプルデータ
-const getAllBooks = () => {
-  return [
-    {
-      id: 'book1',
-      title: 'ゼロから学ぶReact & Next.js',
-      coverImage: '/images/placeholder.svg',
-      author: {
-        username: 'reactmaster',
-        name: '田中太郎',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      price: 2500 as number,
-      originalPrice: 3000,
-      likes: 89,
-      publishedAt: '2025-01-10T10:00:00Z',
-      description: 'React初心者からNext.jsマスターまで、段階的に学べる実践的な教科書',
-      tags: ['React', 'Next.js', 'TypeScript'],
-      totalPages: 484,
-      chaptersCount: 10,
-      readingTime: '約8時間',
-      rating: 4.6,
-      reviewsCount: 23
-    },
-    {
-      id: 'book2',
-      title: 'TypeScript実践ガイド',
-      coverImage: '/images/placeholder.svg',
-      author: {
-        username: 'tsexpert',
-        name: '佐藤花子',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      price: 'free' as const,
-      likes: 234,
-      publishedAt: '2025-01-08T10:00:00Z',
-      description: 'TypeScriptの基礎から高度な型プログラミングまで網羅',
-      tags: ['TypeScript', 'JavaScript', 'プログラミング'],
-      totalPages: 320,
-      chaptersCount: 8,
-      readingTime: '約5時間',
-      rating: 4.8,
-      reviewsCount: 45
-    },
-    {
-      id: 'book3',
-      title: 'Rustプログラミング入門',
-      coverImage: '/images/placeholder.svg',
-      author: {
-        username: 'rustacean',
-        name: '鈴木一郎',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      price: 3200 as number,
-      likes: 156,
-      publishedAt: '2025-01-05T10:00:00Z',
-      description: 'メモリ安全性を保証する次世代システムプログラミング言語',
-      tags: ['Rust', 'システムプログラミング', 'パフォーマンス'],
-      totalPages: 560,
-      chaptersCount: 12,
-      readingTime: '約10時間',
-      rating: 4.7,
-      reviewsCount: 18
-    },
-    {
-      id: 'book4',
-      title: 'エンジニアのためのマネジメント入門',
-      coverImage: '/images/placeholder.svg',
-      author: {
-        username: 'techmanager',
-        name: '山田次郎',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      price: 'free' as const,
-      likes: 412,
-      publishedAt: '2025-01-03T10:00:00Z',
-      description: 'テックリードからEMまで、エンジニアリングマネジメントの基礎',
-      tags: ['マネジメント', 'キャリア', 'リーダーシップ'],
-      totalPages: 280,
-      chaptersCount: 7,
-      readingTime: '約4時間',
-      rating: 4.5,
-      reviewsCount: 67
-    },
-    {
-      id: 'book5',
-      title: 'AWS実践アーキテクチャ設計',
-      coverImage: '/images/placeholder.svg',
-      author: {
-        username: 'cloudarchitect',
-        name: '高橋健太',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      price: 3800 as number,
-      originalPrice: 4500,
-      likes: 198,
-      publishedAt: '2024-12-28T10:00:00Z',
-      description: 'スケーラブルで可用性の高いクラウドシステムの設計手法',
-      tags: ['AWS', 'クラウド', 'アーキテクチャ'],
-      totalPages: 420,
-      chaptersCount: 9,
-      readingTime: '約7時間',
-      rating: 4.4,
-      reviewsCount: 34
-    },
-    {
-      id: 'book6',
-      title: 'GraphQL実装パターン',
-      coverImage: '/images/placeholder.svg',
-      author: {
-        username: 'graphqlexpert',
-        name: '伊藤真理',
-        avatar: '/images/avatar-placeholder.svg'
-      },
-      price: 2800 as number,
-      likes: 145,
-      publishedAt: '2024-12-20T10:00:00Z',
-      description: 'REST APIからGraphQLへの移行とベストプラクティス',
-      tags: ['GraphQL', 'API', 'Backend'],
-      totalPages: 350,
-      chaptersCount: 8,
-      readingTime: '約6時間',
-      rating: 4.3,
-      reviewsCount: 21
-    }
-  ]
-}
-
 export default function BooksPage() {
-  const [activeTab, setActiveTab] = useState('trending')
-  const [sortBy, setSortBy] = useState<'new' | 'popular' | 'price-low' | 'price-high'>('popular')
-  const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>('all')
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-  
-  const books = getAllBooks()
-  
-  // フィルタリング
-  let filteredBooks = books
-  if (priceFilter === 'free') {
-    filteredBooks = filteredBooks.filter(b => b.price === 'free')
-  } else if (priceFilter === 'paid') {
-    filteredBooks = filteredBooks.filter(b => typeof b.price === 'number')
-  }
-  
-  if (selectedTags.length > 0) {
-    filteredBooks = filteredBooks.filter(b => 
-      selectedTags.some(tag => b.tags.includes(tag))
-    )
-  }
-  
-  // ソート
-  const sortedBooks = [...filteredBooks].sort((a, b) => {
-    switch (sortBy) {
-      case 'new':
-        return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-      case 'price-low':
-        const aPrice = a.price === 'free' ? 0 : a.price
-        const bPrice = b.price === 'free' ? 0 : b.price
-        return aPrice - bPrice
-      case 'price-high':
-        const aPriceH = a.price === 'free' ? 0 : a.price
-        const bPriceH = b.price === 'free' ? 0 : b.price
-        return bPriceH - aPriceH
-      case 'popular':
-      default:
-        return b.likes - a.likes
+  const [books, setBooks] = useState<Book[]>([])
+  const [filter, setFilter] = useState<'all' | 'free' | 'paid'>('all')
+  const [sortBy, setSortBy] = useState<'recent' | 'popular'>('recent')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchBooks()
+  }, [filter, sortBy, searchQuery])
+
+  const fetchBooks = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      let result
+
+      if (searchQuery.trim()) {
+        result = await booksApi.searchBooks(searchQuery, 20, 0)
+      } else if (filter === 'free') {
+        result = await booksApi.getFreeBooks(20, 0)
+      } else if (filter === 'paid') {
+        result = await booksApi.getPaidBooks(20, 0)
+      } else {
+        result = await booksApi.getPublishedBooks(20, 0)
+      }
+
+      let sortedBooks = result.data || []
+      
+      // Sort books
+      if (sortBy === 'popular') {
+        sortedBooks = sortedBooks.sort((a, b) => b.likes_count - a.likes_count)
+      } else {
+        sortedBooks = sortedBooks.sort((a, b) => 
+          new Date(b.published_at || b.created_at).getTime() - 
+          new Date(a.published_at || a.created_at).getTime()
+        )
+      }
+
+      setBooks(sortedBooks)
+    } catch (err: any) {
+      console.error('書籍取得エラー:', err)
+      setError(err.message || '書籍の取得に失敗しました')
+    } finally {
+      setLoading(false)
     }
-  })
-  
-  // 全タグを取得
-  const allTags = Array.from(new Set(books.flatMap(b => b.tags)))
-  
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  }
+
+  const tabItems = [
+    { label: 'すべて', value: 'all' as const },
+    { label: '無料', value: 'free' as const },
+    { label: '有料', value: 'paid' as const }
+  ]
+
   return (
-    <PageProvider title="本" description="エンジニアが執筆した技術書や実践ガイド">
+    <PageProvider>
       <div className="books-page">
-        {/* Minimalist Hero Section */}
-        <div className="books-hero books-hero--minimal">
-          <div className="books-hero__inner">
-            <div className="books-hero__main">
-              <div className="books-hero__title-wrapper">
-                <h1 className="books-hero__title">
-                  <span className="books-hero__title-line">
-                    <span className="books-hero__title-text">深い知識を、</span>
-                  </span>
-                  <span className="books-hero__title-line">
-                    <span className="books-hero__title-accent">本</span>
-                    <span className="books-hero__title-text">で学ぶ。</span>
-                  </span>
-                </h1>
-                <div className="books-hero__title-decoration">
-                  <svg width="60" height="4" viewBox="0 0 60 4" fill="none">
-                    <rect x="0" y="0" width="20" height="4" rx="2" fill="#8B5CF6" opacity="0.6"/>
-                    <rect x="24" y="0" width="12" height="4" rx="2" fill="#8B5CF6" opacity="0.4"/>
-                    <rect x="40" y="0" width="20" height="4" rx="2" fill="#8B5CF6" opacity="0.2"/>
-                  </svg>
-                </div>
-              </div>
-              <p className="books-hero__description">
-                エンジニアが執筆した技術書や実践ガイド。<br />
-                体系的な学習で、確かなスキルを身につけましょう。
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">本</h1>
+              <p className="text-gray-600 mt-2">
+                技術書やエンジニアリングの書籍を探そう
               </p>
-              
-              {/* Stats */}
-              <div className="books-hero__stats">
-                <div className="books-hero__stat">
-                  <span className="books-hero__stat-number">486</span>
-                  <span className="books-hero__stat-label">公開書籍</span>
-                </div>
-                <div className="books-hero__stat">
-                  <span className="books-hero__stat-number">234</span>
-                  <span className="books-hero__stat-label">無料公開</span>
-                </div>
-                <div className="books-hero__stat">
-                  <span className="books-hero__stat-number">4.6</span>
-                  <span className="books-hero__stat-label">平均評価</span>
-                </div>
-                <div className="books-hero__stat">
-                  <span className="books-hero__stat-number">156</span>
-                  <span className="books-hero__stat-label">執筆者</span>
-                </div>
+            </div>
+            <Link
+              href="/new/book"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              本を出版する
+            </Link>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+            <div className="grid md:grid-cols-3 gap-4">
+              {/* Search */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  検索
+                </label>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="本を検索..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
               </div>
 
-              {/* Actions */}
-              <div className="books-hero__actions">
-                <Link href="/books/explore">
-                  <Button variant="primary" className="books-hero__btn books-hero__btn--primary">
-                    本を探す
-                  </Button>
-                </Link>
-                <Link href="/new/book">
-                  <Button variant="ghost" className="books-hero__btn books-hero__btn--ghost">
-                    本を執筆
-                  </Button>
-                </Link>
+              {/* Price Filter */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  価格
+                </label>
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value as 'all' | 'free' | 'paid')}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="all">すべて</option>
+                  <option value="free">無料</option>
+                  <option value="paid">有料</option>
+                </select>
               </div>
 
-              {/* Featured Books */}
-              <div className="books-hero__featured">
-                <Link href="/books/react" className="books-hero__featured-book">
-                  <div className="books-hero__featured-cover">⚛️</div>
-                  <div className="books-hero__featured-title">React</div>
-                </Link>
-                <Link href="/books/typescript" className="books-hero__featured-book">
-                  <div className="books-hero__featured-cover">🔷</div>
-                  <div className="books-hero__featured-title">TypeScript</div>
-                </Link>
-                <Link href="/books/aws" className="books-hero__featured-book">
-                  <div className="books-hero__featured-cover">☁️</div>
-                  <div className="books-hero__featured-title">AWS</div>
-                </Link>
-                <Link href="/books/rust" className="books-hero__featured-book">
-                  <div className="books-hero__featured-cover">🦀</div>
-                  <div className="books-hero__featured-title">Rust</div>
-                </Link>
-                <Link href="/books/docker" className="books-hero__featured-book">
-                  <div className="books-hero__featured-cover">🐳</div>
-                  <div className="books-hero__featured-title">Docker</div>
-                </Link>
-                <Link href="/books/kubernetes" className="books-hero__featured-book">
-                  <div className="books-hero__featured-cover">☸️</div>
-                  <div className="books-hero__featured-title">K8s</div>
-                </Link>
+              {/* Sort */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  並び順
+                </label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as 'recent' | 'popular')}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="recent">新着順</option>
+                  <option value="popular">人気順</option>
+                </select>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Featured Books Section */}
-        <div className="books-featured">
-          <div className="books-featured__inner">
-            <div className="books-featured__header">
-              <h2 className="books-featured__title">🏆 今週の人気書籍</h2>
-              <p className="books-featured__subtitle">最も読まれている技術書</p>
-            </div>
-            <div className="books-featured__grid">
-              {books.slice(0, 5).map(book => (
-                <article key={book.id} className="book-card-enhanced">
-                  {book.originalPrice && (
-                    <span className="book-card-enhanced__badge book-card-enhanced__badge--sale">
-                      SALE
-                    </span>
-                  )}
-                  {book.price === 'free' && (
-                    <span className="book-card-enhanced__badge">
-                      無料
-                    </span>
-                  )}
-                  <div className="book-card-enhanced__cover" style={{ height: '160px' }}>
-                    <Link href={`/books/${book.id}`} style={{
-                      width: '100%',
-                      height: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '3rem',
-                      textDecoration: 'none'
-                    }}>
-                      📖
-                    </Link>
-                  </div>
-                  <div className="book-card-enhanced__content">
-                    <h3 className="book-card-enhanced__title">
-                      <Link href={`/books/${book.id}`}>
-                        {book.title}
-                      </Link>
-                    </h3>
-                    <div 
-                      className="book-card-enhanced__author"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        window.location.href = `/${book.author.username}`
-                      }}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
-                      <span>{book.author.name}</span>
-                    </div>
-                      <div className="book-card-enhanced__meta">
-                        <span className="book-card-enhanced__pages">
-                          📄 {book.totalPages}ページ
-                        </span>
-                        <span className="book-card-enhanced__rating">
-                          <span className="book-card-enhanced__rating-star">⭐</span>
-                          {book.rating}
-                        </span>
-                      </div>
-                      <div className="book-card-enhanced__price">
-                        {book.price === 'free' ? (
-                          <span className="book-card-enhanced__price-current book-card-enhanced__price-current--free">
-                            無料
-                          </span>
-                        ) : (
-                          <>
-                            <span className="book-card-enhanced__price-current">
-                              ¥{book.price.toLocaleString()}
-                            </span>
-                            {book.originalPrice && (
-                              <span className="book-card-enhanced__price-original">
-                                ¥{book.originalPrice.toLocaleString()}
-                              </span>
-                            )}
-                          </>
-                        )}
-                        <span className="book-card-enhanced__likes">
-                          ❤️ {book.likes}
-                        </span>
-                      </div>
-                    </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-        
-        {/* Main Layout */}
-        <div className="books-layout">
-          {/* Sidebar */}
-          <aside className="books-sidebar">
-            {/* Price Filter */}
-            <div className="books-sidebar-section">
-              <h3 className="books-sidebar-title">価格</h3>
-              <div className="books-price-filters">
-                <button 
-                  className={`books-price-filter ${priceFilter === 'all' ? 'books-price-filter--active' : ''}`}
-                  onClick={() => setPriceFilter('all')}
-                >
-                  <span className="books-price-filter__label">すべて</span>
-                  <span className="books-price-filter__count">{books.length}</span>
-                </button>
-                <button 
-                  className={`books-price-filter ${priceFilter === 'free' ? 'books-price-filter--active' : ''}`}
-                  onClick={() => setPriceFilter('free')}
-                >
-                  <span className="books-price-filter__label">無料</span>
-                  <span className="books-price-filter__count">
-                    {books.filter(b => b.price === 'free').length}
-                  </span>
-                </button>
-                <button 
-                  className={`books-price-filter ${priceFilter === 'paid' ? 'books-price-filter--active' : ''}`}
-                  onClick={() => setPriceFilter('paid')}
-                >
-                  <span className="books-price-filter__label">有料</span>
-                  <span className="books-price-filter__count">
-                    {books.filter(b => typeof b.price === 'number').length}
-                  </span>
-                </button>
-              </div>
-            </div>
-            
-            {/* Categories */}
-            <div className="books-sidebar-section">
-              <h3 className="books-sidebar-title">カテゴリー</h3>
-              <div className="books-categories">
-                {allTags.map(tag => (
-                  <button
-                    key={tag}
-                    className={`books-category-tag ${selectedTags.includes(tag) ? 'books-category-tag--active' : ''}`}
-                    onClick={() => {
-                      if (selectedTags.includes(tag)) {
-                        setSelectedTags(selectedTags.filter(t => t !== tag))
-                      } else {
-                        setSelectedTags([...selectedTags, tag])
-                      }
-                    }}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            {/* Author CTA */}
-            <div className="books-author-cta">
-              <h3 className="books-author-cta__title">本を執筆しよう</h3>
-              <p className="books-author-cta__text">
-                あなたの知識を本にまとめて共有しませんか？
-              </p>
-              <Link href="/new/book">
-                <button className="books-author-cta__button">
-                  執筆を始める
-                </button>
-              </Link>
-            </div>
-          </aside>
-          
-          {/* Main Content */}
-          <main className="books-main">
-            {/* Filter Bar */}
-            <div className="books-filter-bar">
-              <div className="books-filter-tabs">
-                <button 
-                  className={`books-filter-tab ${activeTab === 'trending' ? 'books-filter-tab--active' : ''}`}
-                  onClick={() => setActiveTab('trending')}
-                >
-                  トレンド
-                </button>
-                <button 
-                  className={`books-filter-tab ${activeTab === 'new' ? 'books-filter-tab--active' : ''}`}
-                  onClick={() => setActiveTab('new')}
-                >
-                  新着
-                </button>
-                <button 
-                  className={`books-filter-tab ${activeTab === 'bestseller' ? 'books-filter-tab--active' : ''}`}
-                  onClick={() => setActiveTab('bestseller')}
-                >
-                  ベストセラー
-                </button>
-              </div>
-              
-              <select 
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="books-filter-sort"
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-red-800 mb-2">エラー</h3>
+              <p className="text-red-700">{error}</p>
+              <button 
+                onClick={fetchBooks}
+                className="mt-2 text-red-600 hover:text-red-800 text-sm"
               >
-                <option value="popular">人気順</option>
-                <option value="new">新着順</option>
-                <option value="price-low">価格が安い順</option>
-                <option value="price-high">価格が高い順</option>
-              </select>
+                再試行
+              </button>
             </div>
-            
-            {/* Results Header */}
-            <div className="books-results-header">
-              <p className="books-results-count">
-                <strong>{sortedBooks.length}</strong> 件の本
-                {selectedTags.length > 0 && (
-                  <span>（{selectedTags.join(', ')}）</span>
-                )}
+          )}
+
+          {/* Books Grid */}
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">本を読み込み中...</p>
+            </div>
+          ) : books.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="text-4xl mb-4">📚</div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">本が見つかりません</h3>
+              <p className="text-gray-600 mb-6">
+                {searchQuery || filter !== 'all' 
+                  ? '検索条件を変更してみてください' 
+                  : 'まだ本がありません。最初の本を出版してみましょう！'
+                }
               </p>
-              {(selectedTags.length > 0 || priceFilter !== 'all') && (
-                <button 
-                  onClick={() => {
-                    setSelectedTags([])
-                    setPriceFilter('all')
-                  }}
-                  className="books-clear-filters"
+              {!searchQuery && filter === 'all' && (
+                <Link
+                  href="/new/book"
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  フィルターをクリア
-                </button>
+                  本を出版する
+                </Link>
               )}
             </div>
-            
-            {/* Books Grid */}
-            {sortedBooks.length > 0 ? (
-              <div className="books-grid">
-                {sortedBooks.map(book => (
-                  <article key={book.id} className="book-card-enhanced">
-                    {book.originalPrice && (
-                      <span className="book-card-enhanced__badge book-card-enhanced__badge--sale">
-                        SALE
-                      </span>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {books.map((book) => (
+                <div key={book.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="aspect-[3/4] bg-gray-100 flex items-center justify-center relative">
+                    {book.cover_image_url ? (
+                      <img 
+                        src={book.cover_image_url} 
+                        alt={book.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="text-6xl">📖</div>
                     )}
-                    {book.price === 'free' && (
-                      <span className="book-card-enhanced__badge">
-                        無料
-                      </span>
-                    )}
-                    <div className="book-card-enhanced__cover" style={{ height: '160px' }}>
-                      <Link href={`/books/${book.id}`} style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '3rem',
-                        textDecoration: 'none'
-                      }}>
-                        📖
-                      </Link>
+                    
+                    {/* Price Badge */}
+                    <div className="absolute top-2 right-2">
+                      {book.is_free ? (
+                        <span className="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">
+                          無料
+                        </span>
+                      ) : (
+                        <span className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium">
+                          ¥{book.price}
+                        </span>
+                      )}
                     </div>
-                    <div className="book-card-enhanced__content">
-                      <h3 className="book-card-enhanced__title">
-                        <Link href={`/books/${book.id}`}>
-                          {book.title}
-                        </Link>
-                      </h3>
-                      <Link href={`/${book.author.username}`} className="book-card-enhanced__author">
-                        <img src={book.author.avatar} alt={book.author.name} className="book-card-enhanced__author-avatar" />
-                        <span>{book.author.name}</span>
-                      </Link>
-                        <div className="book-card-enhanced__meta">
-                          <span className="book-card-enhanced__pages">
-                            📄 {book.totalPages}ページ
-                          </span>
-                          <span className="book-card-enhanced__rating">
-                            <span className="book-card-enhanced__rating-star">⭐</span>
-                            {book.rating}
-                          </span>
-                        </div>
-                        <div className="book-card-enhanced__price">
-                          {book.price === 'free' ? (
-                            <span className="book-card-enhanced__price-current book-card-enhanced__price-current--free">
-                              無料
-                            </span>
-                          ) : (
-                            <>
-                              <span className="book-card-enhanced__price-current">
-                                ¥{book.price.toLocaleString()}
-                              </span>
-                              {book.originalPrice && (
-                                <span className="book-card-enhanced__price-original">
-                                  ¥{book.originalPrice.toLocaleString()}
-                                </span>
-                              )}
-                            </>
-                          )}
-                          <span className="book-card-enhanced__likes">
-                            ❤️ {book.likes}
-                          </span>
-                        </div>
+                  </div>
+                  
+                  <div className="p-4">
+                    <Link 
+                      href={`/books/${book.slug}`}
+                      className="font-bold text-gray-900 hover:text-blue-600 transition-colors block mb-2 line-clamp-2"
+                      title={book.title}
+                    >
+                      {book.title}
+                    </Link>
+                    
+                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      {book.description || '説明がありません'}
+                    </p>
+                    
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center space-x-2 text-gray-500">
+                        <span>@{book.user?.username || 'Unknown'}</span>
                       </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="books-empty">
-                <div className="books-empty__icon">📚</div>
-                <h3 className="books-empty__title">
-                  本が見つかりませんでした
-                </h3>
-                <p className="books-empty__text">
-                  条件を変更してお試しください
-                </p>
-                <Button variant="secondary" onClick={() => {
-                  setPriceFilter('all')
-                  setSelectedTags([])
-                }}>
-                  フィルターをリセット
-                </Button>
-              </div>
-            )}
-            
-            {/* Load More */}
-            {sortedBooks.length > 0 && (
-              <div className="books-load-more">
-                <button className="books-load-more__button">
-                  もっと見る
-                </button>
-              </div>
-            )}
-          </main>
+                      
+                      <div className="flex items-center space-x-3">
+                        <span className="flex items-center space-x-1 text-gray-500">
+                          <span>❤️</span>
+                          <span>{book.likes_count}</span>
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <div className="text-xs text-gray-500">
+                        {formatDate(book.published_at || book.created_at)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Load More */}
+          {books.length > 0 && books.length % 20 === 0 && (
+            <div className="text-center mt-8">
+              <button
+                onClick={() => fetchBooks()}
+                className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                もっと読み込む
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </PageProvider>

@@ -1,0 +1,385 @@
+// 求人機能用データベーススキーマ
+// Jobs Feature Database Schema
+
+// ========================================
+// 求人投稿
+// ========================================
+model Job {
+  id              String    @id @default(uuid())
+  clientId        String    // 投稿者（企業/個人）
+  
+  // 基本情報
+  title           String
+  description     String    // 詳細説明（Markdown）
+  category        String    // web-development, mobile, backend, etc.
+  
+  // 予算・報酬
+  budgetMin       Int?
+  budgetMax       Int?
+  budgetCurrency  String    @default("JPY") // JPY, USD
+  budgetType      String    // fixed, hourly, negotiable
+  
+  // 勤務条件
+  duration        String    // 期間（例: 1-3ヶ月、継続案件）
+  workStyle       String    // remote, onsite, hybrid
+  location        String?   // オンサイト/ハイブリッドの場合の勤務地
+  
+  // ステータス
+  status          String    @default("draft") // draft, open, in_progress, closed, completed
+  isUrgent        Boolean   @default(false)
+  isFeatured      Boolean   @default(false)
+  
+  // 募集要項
+  skills          String    // JSON配列として保存
+  requirements    String    // JSON配列として保存
+  preferredQualifications String? // JSON配列として保存
+  
+  // 統計
+  viewsCount      Int       @default(0)
+  proposalsCount  Int       @default(0)
+  
+  // 日時
+  publishedAt     DateTime?
+  deadline        DateTime?
+  startDate       DateTime? // 希望開始日
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+  
+  // リレーション
+  client          User      @relation(fields: [clientId], references: [id])
+  proposals       Proposal[]
+  attachments     JobAttachment[]
+  bookmarks       JobBookmark[]
+  contracts       Contract[]
+  
+  @@index([clientId])
+  @@index([status, publishedAt])
+  @@index([category])
+  @@index([workStyle])
+  @@index([budgetType])
+}
+
+// ========================================
+// 求人への提案/応募
+// ========================================
+model Proposal {
+  id              String    @id @default(uuid())
+  jobId           String
+  freelancerId    String    // 応募者
+  
+  // 提案内容
+  coverLetter     String    // カバーレター
+  proposedAmount  Int?      // 提案金額
+  proposedCurrency String   @default("JPY")
+  proposedType    String?   // fixed, hourly
+  estimatedDuration String? // 見積もり期間
+  
+  // 追加情報
+  portfolio       String?   // ポートフォリオURL
+  availability    String?   // 稼働可能時間
+  startDate       DateTime? // 開始可能日
+  
+  // ステータス
+  status          String    @default("pending") // pending, shortlisted, accepted, rejected, withdrawn
+  clientViewed    Boolean   @default(false)
+  clientViewedAt  DateTime?
+  
+  // フィードバック
+  clientMessage   String?   // クライアントからのメッセージ
+  rating          Int?      // 提案の評価（1-5）
+  
+  // 日時
+  submittedAt     DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  withdrawnAt     DateTime?
+  
+  // リレーション
+  job             Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  freelancer      User      @relation(fields: [freelancerId], references: [id])
+  attachments     ProposalAttachment[]
+  messages        ProposalMessage[]
+  
+  @@unique([jobId, freelancerId])
+  @@index([jobId, status])
+  @@index([freelancerId])
+}
+
+// ========================================
+// 契約
+// ========================================
+model Contract {
+  id              String    @id @default(uuid())
+  jobId           String
+  clientId        String
+  freelancerId    String
+  proposalId      String?
+  
+  // 契約条件
+  title           String
+  description     String
+  amount          Int
+  currency        String    @default("JPY")
+  paymentType     String    // fixed, hourly, milestone
+  
+  // マイルストーン（段階払い）
+  milestones      String?   // JSON配列として保存
+  
+  // 契約期間
+  startDate       DateTime
+  endDate         DateTime?
+  
+  // ステータス
+  status          String    @default("pending") // pending, active, paused, completed, cancelled, disputed
+  
+  // 支払い
+  totalPaid       Int       @default(0)
+  lastPaymentAt   DateTime?
+  
+  // 評価
+  clientRating    Int?
+  clientReview    String?
+  freelancerRating Int?
+  freelancerReview String?
+  
+  // 日時
+  signedAt        DateTime?
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // リレーション
+  job             Job       @relation(fields: [jobId], references: [id])
+  client          User      @relation("ClientContracts", fields: [clientId], references: [id])
+  freelancer      User      @relation("FreelancerContracts", fields: [freelancerId], references: [id])
+  payments        Payment[]
+  workLogs        WorkLog[]
+  
+  @@index([jobId])
+  @@index([clientId])
+  @@index([freelancerId])
+  @@index([status])
+}
+
+// ========================================
+// 支払い
+// ========================================
+model Payment {
+  id              String    @id @default(uuid())
+  contractId      String
+  
+  // 支払い情報
+  amount          Int
+  currency        String    @default("JPY")
+  fee             Int       @default(0) // プラットフォーム手数料
+  netAmount       Int       // 手数料差引後
+  
+  // 支払い方法
+  method          String    // bank_transfer, credit_card, paypal, stripe
+  transactionId   String?   // 外部決済サービスのID
+  
+  // ステータス
+  status          String    @default("pending") // pending, processing, completed, failed, refunded
+  
+  // 詳細
+  description     String?
+  invoiceUrl      String?
+  receiptUrl      String?
+  
+  // 日時
+  processedAt     DateTime?
+  failedAt        DateTime?
+  refundedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  
+  // リレーション
+  contract        Contract  @relation(fields: [contractId], references: [id])
+  
+  @@index([contractId])
+  @@index([status])
+}
+
+// ========================================
+// 作業ログ（時給制用）
+// ========================================
+model WorkLog {
+  id              String    @id @default(uuid())
+  contractId      String
+  freelancerId    String
+  
+  // 作業内容
+  date            DateTime
+  hours           Float
+  description     String
+  
+  // 承認
+  isApproved      Boolean   @default(false)
+  approvedBy      String?
+  approvedAt      DateTime?
+  
+  // 日時
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // リレーション
+  contract        Contract  @relation(fields: [contractId], references: [id])
+  
+  @@index([contractId])
+  @@index([date])
+}
+
+// ========================================
+// 添付ファイル
+// ========================================
+model JobAttachment {
+  id              String    @id @default(uuid())
+  jobId           String
+  
+  fileName        String
+  fileUrl         String
+  fileSize        Int
+  mimeType        String
+  
+  uploadedAt      DateTime  @default(now())
+  
+  job             Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  
+  @@index([jobId])
+}
+
+model ProposalAttachment {
+  id              String    @id @default(uuid())
+  proposalId      String
+  
+  fileName        String
+  fileUrl         String
+  fileSize        Int
+  mimeType        String
+  
+  uploadedAt      DateTime  @default(now())
+  
+  proposal        Proposal  @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  
+  @@index([proposalId])
+}
+
+// ========================================
+// メッセージ
+// ========================================
+model ProposalMessage {
+  id              String    @id @default(uuid())
+  proposalId      String
+  senderId        String
+  
+  content         String
+  isRead          Boolean   @default(false)
+  readAt          DateTime?
+  
+  createdAt       DateTime  @default(now())
+  
+  proposal        Proposal  @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  
+  @@index([proposalId])
+  @@index([senderId])
+}
+
+// ========================================
+// ブックマーク
+// ========================================
+model JobBookmark {
+  id              String    @id @default(uuid())
+  userId          String
+  jobId           String
+  
+  note            String?
+  
+  createdAt       DateTime  @default(now())
+  
+  job             Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, jobId])
+  @@index([userId])
+  @@index([jobId])
+}
+
+// ========================================
+// スキルマスター
+// ========================================
+model Skill {
+  id              String    @id @default(uuid())
+  name            String    @unique
+  category        String    // programming, framework, tool, etc.
+  
+  description     String?
+  iconUrl         String?
+  
+  // 統計
+  jobsCount       Int       @default(0)
+  usersCount      Int       @default(0)
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([category])
+  @@index([name])
+}
+
+// ========================================
+// ユーザースキル（既存のUserモデルとの関連）
+// ========================================
+model UserSkill {
+  id              String    @id @default(uuid())
+  userId          String
+  skillId         String
+  
+  level           String?   // beginner, intermediate, advanced, expert
+  yearsOfExperience Int?
+  
+  createdAt       DateTime  @default(now())
+  
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([skillId])
+}
+
+// ========================================
+// 評価・レビュー
+// ========================================
+model JobReview {
+  id              String    @id @default(uuid())
+  contractId      String    @unique
+  
+  // クライアント→フリーランサー評価
+  clientToFreelancer Int?   // 1-5
+  clientComment   String?
+  
+  // フリーランサー→クライアント評価
+  freelancerToClient Int?   // 1-5
+  freelancerComment String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([contractId])
+}
+
+// ========================================
+// 通知設定（求人関連）
+// ========================================
+model JobNotificationSettings {
+  userId          String    @id
+  
+  // 求人通知
+  newJobsMatching Boolean   @default(true)  // マッチする新着求人
+  proposalUpdates Boolean   @default(true)  // 提案の更新
+  contractUpdates Boolean   @default(true)  // 契約の更新
+  paymentUpdates  Boolean   @default(true)  // 支払いの更新
+  messages        Boolean   @default(true)  // メッセージ
+  
+  // 配信頻度
+  emailFrequency  String    @default("instant") // instant, daily, weekly, never
+  
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([userId])
+}

@@ -155,17 +155,20 @@ export default function NewArticlePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* ヘッダー */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-3">
+      <div className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => router.back()}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 hover:bg-gray-100 rounded-xl transition-all duration-200 font-medium flex items-center gap-2 text-gray-700 hover:text-gray-900"
               >
-                ← 戻る
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                戻る
               </button>
               
               {/* 保存状態 */}
@@ -187,28 +190,39 @@ export default function NewArticlePage() {
 
             <div className="flex items-center gap-3">
               {/* ビュー切り替え */}
-              <div className="flex bg-gray-100 rounded-lg p-1">
+              <div className="flex bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl p-1">
                 <button
                   onClick={() => setCurrentView('edit')}
                   className={clsx(
-                    'px-3 py-1 text-sm rounded-md transition-colors',
+                    'px-4 py-2 text-sm rounded-lg transition-all duration-200 font-medium',
                     currentView === 'edit'
-                      ? 'bg-white text-gray-900 shadow-sm'
+                      ? 'bg-white text-blue-600 shadow-md'
                       : 'text-gray-600 hover:text-gray-900'
                   )}
                 >
-                  編集
+                  <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    編集
+                  </span>
                 </button>
                 <button
                   onClick={() => setCurrentView('preview')}
                   className={clsx(
-                    'px-3 py-1 text-sm rounded-md transition-colors',
+                    'px-4 py-2 text-sm rounded-lg transition-all duration-200 font-medium',
                     currentView === 'preview'
-                      ? 'bg-white text-gray-900 shadow-sm'
+                      ? 'bg-white text-purple-600 shadow-md'
                       : 'text-gray-600 hover:text-gray-900'
                   )}
                 >
-                  プレビュー
+                  <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    プレビュー
+                  </span>
                 </button>
               </div>
 
@@ -216,28 +230,42 @@ export default function NewArticlePage() {
               <button
                 onClick={saveDraft}
                 disabled={isSaving}
-                className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 transition-colors disabled:opacity-50"
+                className="px-5 py-2.5 text-sm text-gray-700 hover:text-gray-900 transition-all duration-200 disabled:opacity-50 font-medium border border-gray-200 rounded-xl hover:bg-gray-50 hover:shadow-sm"
               >
-                下書き保存
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V2" />
+                  </svg>
+                  下書き保存
+                </span>
               </button>
               
               <button
                 onClick={publishArticle}
                 disabled={isPublishing || !article.title.trim() || !article.content.trim()}
                 className={clsx(
-                  'px-6 py-2 text-sm font-medium rounded-lg transition-colors',
-                  'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
+                  'px-6 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200',
+                  'focus:outline-none focus:ring-4 focus:ring-blue-200',
                   'disabled:opacity-50 disabled:cursor-not-allowed',
-                  'bg-primary text-white hover:bg-blue-600'
+                  'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700',
+                  'shadow-lg hover:shadow-xl transform hover:scale-105'
                 )}
               >
                 {isPublishing ? (
                   <span className="flex items-center gap-2">
-                    <div className="animate-spin w-4 h-4 border border-white border-t-transparent rounded-full" />
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
                     公開中...
                   </span>
                 ) : (
-                  '記事を公開'
+                  <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    記事を公開
+                  </span>
                 )}
               </button>
             </div>
@@ -252,16 +280,16 @@ export default function NewArticlePage() {
             {currentView === 'edit' ? (
               <div className="space-y-6">
                 {/* 記事メタ情報 */}
-                <div className="bg-white rounded-xl shadow-sm border p-6">
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 p-8">
                   {/* タイトル */}
-                  <div className="flex items-start gap-4 mb-6">
+                  <div className="flex items-start gap-4 mb-8">
                     <button
                       onClick={() => {
                         const emojis = ['📝', '💡', '🚀', '⚡', '🎯', '🔥', '✨', '📊', '🛠️', '🎨']
                         const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)]
                         handleEmojiChange(randomEmoji)
                       }}
-                      className="text-4xl hover:scale-110 transition-transform p-2"
+                      className="text-5xl hover:scale-110 transition-all duration-200 p-3 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl hover:shadow-lg"
                       title="絵文字をランダム変更"
                     >
                       {article.emoji}
@@ -272,44 +300,56 @@ export default function NewArticlePage() {
                       placeholder="記事のタイトルを入力"
                       value={article.title}
                       onChange={(e) => updateArticle({ title: e.target.value })}
-                      className="flex-1 text-2xl font-bold border-none outline-none placeholder-gray-400"
+                      className="flex-1 text-3xl font-bold border-none outline-none placeholder-gray-400 bg-transparent"
                     />
                   </div>
 
                   {/* タイプ選択 */}
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="mb-8">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                      </svg>
                       記事タイプ
                     </label>
                     <div className="flex gap-3">
                       <button
                         onClick={() => updateArticle({ type: 'tech' })}
                         className={clsx(
-                          'px-4 py-2 text-sm rounded-lg transition-colors',
+                          'px-5 py-3 text-sm rounded-xl transition-all duration-200 font-medium',
                           article.type === 'tech'
-                            ? 'bg-blue-100 text-blue-700 border-2 border-blue-200'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg transform scale-105'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow-md'
                         )}
                       >
-                        💻 Tech
+                        <span className="flex items-center gap-2">
+                          <span className="text-lg">💻</span>
+                          Tech
+                        </span>
                       </button>
                       <button
                         onClick={() => updateArticle({ type: 'idea' })}
                         className={clsx(
-                          'px-4 py-2 text-sm rounded-lg transition-colors',
+                          'px-5 py-3 text-sm rounded-xl transition-all duration-200 font-medium',
                           article.type === 'idea'
-                            ? 'bg-orange-100 text-orange-700 border-2 border-orange-200'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg transform scale-105'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow-md'
                         )}
                       >
-                        💡 Idea
+                        <span className="flex items-center gap-2">
+                          <span className="text-lg">💡</span>
+                          Idea
+                        </span>
                       </button>
                     </div>
                   </div>
 
                   {/* タグ */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-xl">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                      </svg>
                       タグ ({article.tags.length}/5)
                     </label>
                     
@@ -335,18 +375,20 @@ export default function NewArticlePage() {
                       <div className="flex gap-2">
                         <input
                           type="text"
-                          placeholder="タグを入力"
+                          placeholder="タグを入力してEnterキーで追加"
                           value={tagInput}
                           onChange={(e) => setTagInput(e.target.value)}
                           onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                          className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-400 transition-all duration-200 bg-white"
                         />
                         <button
                           onClick={addTag}
                           disabled={!tagInput.trim()}
-                          className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                          className="px-5 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 font-medium shadow-md hover:shadow-lg"
                         >
-                          追加
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
                         </button>
                       </div>
                     )}
@@ -354,7 +396,15 @@ export default function NewArticlePage() {
                 </div>
 
                 {/* エディタ */}
-                <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-gray-100 overflow-hidden hover:border-blue-200 transition-all duration-200">
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 px-6 py-3 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      Markdownエディタ
+                    </p>
+                  </div>
                   <MarkdownEditor
                     value={article.content}
                     onChange={(content) => updateArticle({ content })}
@@ -364,7 +414,7 @@ export default function NewArticlePage() {
               </div>
             ) : (
               /* プレビュー */
-              <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 p-8">
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-4xl">{article.emoji}</span>
@@ -398,55 +448,79 @@ export default function NewArticlePage() {
           {/* サイドバー */}
           <div className="space-y-6">
             {/* 執筆ガイド */}
-            <div className="bg-white rounded-xl shadow-sm border p-4">
-              <h3 className="font-bold mb-3">✍️ 執筆ガイド</h3>
-              <div className="space-y-2 text-sm text-gray-600">
-                <p>• 見出しで記事を構造化しましょう</p>
-                <p>• コードブロックでサンプルを示す</p>
-                <p>• 画像で理解を深める</p>
-                <p>• 具体的な例を含める</p>
-                <p>• まとめで要点を整理</p>
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl shadow-lg border border-gray-100 p-6">
+              <h3 className="font-bold mb-4 flex items-center gap-2 text-gray-800">
+                <span className="text-2xl">✍️</span>
+                執筆ガイド
+              </h3>
+              <div className="space-y-3 text-sm text-gray-600">
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">•</span>
+                  <span>見出しで記事を構造化しましょう</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">•</span>
+                  <span>コードブロックでサンプルを示す</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">•</span>
+                  <span>画像で理解を深める</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">•</span>
+                  <span>具体的な例を含める</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-500 mt-1">•</span>
+                  <span>まとめで要点を整理</span>
+                </div>
               </div>
             </div>
 
             {/* ショートカット */}
-            <div className="bg-white rounded-xl shadow-sm border p-4">
-              <h3 className="font-bold mb-3">⌨️ ショートカット</h3>
-              <div className="space-y-1 text-sm text-gray-600">
-                <div className="flex justify-between">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow-lg border border-gray-100 p-6">
+              <h3 className="font-bold mb-4 flex items-center gap-2 text-gray-800">
+                <span className="text-2xl">⌨️</span>
+                ショートカット
+              </h3>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex justify-between items-center p-2 hover:bg-white/70 rounded-lg transition-all duration-200">
                   <span>太字</span>
-                  <kbd className="bg-gray-100 px-2 py-1 rounded text-xs">⌘B</kbd>
+                  <kbd className="bg-white px-3 py-1.5 rounded-lg text-xs font-mono shadow-sm border border-gray-200">⌘B</kbd>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center p-2 hover:bg-white/70 rounded-lg transition-all duration-200">
                   <span>イタリック</span>
-                  <kbd className="bg-gray-100 px-2 py-1 rounded text-xs">⌘I</kbd>
+                  <kbd className="bg-white px-3 py-1.5 rounded-lg text-xs font-mono shadow-sm border border-gray-200">⌘I</kbd>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center p-2 hover:bg-white/70 rounded-lg transition-all duration-200">
                   <span>リンク</span>
-                  <kbd className="bg-gray-100 px-2 py-1 rounded text-xs">⌘K</kbd>
+                  <kbd className="bg-white px-3 py-1.5 rounded-lg text-xs font-mono shadow-sm border border-gray-200">⌘K</kbd>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center p-2 hover:bg-white/70 rounded-lg transition-all duration-200">
                   <span>インデント</span>
-                  <kbd className="bg-gray-100 px-2 py-1 rounded text-xs">Tab</kbd>
+                  <kbd className="bg-white px-3 py-1.5 rounded-lg text-xs font-mono shadow-sm border border-gray-200">Tab</kbd>
                 </div>
               </div>
             </div>
 
             {/* 統計 */}
-            <div className="bg-white rounded-xl shadow-sm border p-4">
-              <h3 className="font-bold mb-3">📊 統計</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>文字数</span>
-                  <span className="font-medium">{article.content.length}</span>
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl shadow-lg border border-gray-100 p-6">
+              <h3 className="font-bold mb-4 flex items-center gap-2 text-gray-800">
+                <span className="text-2xl">📊</span>
+                統計
+              </h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between items-center p-3 bg-white/70 rounded-lg">
+                  <span className="text-gray-600">文字数</span>
+                  <span className="font-semibold text-gray-900 text-base">{article.content.length.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>行数</span>
-                  <span className="font-medium">{article.content.split('\n').length}</span>
+                <div className="flex justify-between items-center p-3 bg-white/70 rounded-lg">
+                  <span className="text-gray-600">行数</span>
+                  <span className="font-semibold text-gray-900 text-base">{article.content.split('\n').length.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>推定読了時間</span>
-                  <span className="font-medium">
+                <div className="flex justify-between items-center p-3 bg-white/70 rounded-lg">
+                  <span className="text-gray-600">推定読了時間</span>
+                  <span className="font-semibold text-gray-900 text-base">
                     {Math.max(1, Math.ceil(article.content.length / 500))}分
                   </span>
                 </div>

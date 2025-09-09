@@ -1,0 +1,182 @@
+// ===================================
+// セクション1: ユーザーと認証システム
+// ===================================
+
+// Supabaseの認証と連携するユーザーテーブル
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  username        String    @unique
+  displayName     String
+  bio             String?   @db.Text
+  avatarUrl       String?
+  githubUsername  String?   @unique
+  twitterUsername String?   
+  websiteUrl      String?
+  
+  // プロフィール情報
+  company         String?
+  location        String?
+  jobTitle        String?
+  
+  // ステータス
+  emailVerified   DateTime?
+  isPublic        Boolean   @default(true)
+  isActive        Boolean   @default(true)
+  
+  // 統計情報（非正規化したカウント）
+  articlesCount   Int       @default(0)
+  booksCount      Int       @default(0)
+  scrapsCount     Int       @default(0)
+  followersCount  Int       @default(0)
+  followingCount  Int       @default(0)
+  totalLikesGiven Int       @default(0)
+  totalLikesReceived Int    @default(0)
+  
+  // タイムスタンプ
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastActivityAt  DateTime  @default(now())
+  
+  // リレーション（他のセクションで追加予定）
+  // articles        Article[]
+  // books           Book[]
+  // scraps          Scrap[]
+  // comments        Comment[]
+  // likes           Like[]
+  // followedBy      Follow[]  @relation("following")
+  // following       Follow[]  @relation("follower")
+  
+  @@index([username])
+  @@index([email])
+  @@index([createdAt])
+  @@index([lastActivityAt])
+}
+
+// ユーザー設定テーブル
+model UserSettings {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  
+  // 通知設定
+  emailNotificationEnabled Boolean @default(true)
+  newFollowerNotification  Boolean @default(true)
+  newLikeNotification      Boolean @default(true)
+  newCommentNotification    Boolean @default(true)
+  weeklyDigest              Boolean @default(false)
+  
+  // プライバシー設定
+  showEmail                 Boolean @default(false)
+  showSocialLinks          Boolean @default(true)
+  allowIndexing            Boolean @default(true)
+  
+  // エディター設定
+  defaultEditor            EditorType @default(MARKDOWN)
+  autoSaveDraft           Boolean    @default(true)
+  autoSaveInterval        Int        @default(30) // 秒
+  
+  // テーマ設定
+  theme                   Theme      @default(LIGHT)
+  fontSize                FontSize   @default(MEDIUM)
+  codeTheme              String     @default("github")
+  
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+  
+  // user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// セッション管理（Supabase Auth以外でのカスタムセッション）
+model UserSession {
+  id              String    @id @default(uuid())
+  userId          String
+  token           String    @unique
+  deviceInfo      String?
+  ipAddress       String?
+  userAgent       String?
+  
+  expiresAt       DateTime
+  createdAt       DateTime  @default(now())
+  lastAccessedAt  DateTime  @default(now())
+  
+  // user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+// APIキー管理（開発者向け）
+model ApiKey {
+  id              String    @id @default(uuid())
+  userId          String
+  name            String
+  key             String    @unique
+  permissions     String[]  // ["read:articles", "write:articles", etc.]
+  
+  lastUsedAt      DateTime?
+  expiresAt       DateTime?
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([key])
+}
+
+// 監査ログ（重要な操作を記録）
+model AuditLog {
+  id              String    @id @default(uuid())
+  userId          String?
+  action          String    // "user.login", "article.create", etc.
+  entityType      String?   // "user", "article", "book", etc.
+  entityId        String?
+  
+  metadata        Json?     // 追加情報
+  ipAddress       String?
+  userAgent       String?
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+// Enum定義
+enum EditorType {
+  MARKDOWN
+  RICH_TEXT
+  CODE
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  AUTO
+}
+
+enum FontSize {
+  SMALL
+  MEDIUM
+  LARGE
+  EXTRA_LARGE
+}
+
+// ===================================
+// 設計のポイント
+// ===================================
+// 1. Supabase Authとの連携を前提とした設計
+// 2. 非正規化したカウント情報で高速なプロフィール表示
+// 3. 柔軟な通知・プライバシー設定
+// 4. APIキーによる外部連携対応
+// 5. 監査ログによるセキュリティとコンプライアンス対応
+//
+// 次のセクションで追加される関連テーブル：
+// - Article, Book, Scrap（コンテンツ）
+// - Follow（フォロー関係）
+// - Like, Comment（インタラクション）

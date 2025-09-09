@@ -1,0 +1,313 @@
+// ===================================
+// セクション2: コンテンツの基本構造
+// ===================================
+
+// 記事（Articles）
+model Article {
+  id              String    @id @default(uuid())
+  slug            String    @unique
+  authorId        String
+  
+  // 基本情報
+  title           String
+  emoji           String?   // 記事を表す絵文字
+  type            ArticleType @default(TECH)
+  
+  // コンテンツ
+  content         String    @db.Text
+  contentHtml     String?   @db.Text // キャッシュ用
+  excerpt         String?   // 抜粋（最大200文字）
+  coverImageUrl   String?
+  
+  // メタデータ
+  topics          String[]  // ["React", "TypeScript", "Next.js"]
+  readingTime     Int?      // 読了時間（分）
+  wordCount       Int?
+  
+  // 公開設定
+  status          ContentStatus @default(DRAFT)
+  publishedAt     DateTime?
+  scheduledAt     DateTime? // 予約投稿
+  isArchived      Boolean   @default(false)
+  
+  // SEO
+  metaDescription String?
+  ogImageUrl      String?
+  canonicalUrl    String?
+  
+  // 統計（非正規化）
+  viewsCount      Int       @default(0)
+  likesCount      Int       @default(0)
+  commentsCount   Int       @default(0)
+  bookmarksCount  Int       @default(0)
+  
+  // タイムスタンプ
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastEditedAt    DateTime  @default(now())
+  
+  // リレーション
+  // author        User      @relation(fields: [authorId], references: [id])
+  // comments      Comment[]
+  // likes         Like[]
+  // bookmarks     Bookmark[]
+  // revisions     ArticleRevision[]
+  
+  @@index([authorId])
+  @@index([slug])
+  @@index([status, publishedAt])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// 記事のリビジョン管理
+model ArticleRevision {
+  id              String    @id @default(uuid())
+  articleId       String
+  version         Int
+  
+  title           String
+  content         String    @db.Text
+  topics          String[]
+  
+  changeNote      String?   // 変更内容のメモ
+  createdAt       DateTime  @default(now())
+  createdBy       String
+  
+  // article       Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  
+  @@unique([articleId, version])
+  @@index([articleId])
+}
+
+// 書籍（Books）
+model Book {
+  id              String    @id @default(uuid())
+  slug            String    @unique
+  authorId        String
+  
+  // 基本情報
+  title           String
+  description     String    @db.Text
+  coverImageUrl   String?
+  emoji           String?
+  
+  // 価格設定
+  price           Int       @default(0) // 0 = 無料
+  currency        String    @default("JPY")
+  isFree          Boolean   @default(true)
+  
+  // 公開設定
+  status          ContentStatus @default(DRAFT)
+  publishedAt     DateTime?
+  isArchived      Boolean   @default(false)
+  
+  // 統計（非正規化）
+  chaptersCount   Int       @default(0)
+  totalWordCount  Int       @default(0)
+  purchaseCount   Int       @default(0)
+  viewsCount      Int       @default(0)
+  likesCount      Int       @default(0)
+  reviewsCount    Int       @default(0)
+  averageRating   Float?
+  
+  // タイムスタンプ
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  completedAt     DateTime? // 完成日
+  
+  // リレーション
+  // author        User      @relation(fields: [authorId], references: [id])
+  // chapters      Chapter[]
+  // purchases     Purchase[]
+  // reviews       Review[]
+  // likes         Like[]
+  
+  @@index([authorId])
+  @@index([slug])
+  @@index([status, publishedAt])
+  @@index([price])
+}
+
+// 書籍のチャプター
+model Chapter {
+  id              String    @id @default(uuid())
+  bookId          String
+  
+  // 基本情報
+  number          Int       // チャプター番号
+  title           String
+  slug            String
+  
+  // コンテンツ
+  content         String    @db.Text
+  contentHtml     String?   @db.Text
+  excerpt         String?
+  
+  // メタデータ
+  isFree          Boolean   @default(false) // 無料公開チャプター
+  wordCount       Int?
+  readingTime     Int?
+  
+  // タイムスタンプ
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  publishedAt     DateTime?
+  
+  // book          Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  
+  @@unique([bookId, number])
+  @@unique([bookId, slug])
+  @@index([bookId])
+}
+
+// スクラップ（Scraps）
+model Scrap {
+  id              String    @id @default(uuid())
+  authorId        String
+  
+  // 基本情報
+  title           String
+  emoji           String?
+  
+  // 設定
+  isPublic        Boolean   @default(true)
+  isPinned        Boolean   @default(false) // プロフィールにピン留め
+  allowComments   Boolean   @default(true)
+  
+  // 統計（非正規化）
+  postsCount      Int       @default(0)
+  viewsCount      Int       @default(0)
+  likesCount      Int       @default(0)
+  
+  // タイムスタンプ
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastPostedAt    DateTime?
+  archivedAt      DateTime?
+  
+  // リレーション
+  // author        User      @relation(fields: [authorId], references: [id])
+  // posts         ScrapPost[]
+  // likes         Like[]
+  // collaborators ScrapCollaborator[]
+  
+  @@index([authorId])
+  @@index([isPublic, updatedAt])
+  @@index([createdAt])
+}
+
+// スクラップの投稿
+model ScrapPost {
+  id              String    @id @default(uuid())
+  scrapId         String
+  authorId        String
+  
+  // コンテンツ
+  content         String    @db.Text
+  contentHtml     String?   @db.Text
+  
+  // メタデータ
+  isEdited        Boolean   @default(false)
+  editedAt        DateTime?
+  
+  // 統計
+  likesCount      Int       @default(0)
+  
+  // タイムスタンプ
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // scrap         Scrap     @relation(fields: [scrapId], references: [id], onDelete: Cascade)
+  // author        User      @relation(fields: [authorId], references: [id])
+  // likes         Like[]
+  
+  @@index([scrapId])
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+// スクラップのコラボレーター
+model ScrapCollaborator {
+  id              String    @id @default(uuid())
+  scrapId         String
+  userId          String
+  
+  role            CollaboratorRole @default(VIEWER)
+  joinedAt        DateTime  @default(now())
+  
+  // scrap         Scrap     @relation(fields: [scrapId], references: [id], onDelete: Cascade)
+  // user          User      @relation(fields: [userId], references: [id])
+  
+  @@unique([scrapId, userId])
+  @@index([scrapId])
+  @@index([userId])
+}
+
+// 下書き管理（全コンテンツタイプ共通）
+model Draft {
+  id              String    @id @default(uuid())
+  authorId        String
+  
+  contentType     DraftContentType
+  contentId       String?   // 既存コンテンツの下書きの場合
+  
+  title           String
+  content         String    @db.Text
+  metadata        Json?     // タイプ別の追加情報
+  
+  // 自動保存
+  autoSavedAt     DateTime  @default(now())
+  isAutoSave      Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // author        User      @relation(fields: [authorId], references: [id])
+  
+  @@index([authorId, contentType])
+  @@index([contentId])
+}
+
+// Enum定義
+enum ArticleType {
+  TECH    // テック記事
+  IDEA    // アイデア記事
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  UNLISTED  // URLを知っている人のみ閲覧可能
+  ARCHIVED
+}
+
+enum CollaboratorRole {
+  VIEWER
+  EDITOR
+  ADMIN
+}
+
+enum DraftContentType {
+  ARTICLE
+  BOOK
+  CHAPTER
+  SCRAP
+  SCRAP_POST
+}
+
+// ===================================
+// 設計のポイント
+// ===================================
+// 1. 3つの主要コンテンツタイプ（記事・書籍・スクラップ）を独立管理
+// 2. リビジョン管理で記事の変更履歴を追跡
+// 3. 書籍は章構造で管理、部分的な無料公開に対応
+// 4. スクラップは複数投稿とコラボレーション対応
+// 5. 統一された下書き管理システム
+// 6. 非正規化したカウントでパフォーマンス最適化
+//
+// 次のセクションで追加される関連テーブル：
+// - Like, Comment（インタラクション）
+// - Bookmark（ブックマーク）
+// - Purchase, Review（書籍の購入とレビュー）

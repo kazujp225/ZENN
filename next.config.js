@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  outputFileTracingRoot: __dirname,
   images: {
     domains: ['assets.zenn.dev'],
     formats: ['image/avif', 'image/webp'],

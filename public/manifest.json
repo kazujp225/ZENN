@@ -1,0 +1,43 @@
+{
+  "name": "Zenn Clone - エンジニアのための知識共有コミュニティ",
+  "short_name": "Zenn Clone",
+  "description": "エンジニアが知識を共有するためのプラットフォーム",
+  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "social"],
+  "shortcuts": [
+    {
+      "name": "記事",
+      "url": "/articles",
+      "description": "技術記事を読む"
+    },
+    {
+      "name": "書籍",
+      "url": "/books",
+      "description": "技術書を探す"
+    },
+    {
+      "name": "スクラップ",
+      "url": "/scraps",
+      "description": "スクラップを見る"
+    }
+  ]
+}

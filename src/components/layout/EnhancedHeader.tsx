@@ -8,6 +8,7 @@ import Image from 'next/image'
 import clsx from 'clsx'
 import { useEnhancedAuth } from '@/hooks/useEnhancedAuth'
 import { useEnhancedSearch } from '@/hooks/useEnhancedSearch'
+import { EnhancedLoginModal } from '@/components/auth/EnhancedLoginModal'
 
 interface HeaderProps {
   className?: string
@@ -24,6 +25,7 @@ export function EnhancedHeader({ className }: HeaderProps) {
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [showLoginModal, setShowLoginModal] = useState(false)
   
   const userMenuRef = useRef<HTMLDivElement>(null)
   const userDropdownRef = useRef<HTMLDivElement>(null)
@@ -318,7 +320,7 @@ export function EnhancedHeader({ className }: HeaderProps) {
               {/* モバイル検索ボタン */}
               <button
                 onClick={() => router.push('/search')}
-                className="sm:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -326,17 +328,22 @@ export function EnhancedHeader({ className }: HeaderProps) {
               </button>
 
               {/* 投稿ボタン */}
-              {user && (
-                <Link
-                  href="/new/article"
-                  className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                >
-                  <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  投稿
-                </Link>
-              )}
+              <button
+                onClick={() => {
+                  if (user) {
+                    router.push('/new')
+                  } else {
+                    setShowLoginModal(true)
+                  }
+                }}
+                className="inline-flex items-center px-3 sm:px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm"
+              >
+                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span className="hidden sm:inline">投稿する</span>
+                <span className="sm:hidden">投稿</span>
+              </button>
 
               {/* ユーザーメニューまたはログインボタン */}
               {user ? (
@@ -344,15 +351,23 @@ export function EnhancedHeader({ className }: HeaderProps) {
                   <button
                     ref={userTriggerRef}
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center space-x-2 p-1 rounded-lg hover:bg-gray-100 transition-colors"
+                    className={clsx(
+                      "flex items-center space-x-2 p-1.5 rounded-lg transition-all duration-200",
+                      showUserMenu ? "bg-gray-100 shadow-inner" : "hover:bg-gray-50"
+                    )}
                   >
-                    <Image
-                      src={user.avatar}
-                      alt={user.name}
-                      width={32}
-                      height={32}
-                      className="rounded-full border-2 border-gray-200"
-                    />
+                    <div className="relative">
+                      <Image
+                        src={user.avatar}
+                        alt={user.name}
+                        width={36}
+                        height={36}
+                        className="rounded-full border-2 border-gray-200 shadow-sm"
+                      />
+                      {showUserMenu && (
+                        <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
+                      )}
+                    </div>
                     <div className="hidden sm:block text-left">
                       <div className="text-sm font-medium text-gray-900 truncate max-w-32">
                         {user.name}
@@ -369,6 +384,12 @@ export function EnhancedHeader({ className }: HeaderProps) {
                         </div>
                       )}
                     </div>
+                    <svg className={clsx(
+                      "w-4 h-4 text-gray-400 transition-transform duration-200 hidden sm:block",
+                      showUserMenu && "rotate-180"
+                    )} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </button>
 
                   {/* ユーザードロップダウンメニュー */}
@@ -383,20 +404,29 @@ export function EnhancedHeader({ className }: HeaderProps) {
                         maxHeight: `min(70vh, ${Math.max(200, window.innerHeight - menuPosition.top - 16)}px)`,
                         overflowY: 'auto'
                       }}
-                      className="w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2"
+                      className="w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden animate-fade-in"
                     >
                       {/* ユーザー情報 */}
-                      <div className="px-4 py-3 border-b border-gray-100">
+                      <div className="bg-white px-5 py-4 border-b-2 border-gray-100">
                         <div className="flex items-center space-x-3">
-                          <Image
-                            src={user.avatar}
-                            alt={user.name}
-                            width={40}
-                            height={40}
-                            className="rounded-full"
-                          />
+                          <div className="relative">
+                            <Image
+                              src={user.avatar}
+                              alt={user.name}
+                              width={48}
+                              height={48}
+                              className="rounded-full border-2 border-white shadow-md"
+                            />
+                            {user.emailVerified && (
+                              <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center border-2 border-white">
+                                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium text-gray-900 truncate">
+                            <div className="text-lg font-bold text-gray-900 truncate">
                               {user.name}
                             </div>
                             <div className="text-sm text-gray-500 truncate">
@@ -404,11 +434,16 @@ export function EnhancedHeader({ className }: HeaderProps) {
                             </div>
                             {user.subscription && (
                               <div className={clsx(
-                                'text-xs font-medium mt-1 px-2 py-1 rounded-full inline-block',
-                                user.subscription.tier === 'pro' ? 'bg-blue-100 text-blue-700' :
-                                user.subscription.tier === 'premium' ? 'bg-purple-100 text-purple-700' :
-                                'bg-gray-100 text-gray-700'
+                                'inline-flex items-center gap-1 text-xs font-bold mt-2 px-2.5 py-1 rounded-md',
+                                user.subscription.tier === 'pro' ? 'bg-blue-500 text-white' :
+                                user.subscription.tier === 'premium' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' :
+                                'bg-gray-200 text-gray-700'
                               )}>
+                                {user.subscription.tier === 'premium' && (
+                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                  </svg>
+                                )}
                                 {user.subscription.tier.toUpperCase()}
                               </div>
                             )}
@@ -417,60 +452,88 @@ export function EnhancedHeader({ className }: HeaderProps) {
                       </div>
 
                       {/* メニューアイテム */}
-                      <div className="py-1">
+                      <div className="py-2">
                         <Link
                           href={`/${user.username}`}
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="flex items-center px-5 py-3.5 text-sm text-gray-700 hover:bg-gray-50 transition-all duration-200 group"
                           onClick={() => setShowUserMenu(false)}
                         >
-                          <svg className="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
-                          プロフィール
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center mr-3 group-hover:bg-gray-200 transition-all duration-200">
+                            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">プロフィール</div>
+                            <div className="text-xs text-gray-500 mt-0.5">公開プロフィールを表示</div>
+                          </div>
                         </Link>
                         <Link
                           href="/dashboard"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="flex items-center px-5 py-3.5 text-sm text-gray-700 hover:bg-gray-50 transition-all duration-200 group"
                           onClick={() => setShowUserMenu(false)}
                         >
-                          <svg className="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                          </svg>
-                          ダッシュボード
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center mr-3 group-hover:bg-gray-200 transition-all duration-200">
+                            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">ダッシュボード</div>
+                            <div className="text-xs text-gray-500 mt-0.5">投稿の統計を確認</div>
+                          </div>
                         </Link>
                         <Link
                           href="/dashboard/articles"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          className="flex items-center px-5 py-3.5 text-sm text-gray-700 hover:bg-gray-50 transition-all duration-200 group"
                           onClick={() => setShowUserMenu(false)}
                         >
-                          <svg className="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                          記事管理
-                        </Link>
-                        <Link
-                          href="/settings"
-                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                          onClick={() => setShowUserMenu(false)}
-                        >
-                          <svg className="w-4 h-4 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          設定
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center mr-3 group-hover:bg-gray-200 transition-all duration-200">
+                            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">記事管理</div>
+                            <div className="text-xs text-gray-500 mt-0.5">投稿した記事を管理</div>
+                          </div>
                         </Link>
                       </div>
 
-                      <div className="border-t border-gray-100 pt-1">
+                      <div className="border-t-2 border-gray-100 py-2">
+                        <Link
+                          href="/settings"
+                          className="flex items-center px-5 py-3.5 text-sm text-gray-700 hover:bg-gray-50 transition-all duration-200 group"
+                          onClick={() => setShowUserMenu(false)}
+                        >
+                          <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center mr-3 group-hover:bg-gray-200 transition-all duration-200">
+                            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-900">設定</div>
+                            <div className="text-xs text-gray-500 mt-0.5">アカウント設定を変更</div>
+                          </div>
+                        </Link>
+                      </div>
+
+                      <div className="border-t-2 border-gray-100 py-2">
                         <button
                           onClick={handleLogout}
                           disabled={isLoading}
-                          className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                          className="flex items-center w-full px-5 py-3.5 text-sm hover:bg-red-50 transition-all duration-200 disabled:opacity-50 group"
                         >
-                          <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                          </svg>
-                          {isLoading ? 'ログアウト中...' : 'ログアウト'}
+                          <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center mr-3 group-hover:bg-red-100 transition-all duration-200">
+                            <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                          </div>
+                          <div className="flex-1 text-left">
+                            <div className="font-semibold text-red-600">{isLoading ? 'ログアウト中...' : 'ログアウト'}</div>
+                            <div className="text-xs text-gray-500 mt-0.5">アカウントからサインアウト</div>
+                          </div>
                         </button>
                       </div>
                     </div>,
@@ -532,23 +595,32 @@ export function EnhancedHeader({ className }: HeaderProps) {
               ))}
 
               {/* モバイル投稿ボタン */}
-              {user && (
-                <Link
-                  href="/new/article"
-                  onClick={() => setShowMobileMenu(false)}
-                  className="flex items-center space-x-3 px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors mt-3"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                  <span>記事を投稿</span>
-                </Link>
-              )}
+              <button
+                onClick={() => {
+                  setShowMobileMenu(false)
+                  if (user) {
+                    router.push('/new')
+                  } else {
+                    setShowLoginModal(true)
+                  }
+                }}
+                className="flex items-center space-x-3 px-3 py-2 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors mt-3"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                <span>投稿する</span>
+              </button>
             </div>
           </div>
         )}
       </header>
 
+      {/* ログインモーダル */}
+      <EnhancedLoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </>
   )
 }

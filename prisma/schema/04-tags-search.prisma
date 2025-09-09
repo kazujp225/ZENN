@@ -1,0 +1,333 @@
+// ===================================
+// セクション4: タグ・カテゴリー・検索最適化
+// ===================================
+
+// タグマスター（公式タグ）
+model Tag {
+  id              String    @id @default(uuid())
+  name            String    @unique
+  slug            String    @unique
+  
+  // 表示情報
+  displayName     String    // 表示名（日本語対応）
+  description     String?   @db.Text
+  emoji           String?
+  color           String?   // HEXカラーコード
+  
+  // カテゴリー分類
+  categoryId      String?
+  
+  // メタデータ
+  isOfficial      Boolean   @default(true)  // 公式タグ
+  isPopular       Boolean   @default(false) // 人気タグ
+  isTrending      Boolean   @default(false) // トレンドタグ
+  isArchived      Boolean   @default(false)
+  
+  // 統計（非正規化）
+  articlesCount   Int       @default(0)
+  booksCount      Int       @default(0)
+  scrapsCount     Int       @default(0)
+  followersCount  Int       @default(0)
+  weeklyCount     Int       @default(0) // 今週の投稿数
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // リレーション
+  // category      TagCategory? @relation(fields: [categoryId], references: [id])
+  // articles      ArticleTag[]
+  // books         BookTag[]
+  // scraps        ScrapTag[]
+  // followers     TagFollower[]
+  // synonyms      TagSynonym[] @relation("ParentTag")
+  
+  @@index([name])
+  @@index([slug])
+  @@index([isPopular, articlesCount])
+  @@index([isTrending, weeklyCount])
+  @@index([categoryId])
+}
+
+// タグカテゴリー
+model TagCategory {
+  id              String    @id @default(uuid())
+  name            String    @unique
+  slug            String    @unique
+  displayName     String
+  description     String?
+  
+  emoji           String?
+  color           String?
+  sortOrder       Int       @default(0)
+  
+  isActive        Boolean   @default(true)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // tags          Tag[]
+  
+  @@index([sortOrder])
+}
+
+// タグの同義語管理
+model TagSynonym {
+  id              String    @id @default(uuid())
+  parentTagId     String    // 正式なタグ
+  synonym         String    @unique // 同義語
+  
+  createdAt       DateTime  @default(now())
+  
+  // parentTag     Tag       @relation("ParentTag", fields: [parentTagId], references: [id])
+  
+  @@index([parentTagId])
+  @@index([synonym])
+}
+
+// 記事-タグ関連テーブル
+model ArticleTag {
+  id              String    @id @default(uuid())
+  articleId       String
+  tagId           String
+  
+  createdAt       DateTime  @default(now())
+  
+  // article       Article   @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  // tag           Tag       @relation(fields: [tagId], references: [id])
+  
+  @@unique([articleId, tagId])
+  @@index([articleId])
+  @@index([tagId])
+}
+
+// 書籍-タグ関連テーブル
+model BookTag {
+  id              String    @id @default(uuid())
+  bookId          String
+  tagId           String
+  
+  createdAt       DateTime  @default(now())
+  
+  // book          Book      @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  // tag           Tag       @relation(fields: [tagId], references: [id])
+  
+  @@unique([bookId, tagId])
+  @@index([bookId])
+  @@index([tagId])
+}
+
+// スクラップ-タグ関連テーブル
+model ScrapTag {
+  id              String    @id @default(uuid())
+  scrapId         String
+  tagId           String
+  
+  createdAt       DateTime  @default(now())
+  
+  // scrap         Scrap     @relation(fields: [scrapId], references: [id], onDelete: Cascade)
+  // tag           Tag       @relation(fields: [tagId], references: [id])
+  
+  @@unique([scrapId, tagId])
+  @@index([scrapId])
+  @@index([tagId])
+}
+
+// タグフォロー
+model TagFollower {
+  id              String    @id @default(uuid())
+  userId          String
+  tagId           String
+  
+  createdAt       DateTime  @default(now())
+  
+  // user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // tag           Tag       @relation(fields: [tagId], references: [id])
+  
+  @@unique([userId, tagId])
+  @@index([userId])
+  @@index([tagId])
+}
+
+// 全文検索インデックス（PostgreSQL専用）
+model SearchIndex {
+  id              String    @id @default(uuid())
+  
+  // ターゲット
+  contentType     SearchContentType
+  contentId       String
+  
+  // 検索用データ
+  title           String
+  content         String    @db.Text
+  tags            String[]
+  authorName      String
+  
+  // 検索ベクトル（PostgreSQL tsvector）
+  searchVector    String?   @db.Text
+  
+  // メタデータ
+  publishedAt     DateTime?
+  popularityScore Float     @default(0.0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@unique([contentType, contentId])
+  @@index([contentType])
+  // PostgreSQL GINインデックス用（実際のマイグレーションで設定）
+  // @@index([searchVector(gin)])
+}
+
+// 検索クエリログ
+model SearchQuery {
+  id              String    @id @default(uuid())
+  
+  // クエリ情報
+  query           String
+  normalizedQuery String    // 正規化されたクエリ
+  filters         Json?     // フィルター条件
+  
+  // ユーザー情報
+  userId          String?
+  sessionId       String?
+  
+  // 結果情報
+  resultsCount    Int
+  clickedResultId String?   // クリックされた結果
+  clickPosition   Int?      // クリック位置
+  
+  // メタデータ
+  ipAddress       String?
+  userAgent       String?
+  referer         String?
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([query])
+  @@index([normalizedQuery])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// 人気の検索クエリ（集計テーブル）
+model PopularQuery {
+  id              String    @id @default(uuid())
+  
+  query           String    @unique
+  searchCount     Int       @default(1)
+  clickRate       Float     @default(0.0)
+  
+  // 期間別統計
+  dailyCount      Int       @default(0)
+  weeklyCount     Int       @default(0)
+  monthlyCount    Int       @default(0)
+  
+  lastSearchedAt  DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([searchCount desc])
+  @@index([weeklyCount desc])
+  @@index([lastSearchedAt])
+}
+
+// おすすめタグ（ML/AI用）
+model TagRecommendation {
+  id              String    @id @default(uuid())
+  
+  // 基準となるタグ
+  baseTagId       String
+  
+  // おすすめされるタグ
+  recommendedTagId String
+  
+  // スコア
+  score           Float     // 関連度スコア
+  coOccurrence    Int       @default(0) // 共起回数
+  
+  // メタデータ
+  calculatedAt    DateTime  @default(now())
+  
+  // baseTag       Tag       @relation("BaseTag", fields: [baseTagId], references: [id])
+  // recommendedTag Tag      @relation("RecommendedTag", fields: [recommendedTagId], references: [id])
+  
+  @@unique([baseTagId, recommendedTagId])
+  @@index([baseTagId, score desc])
+  @@index([recommendedTagId])
+}
+
+// トレンド分析（時系列データ）
+model TrendAnalysis {
+  id              String    @id @default(uuid())
+  
+  // 分析対象
+  entityType      TrendEntityType
+  entityId        String
+  entityName      String
+  
+  // 期間
+  period          TrendPeriod
+  periodStart     DateTime
+  periodEnd       DateTime
+  
+  // メトリクス
+  viewsCount      Int       @default(0)
+  likesCount      Int       @default(0)
+  sharesCount     Int       @default(0)
+  commentsCount   Int       @default(0)
+  
+  // トレンドスコア
+  trendScore      Float     @default(0.0)
+  growth          Float     @default(0.0) // 成長率
+  
+  createdAt       DateTime  @default(now())
+  
+  @@unique([entityType, entityId, period, periodStart])
+  @@index([entityType, period, trendScore desc])
+  @@index([period, periodStart])
+}
+
+// Enum定義
+enum SearchContentType {
+  ARTICLE
+  BOOK
+  SCRAP
+  USER
+}
+
+enum TrendEntityType {
+  TAG
+  ARTICLE
+  BOOK
+  USER
+}
+
+enum TrendPeriod {
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+// ===================================
+// 設計のポイント
+// ===================================
+// 1. 階層化されたタグシステム（カテゴリー・公式・同義語）
+// 2. 全文検索最適化（PostgreSQL tsvector対応）
+// 3. 検索クエリ分析とおすすめ機能
+// 4. トレンド分析（時系列データ）
+// 5. タグのフォロー機能
+// 6. パフォーマンス重視の非正規化
+// 7. AI/ML向けのレコメンデーション基盤
+//
+// PostgreSQL専用機能:
+// - 全文検索（tsvector/tsquery）
+// - GINインデックス
+// - 三角法関数（類似度計算）
+//
+// 次のセクションで追加される機能：
+// - 支払いと収益化システム
+// - イベント管理

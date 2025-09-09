@@ -1,155 +1,141 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArticleCard } from '@/components/cards/ArticleCard'
 import { BookCard } from '@/components/cards/BookCard'
 import { ScrapCard } from '@/components/cards/ScrapCard'
-
-// サンプルデータ
-const trendingArticles = [
-  {
-    id: '1',
-    title: 'Next.js 14の新機能まとめ - App Routerの進化',
-    emoji: '🚀',
-    author: {
-      username: 'developer1',
-      name: '田中太郎',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    publishedAt: '2025-01-15T10:00:00Z',
-    likes: 234,
-    comments: 12,
-    type: 'tech' as const,
-    tags: ['Next.js', 'React', 'TypeScript']
-  },
-  {
-    id: '2',
-    title: 'TypeScriptの型パズルを解く - 高度な型プログラミング入門',
-    emoji: '🧩',
-    author: {
-      username: 'tsexpert',
-      name: '佐藤花子',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    publishedAt: '2025-01-14T15:30:00Z',
-    likes: 189,
-    comments: 8,
-    type: 'tech' as const,
-    tags: ['TypeScript', 'JavaScript']
-  },
-  {
-    id: '3',
-    title: 'Rustで作る高速Webサーバー - パフォーマンス最適化のコツ',
-    emoji: '🦀',
-    author: {
-      username: 'rustacean',
-      name: '鈴木一郎',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    publishedAt: '2025-01-13T09:00:00Z',
-    likes: 156,
-    comments: 5,
-    type: 'tech' as const,
-    tags: ['Rust', 'Backend', 'Performance']
-  }
-]
-
-const ideaArticles = [
-  {
-    id: '4',
-    title: 'エンジニアのキャリア戦略 - 市場価値を高める5つの方法',
-    emoji: '💡',
-    author: {
-      username: 'careercoach',
-      name: '山田次郎',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    publishedAt: '2025-01-12T14:00:00Z',
-    likes: 312,
-    comments: 24,
-    type: 'idea' as const,
-    tags: ['Career', 'Skills']
-  },
-  {
-    id: '5',
-    title: 'リモートワークで生産性を2倍にする環境構築',
-    emoji: '🏠',
-    author: {
-      username: 'remoteworker',
-      name: '高橋美咲',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    publishedAt: '2025-01-11T11:00:00Z',
-    likes: 278,
-    comments: 19,
-    type: 'idea' as const,
-    tags: ['Remote', 'Productivity']
-  }
-]
-
-const featuredBooks = [
-  {
-    id: 'book1',
-    title: 'ゼロから学ぶReact & Next.js',
-    coverImage: '/images/placeholder.svg',
-    author: {
-      username: 'reactmaster',
-      name: '田中太郎',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    price: 2500 as number,
-    likes: 89,
-    publishedAt: '2025-01-10T10:00:00Z',
-    description: 'React初心者からNext.jsマスターまで、段階的に学べる実践的な教科書'
-  },
-  {
-    id: 'book2',
-    title: 'TypeScript実践ガイド',
-    coverImage: '/images/placeholder.svg',
-    author: {
-      username: 'tsexpert',
-      name: '佐藤花子',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    price: 'free' as const,
-    likes: 234,
-    publishedAt: '2025-01-08T10:00:00Z',
-    description: 'TypeScriptの基礎から高度な型プログラミングまで網羅'
-  }
-]
-
-const recentScraps = [
-  {
-    id: 'scrap1',
-    title: 'Next.js 14でのSSGとISRの使い分けについて',
-    author: {
-      username: 'developer1',
-      name: '田中太郎',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    publishedAt: '2025-01-15T10:00:00Z',
-    updatedAt: '2025-01-15T15:30:00Z',
-    commentsCount: 8,
-    isOpen: true,
-    emoji: '💭',
-    excerpt: 'Next.js 14でSSGとISRをどう使い分けるか、実際のプロジェクトでの経験をもとに考察してみました...'
-  },
-  {
-    id: 'scrap2',
-    title: 'Rust vs Go - バックエンド開発での選択基準',
-    author: {
-      username: 'backenddev',
-      name: '高橋健太',
-      avatar: '/images/avatar-placeholder.svg'
-    },
-    publishedAt: '2025-01-14T09:00:00Z',
-    updatedAt: '2025-01-14T09:00:00Z',
-    commentsCount: 15,
-    isOpen: false,
-    emoji: '🤔',
-    excerpt: 'RustとGoのどちらを選ぶべきか。パフォーマンス、開発効率、エコシステムの観点から比較...'
-  }
-]
+import { articlesApi, booksApi, scrapsApi } from '@/lib/api'
 
 export default function ZennPage() {
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [trendingArticles, setTrendingArticles] = useState<any[]>([])
+  const [ideaArticles, setIdeaArticles] = useState<any[]>([])
+  const [featuredBooks, setFeaturedBooks] = useState<any[]>([])
+  const [recentScraps, setRecentScraps] = useState<any[]>([])
+
+  useEffect(() => {
+    fetchAllContent()
+  }, [])
+
+  const fetchAllContent = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+
+      // 並列でデータを取得
+      const [articlesRes, booksRes, scrapsRes] = await Promise.all([
+        articlesApi.getPublishedArticles(10, 0),
+        booksApi.getPublishedBooks(4, 0),
+        scrapsApi.getOpenScraps(4, 0)
+      ])
+
+      // Tech記事とIdea記事を分離
+      const techArticles = (articlesRes.data || [])
+        .filter((a: any) => a.type === 'tech')
+        .sort((a: any, b: any) => b.likes_count - a.likes_count)
+        .slice(0, 3)
+        .map((article: any) => ({
+          id: article.id,
+          title: article.title,
+          slug: article.slug,
+          emoji: article.emoji || '📝',
+          author: {
+            id: article.user?.id || '',
+            username: article.user?.username || 'unknown',
+            name: article.user?.display_name || article.user?.username || 'Unknown',
+            avatar: article.user?.avatar_url || '/images/avatar-placeholder.svg'
+          },
+          publishedAt: article.published_at || article.created_at,
+          readTime: `${Math.ceil(article.content.length / 500)}分`,
+          likes: article.likes_count,
+          comments: article.comments_count,
+          type: 'tech' as const,
+          tags: article.topics || []
+        }))
+
+      const ideaArticlesData = (articlesRes.data || [])
+        .filter((a: any) => a.type === 'idea')
+        .sort((a: any, b: any) => b.likes_count - a.likes_count)
+        .slice(0, 2)
+        .map((article: any) => ({
+          id: article.id,
+          title: article.title,
+          slug: article.slug,
+          emoji: article.emoji || '💡',
+          author: {
+            id: article.user?.id || '',
+            username: article.user?.username || 'unknown',
+            name: article.user?.display_name || article.user?.username || 'Unknown',
+            avatar: article.user?.avatar_url || '/images/avatar-placeholder.svg'
+          },
+          publishedAt: article.published_at || article.created_at,
+          readTime: `${Math.ceil(article.content.length / 500)}分`,
+          likes: article.likes_count,
+          comments: article.comments_count,
+          type: 'idea' as const,
+          tags: article.topics || []
+        }))
+
+      // 書籍データを整形
+      const books = (booksRes.data || []).slice(0, 2).map((book: any) => ({
+        id: book.id,
+        title: book.title,
+        slug: book.slug,
+        coverImage: book.cover_image_url || '/images/placeholder.svg',
+        author: {
+          username: book.user?.username || 'unknown',
+          name: book.user?.display_name || book.user?.username || 'Unknown',
+          avatar: book.user?.avatar_url || '/images/avatar-placeholder.svg'
+        },
+        price: book.price || 0,
+        likes: book.likes_count,
+        publishedAt: book.published_at || book.created_at,
+        description: book.description || ''
+      }))
+
+      // スクラップデータを整形
+      const scraps = (scrapsRes.data || []).slice(0, 2).map((scrap: any) => ({
+        id: scrap.id,
+        title: scrap.title,
+        author: {
+          username: scrap.user?.username || 'unknown',
+          name: scrap.user?.display_name || scrap.user?.username || 'Unknown',
+          avatar: scrap.user?.avatar_url || '/images/avatar-placeholder.svg'
+        },
+        publishedAt: scrap.created_at,
+        updatedAt: scrap.updated_at,
+        commentsCount: scrap.comments_count,
+        isOpen: !scrap.closed,
+        emoji: scrap.emoji || '💭',
+        excerpt: scrap.content.substring(0, 150) + '...'
+      }))
+
+      setTrendingArticles(techArticles)
+      setIdeaArticles(ideaArticlesData)
+      setFeaturedBooks(books)
+      setRecentScraps(scraps)
+
+    } catch (err: any) {
+      console.error('コンテンツ取得エラー:', err)
+      setError(err.message || 'データの取得に失敗しました')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <main className="container py-8">
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">読み込み中...</p>
+        </div>
+      </main>
+    )
+  }
+
   return (
     <main className="container py-8">
       {/* イベントバナー */}
@@ -167,6 +153,13 @@ export default function ZennPage() {
         </div>
       </section>
 
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+          <h3 className="font-semibold text-red-800 mb-2">エラー</h3>
+          <p className="text-red-700">{error}</p>
+        </div>
+      )}
+
       {/* Tech記事セクション */}
       <section className="mb-12">
         <div className="flex items-center justify-between mb-6">
@@ -177,9 +170,15 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {trendingArticles.map(article => (
-            <ArticleCard key={article.id} {...article} />
-          ))}
+          {trendingArticles.length > 0 ? (
+            trendingArticles.map(article => (
+              <ArticleCard key={article.id} article={article} />
+            ))
+          ) : (
+            <div className="text-center col-span-full py-8 text-gray-500">
+              Tech記事がありません
+            </div>
+          )}
         </div>
       </section>
 
@@ -193,9 +192,15 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {ideaArticles.map(article => (
-            <ArticleCard key={article.id} {...article} />
-          ))}
+          {ideaArticles.length > 0 ? (
+            ideaArticles.map(article => (
+              <ArticleCard key={article.id} article={article} />
+            ))
+          ) : (
+            <div className="text-center col-span-full py-8 text-gray-500">
+              Ideas記事がありません
+            </div>
+          )}
         </div>
       </section>
 
@@ -209,9 +214,15 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {featuredBooks.map(book => (
-            <BookCard key={book.id} {...book} />
-          ))}
+          {featuredBooks.length > 0 ? (
+            featuredBooks.map(book => (
+              <BookCard key={book.id} {...book} />
+            ))
+          ) : (
+            <div className="text-center col-span-full py-8 text-gray-500">
+              書籍がありません
+            </div>
+          )}
         </div>
       </section>
 
@@ -225,9 +236,15 @@ export default function ZennPage() {
         </div>
         
         <div className="card-grid">
-          {recentScraps.map(scrap => (
-            <ScrapCard key={scrap.id} {...scrap} />
-          ))}
+          {recentScraps.length > 0 ? (
+            recentScraps.map(scrap => (
+              <ScrapCard key={scrap.id} {...scrap} />
+            ))
+          ) : (
+            <div className="text-center col-span-full py-8 text-gray-500">
+              スクラップがありません
+            </div>
+          )}
         </div>
       </section>
 

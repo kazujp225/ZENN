@@ -1,213 +1,164 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ArticleCard } from '@/components/cards/ArticleCard'
 import { BookCard } from '@/components/cards/BookCard'
 import { ScrapCard } from '@/components/cards/ScrapCard'
+import { usersApi, articlesApi, booksApi, scrapsApi } from '@/lib/api'
 import '@/styles/pages/profile.css'
-
-// サンプルデータ
-const getUser = (username: string) => {
-  return {
-    username: username.replace('@', ''),
-    name: '田中太郎',
-    avatar: '/images/avatar-placeholder.svg',
-    bio: 'フルスタックエンジニア / React・Next.js・TypeScript・Node.js / 技術記事を書くのが趣味です。最近はRustとGoにも興味があります。',
-    location: '東京, Japan',
-    company: 'Tech Corp',
-    position: 'Senior Frontend Engineer',
-    website: 'https://example.com',
-    twitter: 'tanaka_taro',
-    github: 'tanaka-taro',
-    zenn: 'tanaka_taro',
-    followersCount: 1234,
-    followingCount: 567,
-    articlesCount: 45,
-    booksCount: 3,
-    scrapsCount: 12,
-    joinedAt: '2023-01-15T00:00:00Z',
-    isVerified: true,
-    badges: [
-      { id: '1', name: '記事投稿マスター', icon: '📝', description: '50記事以上投稿' },
-      { id: '2', name: 'トレンド入り', icon: '🔥', description: 'トレンド1位獲得' },
-      { id: '3', name: 'ベストセラー著者', icon: '📚', description: '書籍が1000部以上売上' },
-      { id: '4', name: 'コントリビューター', icon: '🏆', description: 'Zennに貢献' }
-    ],
-    skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'AWS', 'Docker', 'GraphQL'],
-    recentActivity: [
-      { type: 'article', action: '記事を投稿しました', title: 'Next.js 14の新機能まとめ', time: '2時間前' },
-      { type: 'like', action: 'いいねしました', title: 'TypeScriptの型パズルを解く', time: '5時間前' },
-      { type: 'scrap', action: 'スクラップを投稿しました', title: 'SSGとISRの使い分け', time: '1日前' },
-      { type: 'book', action: '本を公開しました', title: 'ゼロから学ぶReact', time: '3日前' }
-    ]
-  }
-}
-
-const getUserContent = () => {
-  return {
-    articles: [
-      {
-        id: '1',
-        title: 'Next.js 14の新機能まとめ - App Routerの進化とServer Actions',
-        emoji: '🚀',
-        author: {
-          username: 'developer1',
-          name: '田中太郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        excerpt: 'Next.js 14では、App Routerがさらに進化し、Server Actionsが安定版になりました。この記事では、新機能の詳細と実装例を紹介します。',
-        publishedAt: '2025-01-15T10:00:00Z',
-        readTime: '5分',
-        likes: 234,
-        comments: 12,
-        type: 'tech' as const,
-        tags: ['Next.js', 'React', 'TypeScript', 'Web開発']
-      },
-      {
-        id: '2',
-        title: 'TypeScriptの型パズルを解く - 高度な型プログラミング入門',
-        emoji: '🧩',
-        author: {
-          username: 'developer1',
-          name: '田中太郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        excerpt: 'TypeScriptの型システムを活用した高度な型プログラミングのテクニックを紹介。Conditional Types、Template Literal Types、型推論の仕組みを解説。',
-        publishedAt: '2025-01-14T15:30:00Z',
-        readTime: '8分',
-        likes: 189,
-        comments: 8,
-        type: 'tech' as const,
-        tags: ['TypeScript', 'JavaScript', '型システム']
-      },
-      {
-        id: '3',
-        title: 'Clean Architectureを実装する - フロントエンドでの実践例',
-        emoji: '🏗️',
-        author: {
-          username: 'developer1',
-          name: '田中太郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        excerpt: 'Clean Architectureの原則をフロントエンド開発に適用する方法を、実際のコード例とともに解説します。',
-        publishedAt: '2025-01-13T09:00:00Z',
-        readTime: '12分',
-        likes: 156,
-        comments: 15,
-        type: 'tech' as const,
-        tags: ['Architecture', 'Clean Code', 'React']
-      }
-    ],
-    books: [
-      {
-        id: 'book1',
-        title: 'ゼロから学ぶReact & Next.js完全ガイド',
-        coverImage: '/images/placeholder.svg',
-        author: {
-          username: 'developer1',
-          name: '田中太郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        price: 2500 as number,
-        likes: 89,
-        publishedAt: '2025-01-10T10:00:00Z',
-        description: 'React初心者からNext.jsマスターまで、段階的に学べる実践的な教科書。サンプルコード付き。',
-        chapters: 15,
-        pages: 320
-      },
-      {
-        id: 'book2',
-        title: 'TypeScript設計パターン',
-        coverImage: '/images/placeholder.svg',
-        author: {
-          username: 'developer1',
-          name: '田中太郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        price: 'free' as const,
-        likes: 234,
-        publishedAt: '2024-12-01T10:00:00Z',
-        description: 'TypeScriptを使った設計パターンの実装例と活用方法を詳しく解説。',
-        chapters: 10,
-        pages: 180
-      }
-    ],
-    scraps: [
-      {
-        id: 'scrap1',
-        title: 'Next.js 14でのSSGとISRの使い分けについて',
-        author: {
-          username: 'developer1',
-          name: '田中太郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        publishedAt: '2025-01-15T10:00:00Z',
-        updatedAt: '2025-01-15T15:30:00Z',
-        commentsCount: 8,
-        isOpen: true,
-        emoji: '💭',
-        excerpt: 'Next.js 14でSSGとISRをどう使い分けるか、実際のプロジェクトでの経験をもとに考察してみました。パフォーマンスとデータの鮮度のバランスが重要...'
-      },
-      {
-        id: 'scrap2',
-        title: 'Reactのパフォーマンス最適化チェックリスト',
-        author: {
-          username: 'developer1',
-          name: '田中太郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        publishedAt: '2025-01-14T09:00:00Z',
-        updatedAt: '2025-01-14T18:00:00Z',
-        commentsCount: 15,
-        isOpen: false,
-        emoji: '🚀',
-        excerpt: 'Reactアプリのパフォーマンスを改善するためのチェックリストをまとめました。memo化、遅延読み込み、仮想化など...'
-      }
-    ],
-    liked: [
-      {
-        id: '10',
-        title: 'Rustで作る高速Webサーバー - パフォーマンス最適化のコツ',
-        emoji: '🦀',
-        author: {
-          username: 'rustacean',
-          name: '鈴木一郎',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        publishedAt: '2025-01-13T09:00:00Z',
-        readTime: '10分',
-        likes: 156,
-        comments: 5,
-        type: 'tech' as const,
-        tags: ['Rust', 'Backend', 'Performance']
-      },
-      {
-        id: '11',
-        title: 'GraphQL vs REST - 適材適所の使い分け',
-        emoji: '🔄',
-        author: {
-          username: 'api_expert',
-          name: '佐藤花子',
-          avatar: '/images/avatar-placeholder.svg'
-        },
-        publishedAt: '2025-01-12T14:00:00Z',
-        readTime: '7分',
-        likes: 98,
-        comments: 12,
-        type: 'tech' as const,
-        tags: ['GraphQL', 'REST', 'API']
-      }
-    ]
-  }
-}
 
 export default function ProfilePageClient({ username }: { username: string }) {
   const [activeTab, setActiveTab] = useState('articles')
   const [isFollowing, setIsFollowing] = useState(false)
-  
-  const user = getUser(username)
-  const content = getUserContent()
+  const [user, setUser] = useState<any>(null)
+  const [content, setContent] = useState<any>({
+    articles: [],
+    books: [],
+    scraps: [],
+    liked: []
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchUserData()
+  }, [username])
+
+  const fetchUserData = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      // ユーザー情報を取得
+      const { data: userData } = await usersApi.getUserByUsername(username.replace('@', ''))
+      if (!userData) {
+        setError('ユーザーが見つかりません')
+        return
+      }
+
+      // ユーザーのコンテンツを取得
+      const [articlesRes, booksRes, scrapsRes] = await Promise.all([
+        articlesApi.getArticlesByUser(userData.id, 20, 0),
+        booksApi.getBooksByUser(userData.id, 20, 0),
+        scrapsApi.getScrapsByUser(userData.id, 20, 0)
+      ])
+
+      // ユーザー情報を整形
+      const userInfo = {
+        username: userData.username,
+        name: userData.display_name || userData.username,
+        avatar: userData.avatar_url || '/images/avatar-placeholder.svg',
+        bio: userData.bio || '',
+        location: userData.location || '',
+        company: userData.company || '',
+        position: userData.position || '',
+        website: userData.website || '',
+        twitter: userData.twitter_username || '',
+        github: userData.github_username || '',
+        zenn: userData.username,
+        followersCount: userData.followers_count || 0,
+        followingCount: userData.following_count || 0,
+        articlesCount: articlesRes.data?.length || 0,
+        booksCount: booksRes.data?.length || 0,
+        scrapsCount: scrapsRes.data?.length || 0,
+        joinedAt: userData.created_at,
+        isVerified: userData.is_verified || false,
+        badges: [],
+        skills: userData.skills || [],
+        recentActivity: []
+      }
+
+      // コンテンツを整形
+      const userContent = {
+        articles: (articlesRes.data || []).map((article: any) => ({
+          id: article.id,
+          title: article.title,
+          emoji: article.emoji || '📝',
+          slug: article.slug,
+          author: {
+            username: userData.username,
+            name: userData.display_name || userData.username,
+            avatar: userData.avatar_url || '/images/avatar-placeholder.svg'
+          },
+          excerpt: article.content.substring(0, 150) + '...',
+          publishedAt: article.published_at || article.created_at,
+          readTime: `${Math.ceil(article.content.length / 500)}分`,
+          likes: article.likes_count,
+          comments: article.comments_count,
+          type: article.type as 'tech' | 'idea',
+          tags: article.topics || []
+        })),
+        books: (booksRes.data || []).map((book: any) => ({
+          id: book.id,
+          title: book.title,
+          slug: book.slug,
+          coverImage: book.cover_image_url || '/images/placeholder.svg',
+          author: {
+            username: userData.username,
+            name: userData.display_name || userData.username,
+            avatar: userData.avatar_url || '/images/avatar-placeholder.svg'
+          },
+          price: book.price || 0,
+          likes: book.likes_count,
+          publishedAt: book.published_at || book.created_at,
+          description: book.description || '',
+          chapters: book.chapters_count || 0,
+          pages: book.total_pages || 0
+        })),
+        scraps: (scrapsRes.data || []).map((scrap: any) => ({
+          id: scrap.id,
+          title: scrap.title,
+          author: {
+            username: userData.username,
+            name: userData.display_name || userData.username,
+            avatar: userData.avatar_url || '/images/avatar-placeholder.svg'
+          },
+          publishedAt: scrap.created_at,
+          updatedAt: scrap.updated_at,
+          commentsCount: scrap.comments_count,
+          isOpen: !scrap.closed,
+          emoji: scrap.emoji || '💭',
+          excerpt: scrap.content.substring(0, 150) + '...'
+        })),
+        liked: [] // いいねした記事（後で実装）
+      }
+
+      setUser(userInfo)
+      setContent(userContent)
+    } catch (err: any) {
+      console.error('ユーザーデータ取得エラー:', err)
+      setError(err.message || 'データの取得に失敗しました')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="profile-page">
+        <div className="container py-8">
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">読み込み中...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !user) {
+    return (
+      <div className="profile-page">
+        <div className="container py-8">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">ユーザーが見つかりません</h1>
+            <p className="text-gray-600">{error || '指定されたユーザーは存在しません。'}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
   
   const tabs = [
     { id: 'articles', label: '記事', count: content.articles.length, icon: '📝' },
@@ -388,7 +339,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
                 <div className="profile-content-grid">
                   {content.articles.length > 0 ? (
                     content.articles.map(article => (
-                      <Link key={article.id} href={`/articles/${article.id}`} className="profile-article">
+                      <Link key={article.id} href={`/articles/${article.slug || article.id}`} className="profile-article">
                         <div className="profile-article__header">
                           <span className="profile-article__emoji">{article.emoji}</span>
                           <div className="profile-article__content">
@@ -484,7 +435,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
                 <div className="profile-content-grid">
                   {content.liked.length > 0 ? (
                     content.liked.map(article => (
-                      <Link key={article.id} href={`/articles/${article.id}`} className="profile-article">
+                      <Link key={article.id} href={`/articles/${article.slug || article.id}`} className="profile-article">
                         <div className="profile-article__header">
                           <span className="profile-article__emoji">{article.emoji}</span>
                           <div className="profile-article__content">

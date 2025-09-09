@@ -1,0 +1,364 @@
+// ===================================
+// セクション3: インタラクション機能
+// ===================================
+
+// いいね（統一されたLikeシステム）
+model Like {
+  id              String    @id @default(uuid())
+  userId          String
+  
+  // ポリモーフィックなターゲット
+  targetType      LikeTargetType
+  targetId        String
+  
+  createdAt       DateTime  @default(now())
+  
+  // user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, targetType, targetId])
+  @@index([targetType, targetId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// コメント（階層構造対応）
+model Comment {
+  id              String    @id @default(uuid())
+  authorId        String
+  
+  // ポリモーフィックなターゲット
+  targetType      CommentTargetType
+  targetId        String
+  
+  // 階層構造（ネストしたリプライ）
+  parentId        String?   // 親コメントのID
+  rootId          String?   // ルートコメントのID（深いネスト対策）
+  depth           Int       @default(0) // 0=ルートコメント
+  
+  // コンテンツ
+  content         String    @db.Text
+  contentHtml     String?   @db.Text
+  
+  // ステータス
+  isEdited        Boolean   @default(false)
+  editedAt        DateTime?
+  isDeleted       Boolean   @default(false)
+  deletedAt       DateTime?
+  
+  // 統計
+  likesCount      Int       @default(0)
+  repliesCount    Int       @default(0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // リレーション
+  // author        User      @relation(fields: [authorId], references: [id])
+  // parent        Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  // replies       Comment[] @relation("CommentReplies")
+  // likes         Like[]
+  // reports       Report[]
+  
+  @@index([targetType, targetId])
+  @@index([parentId])
+  @@index([rootId])
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+// フォロー関係
+model Follow {
+  id              String    @id @default(uuid())
+  followerId      String    // フォローする人
+  followingId     String    // フォローされる人
+  
+  createdAt       DateTime  @default(now())
+  
+  // follower      User      @relation("following", fields: [followerId], references: [id], onDelete: Cascade)
+  // following     User      @relation("follower", fields: [followingId], references: [id], onDelete: Cascade)
+  
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@index([createdAt])
+}
+
+// ブックマーク
+model Bookmark {
+  id              String    @id @default(uuid())
+  userId          String
+  
+  // ポリモーフィックなターゲット
+  targetType      BookmarkTargetType
+  targetId        String
+  
+  // フォルダ管理
+  folderId        String?
+  
+  // メタデータ
+  note            String?   // ユーザーのメモ
+  tags            String[]  // ユーザー独自のタグ
+  
+  createdAt       DateTime  @default(now())
+  
+  // user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // folder        BookmarkFolder? @relation(fields: [folderId], references: [id])
+  
+  @@unique([userId, targetType, targetId])
+  @@index([userId, folderId])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+}
+
+// ブックマークフォルダ
+model BookmarkFolder {
+  id              String    @id @default(uuid())
+  userId          String
+  
+  name            String
+  description     String?
+  emoji           String?
+  color           String?   // HEXカラーコード
+  
+  // 設定
+  isPublic        Boolean   @default(false)
+  sortOrder       Int       @default(0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // bookmarks     Bookmark[]
+  
+  @@index([userId])
+  @@index([userId, sortOrder])
+}
+
+// 通知システム
+model Notification {
+  id              String    @id @default(uuid())
+  recipientId     String
+  
+  // 通知の種類と内容
+  type            NotificationType
+  title           String
+  message         String?
+  
+  // 関連エンティティ
+  actorId         String?   // 通知を発生させたユーザー
+  targetType      String?
+  targetId        String?
+  
+  // メタデータ
+  metadata        Json?     // 追加情報
+  imageUrl        String?
+  actionUrl       String?   // 通知をクリックした時の遷移先
+  
+  // ステータス
+  isRead          Boolean   @default(false)
+  readAt          DateTime?
+  
+  createdAt       DateTime  @default(now())
+  
+  // recipient     User      @relation("NotificationRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  // actor         User?     @relation("NotificationActor", fields: [actorId], references: [id])
+  
+  @@index([recipientId, isRead])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// 閲覧履歴（プライベート）
+model ViewHistory {
+  id              String    @id @default(uuid())
+  userId          String?   // ログインユーザーの場合
+  
+  // ターゲット
+  targetType      ViewTargetType
+  targetId        String
+  
+  // セッション情報
+  sessionId       String?   // 匿名ユーザーのセッション
+  ipAddress       String?
+  userAgent       String?
+  
+  // メタデータ
+  duration        Int?      // 滞在時間（秒）
+  scrollDepth     Float?    // スクロール深度（0.0-1.0）
+  referrer        String?
+  
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId, targetType])
+  @@index([targetType, targetId])
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+// レポート・通報システム
+model Report {
+  id              String    @id @default(uuid())
+  reporterId      String?   // 通報者（匿名の場合はnull）
+  
+  // 通報対象
+  targetType      ReportTargetType
+  targetId        String
+  
+  // 通報内容
+  reason          ReportReason
+  customReason    String?   // その他の理由
+  description     String?   @db.Text
+  
+  // ステータス
+  status          ReportStatus @default(PENDING)
+  reviewedBy      String?   // レビュー担当者
+  reviewedAt      DateTime?
+  resolution      String?   @db.Text
+  
+  // メタデータ
+  ipAddress       String?
+  userAgent       String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // reporter      User?     @relation(fields: [reporterId], references: [id])
+  // reviewer      User?     @relation("ReportReviewer", fields: [reviewedBy], references: [id])
+  
+  @@index([targetType, targetId])
+  @@index([reporterId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// おすすめアルゴリズム用のスコアリング
+model ContentScore {
+  id              String    @id @default(uuid())
+  
+  // コンテンツ
+  contentType     ContentScoreType
+  contentId       String
+  
+  // スコア計算
+  viewsScore      Float     @default(0.0)
+  likesScore      Float     @default(0.0)
+  commentsScore   Float     @default(0.0)
+  shareScore      Float     @default(0.0)
+  timeScore       Float     @default(0.0)  // 時間による減衰
+  
+  totalScore      Float     @default(0.0)
+  
+  // 計算メタデータ
+  lastCalculated  DateTime  @default(now())
+  
+  @@unique([contentType, contentId])
+  @@index([contentType, totalScore])
+  @@index([lastCalculated])
+}
+
+// Enum定義
+enum LikeTargetType {
+  ARTICLE
+  BOOK
+  SCRAP
+  SCRAP_POST
+  COMMENT
+}
+
+enum CommentTargetType {
+  ARTICLE
+  BOOK
+  SCRAP
+  SCRAP_POST
+}
+
+enum BookmarkTargetType {
+  ARTICLE
+  BOOK
+  SCRAP
+}
+
+enum ViewTargetType {
+  ARTICLE
+  BOOK
+  CHAPTER
+  SCRAP
+  PROFILE
+}
+
+enum ReportTargetType {
+  USER
+  ARTICLE
+  BOOK
+  SCRAP
+  SCRAP_POST
+  COMMENT
+}
+
+enum NotificationType {
+  // フォロー関連
+  NEW_FOLLOWER
+  FOLLOW_BACK
+  
+  // コンテンツ関連
+  NEW_ARTICLE_FROM_FOLLOWING
+  NEW_BOOK_FROM_FOLLOWING
+  NEW_SCRAP_FROM_FOLLOWING
+  
+  // インタラクション関連
+  ARTICLE_LIKED
+  BOOK_LIKED
+  SCRAP_LIKED
+  COMMENT_LIKED
+  ARTICLE_COMMENTED
+  BOOK_COMMENTED
+  SCRAP_COMMENTED
+  COMMENT_REPLIED
+  
+  // 収益関連
+  BOOK_PURCHASED
+  TIP_RECEIVED
+  
+  // システム
+  SYSTEM_ANNOUNCEMENT
+  SECURITY_ALERT
+  WEEKLY_DIGEST
+}
+
+enum ReportReason {
+  SPAM
+  HARASSMENT
+  HATE_SPEECH
+  COPYRIGHT_VIOLATION
+  INAPPROPRIATE_CONTENT
+  MISINFORMATION
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWING
+  RESOLVED
+  DISMISSED
+}
+
+enum ContentScoreType {
+  ARTICLE
+  BOOK
+  SCRAP
+}
+
+// ===================================
+// 設計のポイント
+// ===================================
+// 1. ポリモーフィック関連でコードの重複を削減
+// 2. 階層構造のコメント（無限ネスト対応）
+// 3. 包括的な通知システム
+// 4. ブックマークのフォルダ管理
+// 5. 閲覧履歴による分析データ収集
+// 6. レポート・モデレーション機能
+// 7. おすすめアルゴリズム用のスコアリング
+//
+// 次のセクションで追加される機能：
+// - タグ管理と検索最適化
+// - 支払いと収益化システム

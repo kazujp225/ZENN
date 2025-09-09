@@ -1,7 +1,7 @@
 {
   "name": "zenn-clone",
   "version": "1.0.0",
-  "description": "",
+  "description": "Zenn.devのクローンアプリケーションです。Next.js 14 + TypeScriptを使用して構築されており、エンジニア向けの記事・書籍・スクラップ共有機能を提供します。",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -9,33 +9,66 @@
     "start": "NODE_ENV=production node server.js",
     "start:next": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts",
+    "seed:supabase": "tsx scripts/seed-database.ts",
+    "check:db": "tsx scripts/check-database.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@types/node": "^24.3.0",
-    "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.9",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.57.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/react-window": "^1.8.8",
+    "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "next": "^15.5.2",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "lucide-react": "^0.542.0",
+    "next": "^14.2.32",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-markdown": "^10.1.0",
     "react-syntax-highlighter": "^15.6.6",
     "react-window": "^2.0.2",
     "remark-gfm": "^4.0.1",
     "swr": "^2.3.6",
     "typescript": "^5.9.2",
+    "zod": "^4.1.5",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.0.0",
+    "@prisma/client": "^6.15.0",
+    "@types/node": "^24.3.1",
+    "autoprefixer": "^10.4.21",
+    "dotenv": "^17.2.2",
     "eslint": "^9.34.0",
-    "eslint-config-next": "^15.5.2"
-  }
+    "eslint-config-next": "^15.5.2",
+    "postcss": "^8.5.6",
+    "prisma": "^6.15.0",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.20.5"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kazujp225/ZENN.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kazujp225/ZENN/issues"
+  },
+  "homepage": "https://github.com/kazujp225/ZENN#readme"
 }

@@ -19,56 +19,28 @@ interface ArticleDraft {
   updatedAt?: string
 }
 
-// サンプル記事データ（実際はAPIから取得）
-const getArticleForEdit = (slug: string): ArticleDraft => {
-  return {
-    id: slug,
-    title: 'Next.js 14の新機能まとめ - App Routerの進化と最新のベストプラクティス',
-    emoji: '🚀',
-    type: 'tech',
-    tags: ['Next.js', 'React', 'TypeScript', 'Web開発'],
-    content: `# はじめに
-
-Next.js 14がリリースされ、App Routerがさらに進化しました。本記事では、Next.js 14の新機能と、実際のプロジェクトで使えるベストプラクティスについて解説します。
-
-## Partial Prerendering (PPR)
-
-Partial Prerenderingは、静的レンダリングと動的レンダリングを組み合わせた新しいレンダリング手法です。
-
-\`\`\`tsx
-// app/page.tsx
-export const experimental_ppr = true
-
-export default async function Page() {
-  // 静的にレンダリングされる部分
-  const staticContent = <StaticComponent />
-  
-  // 動的にレンダリングされる部分
-  const dynamicContent = <Suspense fallback={<Loading />}>
-    <DynamicComponent />
-  </Suspense>
-  
-  return (
-    <div>
-      {staticContent}
-      {dynamicContent}
-    </div>
-  )
-}
-\`\`\`
-
-### PPRのメリット
-
-- **初期表示の高速化**: 静的部分が即座に表示される
-- **SEOの改善**: 静的コンテンツが事前レンダリングされる  
-- **動的データの鮮度**: 動的部分は常に最新のデータを表示
-
-## まとめ
-
-Next.js 14は、開発体験とパフォーマンスの両面で大幅な改善をもたらしました。特にPPRとServer Actionsの組み合わせにより、より高速でインタラクティブなWebアプリケーションの構築が可能になりました。`,
-    published: true,
-    publishedAt: '2025-01-15T10:00:00Z',
-    updatedAt: '2025-01-16T14:30:00Z'
+// APIから記事データを取得
+const getArticleForEdit = async (slug: string): Promise<ArticleDraft | null> => {
+  try {
+    const { articlesApi } = await import('@/lib/api')
+    const { data } = await articlesApi.getArticleBySlug(slug)
+    
+    if (!data) return null
+    
+    return {
+      id: data.id,
+      title: data.title,
+      emoji: data.emoji || '📝',
+      type: data.type as 'tech' | 'idea',
+      tags: data.topics || [],
+      content: data.content,
+      published: data.published,
+      publishedAt: data.published_at,
+      updatedAt: data.updated_at
+    }
+  } catch (error) {
+    console.error('記事取得エラー:', error)
+    return null
   }
 }
 
@@ -88,11 +60,16 @@ export default function EditArticleClient({ slug }: { slug: string }) {
   useEffect(() => {
     const loadArticle = async () => {
       try {
-        // TODO: 実際のAPI呼び出し
-        const articleData = getArticleForEdit(slug)
+        const articleData = await getArticleForEdit(slug)
+        if (!articleData) {
+          router.push('/404')
+          return
+        }
         setArticle(articleData)
         setOriginalArticle(articleData)
-        setLastSaved(new Date(articleData.updatedAt!))
+        if (articleData.updatedAt) {
+          setLastSaved(new Date(articleData.updatedAt))
+        }
       } catch (error) {
         console.error('記事の読み込みに失敗しました:', error)
         router.push('/404')
