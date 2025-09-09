@@ -38,7 +38,6 @@
   ],
   "exclude": [
     "node_modules",
-    "prisma/seed-optimized.ts",
-    "lib/auth.ts"
+    "prisma/seed-optimized.ts"
   ]
 }

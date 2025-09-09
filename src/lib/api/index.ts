@@ -7,6 +7,9 @@ export { usersApi } from './users'
 export { topicsApi } from './topics'
 export { commentsApi } from './comments'
 export { authApi } from './auth'
+export { storageApi } from './storage'
+export { rpcApi } from './rpc'
+export { realtimeService } from './realtime'
 
 // Re-export types
 export type { Database } from '@/lib/supabase/database.types'

@@ -36,13 +36,37 @@ export default function NewArticlePage() {
 
   // 自動保存機能
   const saveAsDraft = useCallback(async () => {
+    if (!article.title && !article.content) return
+    
     setIsSaving(true)
     try {
-      // TODO: 実際のAPI呼び出し
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // ローカルストレージに保存（デモ用）
+      // ローカルストレージに保存
       localStorage.setItem('article-draft', JSON.stringify(article))
+      
+      // APIで下書き保存（必要に応じて）
+      if (article.title.trim() || article.content.trim()) {
+        const response = await fetch('/api/articles', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: article.title.trim() || '無題の記事',
+            content: article.content,
+            emoji: article.emoji,
+            slug: slugify(article.title || 'untitled'),
+            topics: article.tags,
+            is_published: false // 下書きとして保存
+          }),
+        })
+        
+        if (response.ok) {
+          const { data } = await response.json()
+          // 下書きIDを保存（後で更新用に使用）
+          localStorage.setItem('article-draft-id', data.id)
+        }
+      }
+      
       setLastSaved(new Date())
     } catch (error) {
       console.error('下書き保存に失敗しました:', error)
@@ -112,37 +136,37 @@ export default function NewArticlePage() {
 
     setIsPublishing(true)
     try {
-      // TODO: 実際のAPI呼び出し
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // 記事を保存（ローカルストレージの管理用リスト）
-      const id = createArticleId()
-      const slug = `${slugify(article.title)}-${id.slice(0, 6)}`
-      const now = new Date().toISOString()
-      const saved: Article = {
-        id,
-        slug,
-        title: article.title.trim(),
-        emoji: article.emoji,
-        type: article.type,
-        tags: article.tags,
-        content: article.content,
-        published: true,
-        createdAt: now,
-        updatedAt: now,
-        views: 0,
-        likes: 0,
+      // APIを呼び出して記事を作成
+      const response = await fetch('/api/articles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: article.title.trim(),
+          content: article.content,
+          emoji: article.emoji,
+          slug: slugify(article.title),
+          topics: article.tags, // タグをトピックとして送信
+          is_published: true
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to create article')
       }
-      saveArticle(saved)
+
+      const { data } = await response.json()
 
       // 下書きをクリア
       localStorage.removeItem('article-draft')
       
-      // ダッシュボードの管理画面へ
-      router.push(`/dashboard/articles`)
+      // 記事ページへリダイレクト
+      router.push(`/articles/${data.slug}`)
     } catch (error) {
       console.error('記事の公開に失敗しました:', error)
-      alert('記事の公開に失敗しました')
+      alert('記事の公開に失敗しました: ' + (error instanceof Error ? error.message : 'Unknown error'))
     } finally {
       setIsPublishing(false)
     }

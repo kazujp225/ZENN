@@ -40,9 +40,10 @@ Zenn.devのクローンアプリケーションです。Next.js 14 + TypeScript�
 
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
+- **Backend**: Supabase (PostgreSQL, Auth, Storage, Realtime, Edge Functions)
 - **Styling**: CSS Modules + BEM命名規則
 - **State Management**: React Context API + カスタムフック
-- **Authentication**: デュアル認証システム（AuthContext + EnhancedAuth）
+- **Authentication**: Supabase Auth + デュアル認証システム
 - **UI/UX**: レスポンシブデザイン、ダークモード対応準備
 
 ## 🚀 クイックスタート
@@ -51,6 +52,26 @@ Zenn.devのクローンアプリケーションです。Next.js 14 + TypeScript�
 - Node.js 18.0.0以上
 - npm または yarn
 - Git
+- Supabaseアカウント
+
+### ⚠️ 重要：環境変数の設定
+
+**アプリケーションを起動する前に、必ず環境変数を設定してください。**
+
+1. **`.env.local`ファイルを作成**:
+```bash
+cp .env.example .env.local
+```
+
+2. **Supabaseプロジェクトを作成し、以下の値を取得**:
+```
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+SESSION_SECRET=your-secret-key
+```
+
+3. **セットアップガイドを確認**: `/setup`ページで詳細な手順を確認できます。
 
 ### インストールと起動
 
@@ -62,12 +83,16 @@ cd ZENN/zenn-clone
 # 依存関係のインストール
 npm install
 
+# 環境変数を設定（上記参照）
+
 # 開発サーバーの起動
 npm run dev
 
 # ブラウザで開く
 # http://localhost:3000
 ```
+
+**環境変数が未設定の場合**: `/setup`ページにアクセスして設定手順を確認してください。
 
 ### ビルドとデプロイ
 
