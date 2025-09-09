@@ -44,6 +44,74 @@ const getPersonalizedContent = (username: string) => {
         comments: 12,
         type: 'tech' as const,
         tags: ['TypeScript', 'Development']
+      },
+      {
+        id: 'fy3',
+        title: 'Vue 3.4 + Vite 5でモダンフロントエンド開発',
+        emoji: '💚',
+        author: {
+          username: 'vue_master',
+          name: 'Vue.js マスター',
+          avatar: '/images/avatar-placeholder.svg'
+        },
+        excerpt: 'Vue 3.4とVite 5を組み合わせた最新の開発環境構築と、パフォーマンス最適化のテクニック。',
+        publishedAt: '2025-01-15T10:00:00Z',
+        readTime: '8分',
+        likes: 312,
+        comments: 18,
+        type: 'tech' as const,
+        tags: ['Vue.js', 'Vite', 'Frontend']
+      },
+      {
+        id: 'fy4',
+        title: 'Tailwind CSS v4.0のBreaking Changes対応ガイド',
+        emoji: '🎨',
+        author: {
+          username: 'css_expert',
+          name: 'CSS エキスパート',
+          avatar: '/images/avatar-placeholder.svg'
+        },
+        excerpt: 'Tailwind CSS v4.0で変更された設定ファイルの書き方やクラス名の変更点を徹底解説。',
+        publishedAt: '2025-01-14T16:00:00Z',
+        readTime: '6分',
+        likes: 189,
+        comments: 8,
+        type: 'tech' as const,
+        tags: ['CSS', 'Tailwind', 'UI']
+      },
+      {
+        id: 'fy5',
+        title: 'GraphQL vs tRPCで悩む開発者へのアドバイス',
+        emoji: '⚡',
+        author: {
+          username: 'api_architect',
+          name: 'APIアーキテクト',
+          avatar: '/images/avatar-placeholder.svg'
+        },
+        excerpt: 'GraphQLとtRPCの特性を比較し、プロジェクトの要件に応じた最適な選択指針を提示。',
+        publishedAt: '2025-01-13T11:00:00Z',
+        readTime: '10分',
+        likes: 267,
+        comments: 25,
+        type: 'tech' as const,
+        tags: ['GraphQL', 'tRPC', 'API']
+      },
+      {
+        id: 'fy6',
+        title: 'Docker Compose開発環境のベストプラクティス',
+        emoji: '🐳',
+        author: {
+          username: 'devops_guru',
+          name: 'DevOps スペシャリスト',
+          avatar: '/images/avatar-placeholder.svg'
+        },
+        excerpt: '複数サービスを組み合わせた開発環境をDocker Composeで効率的に管理するテクニック集。',
+        publishedAt: '2025-01-13T09:00:00Z',
+        readTime: '9分',
+        likes: 198,
+        comments: 15,
+        type: 'tech' as const,
+        tags: ['Docker', 'DevOps', 'Development']
       }
     ],
     followingUpdates: [

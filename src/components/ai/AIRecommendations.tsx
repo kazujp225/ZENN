@@ -47,7 +47,7 @@ export const AIRecommendations = ({
     
     // AIによるレコメンデーションのシミュレーション
     setTimeout(() => {
-      const mockRecommendations: Recommendation[] = [
+      const allRecommendations: Recommendation[] = [
         {
           id: '1',
           title: 'Next.js 14 App RouterでのSSR最適化テクニック',
@@ -117,8 +117,152 @@ export const AIRecommendations = ({
           reason: '関連トピックの深掘り',
           emoji: '⚛️',
           link: '/articles/react-server-components'
+        },
+        {
+          id: '6',
+          title: 'Vue 3.4の新Composition API完全解説',
+          type: 'article',
+          author: {
+            name: '高橋美咲',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['Vue.js', 'Composition API', 'JavaScript'],
+          score: 0.89,
+          reason: 'あなたが興味を示したフレームワーク',
+          emoji: '💚',
+          link: '/articles/vue3-composition-api'
+        },
+        {
+          id: '7',
+          title: 'Docker Composeを使った開発環境構築',
+          type: 'book',
+          author: {
+            name: '林正男',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['Docker', 'DevOps', 'Development'],
+          score: 0.86,
+          reason: '開発効率化に役立つ技術',
+          emoji: '🐳',
+          link: '/books/docker-compose-dev'
+        },
+        {
+          id: '8',
+          title: 'GraphQL vs REST API設計論争',
+          type: 'scrap',
+          author: {
+            name: '小川直樹',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['GraphQL', 'REST', 'API'],
+          score: 0.84,
+          reason: 'エンジニア間で話題のトピック',
+          emoji: '⚡',
+          link: '/scraps/graphql-vs-rest'
+        },
+        {
+          id: '9',
+          title: 'Python機械学習入門 - scikit-learnから始める',
+          type: 'book',
+          author: {
+            name: '中村智子',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['Python', 'Machine Learning', 'Data Science'],
+          score: 0.91,
+          reason: '今注目の技術分野',
+          emoji: '🤖',
+          link: '/books/python-ml-intro'
+        },
+        {
+          id: '10',
+          title: 'Tailwind CSS vs Styled Componentsの選択指針',
+          type: 'article',
+          author: {
+            name: '森田健太',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['CSS', 'Tailwind', 'React'],
+          score: 0.87,
+          reason: 'UIライブラリの比較検討',
+          emoji: '🎨',
+          link: '/articles/tailwind-vs-styled'
+        },
+        {
+          id: '11',
+          title: 'Kubernetes入門：Podから始めるコンテナオーケストレーション',
+          type: 'article',
+          author: {
+            name: '藤井良太',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['Kubernetes', 'Docker', 'DevOps'],
+          score: 0.83,
+          reason: 'インフラ技術の学習におすすめ',
+          emoji: '⚓',
+          link: '/articles/kubernetes-basics'
+        },
+        {
+          id: '12',
+          title: 'Web3開発者が知るべきSolidity基礎',
+          type: 'scrap',
+          author: {
+            name: '松本由美',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['Solidity', 'Web3', 'Blockchain'],
+          score: 0.79,
+          reason: '新興技術への関心',
+          emoji: '⛓️',
+          link: '/scraps/solidity-basics'
+        },
+        {
+          id: '13',
+          title: 'Figmaで作るデザインシステム実践ガイド',
+          type: 'book',
+          author: {
+            name: '石田麻衣',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['Design', 'Figma', 'UI/UX'],
+          score: 0.90,
+          reason: 'デザインとエンジニアリングの架け橋',
+          emoji: '🎨',
+          link: '/books/figma-design-system'
+        },
+        {
+          id: '14',
+          title: 'WebAssemblyでブラウザの限界を突破する',
+          type: 'article',
+          author: {
+            name: '渡辺秀樹',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['WebAssembly', 'Performance', 'Browser'],
+          score: 0.88,
+          reason: '最先端のWeb技術',
+          emoji: '⚡',
+          link: '/articles/webassembly-performance'
+        },
+        {
+          id: '15',
+          title: 'Flutter vs React Native 2024年版比較',
+          type: 'scrap',
+          author: {
+            name: '金子拓也',
+            avatar: '/images/avatar-placeholder.svg'
+          },
+          tags: ['Flutter', 'React Native', 'Mobile'],
+          score: 0.81,
+          reason: 'モバイル開発の選択肢',
+          emoji: '📱',
+          link: '/scraps/flutter-vs-rn-2024'
         }
       ]
+      
+      // ランダムに選択してバリエーションを作る
+      const shuffled = [...allRecommendations].sort(() => 0.5 - Math.random())
+      const mockRecommendations = shuffled.slice(0, Math.min(maxItems, 8))
       
       setRecommendations(mockRecommendations.slice(0, maxItems))
       setIsLoading(false)
