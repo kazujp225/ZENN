@@ -53,8 +53,11 @@ export const articlesApi = {
       .eq('slug', slug)
       .single()
 
-    if (error) throw error
-    return data
+    if (error) {
+      console.error('Error fetching article:', error)
+      return { data: null, error: error.message }
+    }
+    return { data, error: null }
   },
 
   // Get articles by user

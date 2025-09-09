@@ -3,9 +3,10 @@ import { booksApi, chaptersApi } from '@/lib/api'
 
 async function getBook(slug: string) {
   try {
-    const { data } = await booksApi.getBookBySlug(slug)
-    if (!data) return null
+    const bookResult: any = await booksApi.getBookBySlug(slug)
+    if (!bookResult || !bookResult.data) return null
     
+    const data = bookResult.data
     const { data: chapters } = await chaptersApi.getChaptersByBook(data.id, 100, 0)
     
     return {
@@ -32,7 +33,7 @@ async function getBook(slug: string) {
         '実践的なプロジェクト構築',
         'テスト駆動開発の実践'
       ],
-      chapters: chapters?.map((ch, idx) => ({
+      chapters: chapters?.map((ch: any, idx: number) => ({
         id: ch.id,
         title: ch.title,
         free: idx < 2,
@@ -44,6 +45,8 @@ async function getBook(slug: string) {
       isbn: '978-4-123456-78-9',
       tags: data.topics || [],
       reviews: [],
+      reviewsCount: 0,
+      averageRating: 0,
       relatedBooks: []
     }
   } catch (error) {

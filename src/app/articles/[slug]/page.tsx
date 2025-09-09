@@ -4,12 +4,21 @@ import type { Article } from '@/types/article'
 
 async function getArticle(slug: string): Promise<Article | null> {
   try {
-    const { data } = await articlesApi.getArticleBySlug(slug)
+    const articleResponse: any = await articlesApi.getArticleBySlug(slug)
     
-    if (!data) return null
+    if (!articleResponse || !articleResponse.data) {
+      return null
+    }
+    
+    const data = articleResponse.data
 
     // Get comments for the article
-    const { data: comments } = await commentsApi.getCommentsByArticle(data.id, 50, 0)
+    let comments: any[] = []
+    try {
+      comments = await commentsApi.getArticleComments(data.id) || []
+    } catch (err) {
+      console.error('Failed to fetch comments:', err)
+    }
     
     // Get related articles
     const { data: relatedArticles } = await articlesApi.getPublishedArticles(3, 0)
@@ -35,7 +44,7 @@ async function getArticle(slug: string): Promise<Article | null> {
       tags: data.topics || [],
       content: data.content,
       toc: extractTOC(data.content),
-      relatedArticles: relatedArticles?.filter(a => a.id !== data.id).slice(0, 3).map(a => ({
+      relatedArticles: relatedArticles?.filter((a: any) => a.id !== data.id).slice(0, 3).map((a: any) => ({
         id: a.id,
         title: a.title,
         emoji: a.emoji || '📝',
@@ -46,7 +55,7 @@ async function getArticle(slug: string): Promise<Article | null> {
         likes: a.likes_count,
         publishedAt: a.published_at || a.created_at
       })) || [],
-      comments: comments?.map(c => ({
+      comments: comments?.map((c: any) => ({
         id: c.id,
         author: {
           username: c.user?.username || 'unknown',

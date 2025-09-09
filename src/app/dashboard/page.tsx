@@ -53,9 +53,9 @@ export default function DashboardPage() {
       
       // ユーザーのコンテンツを取得
       const [articlesRes, booksRes, scrapsRes] = await Promise.all([
-        articlesApi.getUserArticles(user.id, 10, 0),
-        booksApi.getUserBooks(user.id, 10, 0),
-        scrapsApi.getUserScraps(user.id, 10, 0)
+        articlesApi.getArticlesByUser(user.id, 10, 0),
+        booksApi.getBooksByUser(user.id, 10, 0),
+        scrapsApi.getScrapsByUser(user.id, 10, 0)
       ]);
 
       const userArticles = articlesRes.data || [];
@@ -67,16 +67,16 @@ export default function DashboardPage() {
       setScraps(userScraps);
 
       // 統計情報を計算
-      const totalLikes = userArticles.reduce((sum, a) => sum + a.likes_count, 0) +
-                        userBooks.reduce((sum, b) => sum + b.likes_count, 0);
-      const totalComments = userArticles.reduce((sum, a) => sum + a.comments_count, 0) +
-                           userScraps.reduce((sum, s) => sum + s.comments_count, 0);
+      const totalLikes = userArticles.reduce((sum, a: any) => sum + a.likes_count, 0) +
+                        userBooks.reduce((sum, b: any) => sum + b.likes_count, 0);
+      const totalComments = userArticles.reduce((sum, a: any) => sum + a.comments_count, 0) +
+                           userScraps.reduce((sum, s: any) => sum + s.comments_count, 0);
       
       setDashboardStats({
         totalViews: Math.floor(Math.random() * 50000) + 10000, // ビュー数はモック
         totalLikes,
         totalComments,
-        totalEarnings: userBooks.filter(b => !b.is_free).reduce((sum, b) => sum + (b.price || 0), 0) * 100,
+        totalEarnings: userBooks.filter((b: any) => !b.is_free).reduce((sum, b: any) => sum + (b.price || 0), 0) * 100,
         monthlyViews: Math.floor(Math.random() * 10000) + 1000,
         monthlyGrowth: Math.random() * 20,
       });
@@ -90,7 +90,7 @@ export default function DashboardPage() {
           id: '1',
           type: 'like',
           user: 'ユーザー',
-          message: `があなたの記事「${userArticles[0].title}」にいいねしました`,
+          message: `があなたの記事「${(userArticles[0] as any)?.title || '記事'}」にいいねしました`,
           time: '2時間前',
           read: false,
         });
@@ -98,7 +98,7 @@ export default function DashboardPage() {
       
       // コメント通知を生成
       if (userArticles.length > 0) {
-        const totalComments = userArticles.reduce((sum, a) => sum + a.comments_count, 0);
+        const totalComments = userArticles.reduce((sum, a: any) => sum + a.comments_count, 0);
         if (totalComments > 0) {
           generatedNotifications.push({
             id: '2',
@@ -111,17 +111,7 @@ export default function DashboardPage() {
         }
       }
       
-      // フォロワー通知を生成
-      if (userData.followers_count > 0) {
-        generatedNotifications.push({
-          id: '3',
-          type: 'follow',
-          user: 'ユーザー',
-          message: 'があなたをフォローしました',
-          time: '1日前',
-          read: true,
-        });
-      }
+      // フォロワー通知を生成 (userData not available in this context)
       
       setNotifications(generatedNotifications);
     } catch (error) {
@@ -294,7 +284,7 @@ export default function DashboardPage() {
                 <div className="dashboard__section">
                   <h2 className="dashboard__section-title">最近の記事</h2>
                   <div className="dashboard__article-list">
-                    {articles.slice(0, 3).map(article => (
+                    {articles.slice(0, 3).map((article: any) => (
                       <div key={article.id} className="dashboard__article-item">
                         <div className="dashboard__article-info">
                           <h3 className="dashboard__article-title">
@@ -324,7 +314,7 @@ export default function DashboardPage() {
                 <div className="dashboard__section">
                   <h2 className="dashboard__section-title">通知</h2>
                   <div className="dashboard__notification-list">
-                    {notifications.map(notification => (
+                    {notifications.map((notification: any) => (
                       <div 
                         key={notification.id} 
                         className={`dashboard__notification ${!notification.read ? 'dashboard__notification--unread' : ''}`}
@@ -403,7 +393,7 @@ export default function DashboardPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {articles.map(article => (
+                    {articles.map((article: any) => (
                       <tr key={article.id}>
                         <td>{article.title}</td>
                         <td>

@@ -29,7 +29,7 @@ export default function ArticlesPage() {
 
   const fetchTopics = async () => {
     try {
-      const { data } = await topicsApi.getPopularTopics(10)
+      const data = await topicsApi.getPopularTopics(10)
       setTopics(data || [])
     } catch (err: any) {
       console.error('トピック取得エラー:', err)
@@ -232,7 +232,7 @@ export default function ArticlesPage() {
                     
                     {article.topics && (
                       <div className="flex flex-wrap gap-1">
-                        {article.topics.slice(0, 3).map((topic) => (
+                        {article.topics.slice(0, 3).map((topic: any) => (
                           <button
                             key={topic}
                             onClick={() => setSelectedTopic(topic)}

@@ -1,6 +1,7 @@
 // API exports - centralized API access point
 export { articlesApi } from './articles'
 export { booksApi } from './books'
+export { chaptersApi } from './chapters'
 export { scrapsApi } from './scraps'
 export { usersApi } from './users'
 export { topicsApi } from './topics'

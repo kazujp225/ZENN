@@ -7,7 +7,7 @@ type UserUpdate = Database['public']['Tables']['users']['Update']
 
 export const usersApi = {
   // Get user by username
-  async getUserByUsername(username: string) {
+  async getUserByUsername(username: string): Promise<{ data: User | null; error: string | null }> {
     const supabase = createClient()
     
     const { data, error } = await supabase
@@ -23,8 +23,11 @@ export const usersApi = {
       .eq('username', username)
       .single()
 
-    if (error) throw error
-    return data
+    if (error) {
+      console.error('Error fetching user:', error)
+      return { data: null, error: error.message }
+    }
+    return { data, error: null }
   },
 
   // Get user by ID

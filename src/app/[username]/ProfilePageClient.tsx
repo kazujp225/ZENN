@@ -31,11 +31,14 @@ export default function ProfilePageClient({ username }: { username: string }) {
       setError(null)
       
       // ユーザー情報を取得
-      const { data: userData } = await usersApi.getUserByUsername(username.replace('@', ''))
-      if (!userData) {
+      const userResult = await usersApi.getUserByUsername(username.replace('@', ''))
+      if (!userResult.data) {
         setError('ユーザーが見つかりません')
+        setLoading(false)
         return
       }
+
+      const userData = userResult.data
 
       // ユーザーのコンテンツを取得
       const [articlesRes, booksRes, scrapsRes] = await Promise.all([
@@ -50,22 +53,22 @@ export default function ProfilePageClient({ username }: { username: string }) {
         name: userData.display_name || userData.username,
         avatar: userData.avatar_url || '/images/avatar-placeholder.svg',
         bio: userData.bio || '',
-        location: userData.location || '',
-        company: userData.company || '',
-        position: userData.position || '',
-        website: userData.website || '',
+        location: '',  // Not in database
+        company: '',   // Not in database
+        position: '',  // Not in database
+        website: userData.website_url || '',
         twitter: userData.twitter_username || '',
         github: userData.github_username || '',
         zenn: userData.username,
-        followersCount: userData.followers_count || 0,
-        followingCount: userData.following_count || 0,
+        followersCount: 0,  // Will need to query separately
+        followingCount: 0,  // Will need to query separately
         articlesCount: articlesRes.data?.length || 0,
         booksCount: booksRes.data?.length || 0,
         scrapsCount: scrapsRes.data?.length || 0,
         joinedAt: userData.created_at,
-        isVerified: userData.is_verified || false,
+        isVerified: false,  // Not in database
         badges: [],
-        skills: userData.skills || [],
+        skills: [],  // Not in database
         recentActivity: []
       }
 
@@ -301,7 +304,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
                 {/* バッジ */}
                 {user.badges.length > 0 && (
                   <div className="profile-header__badges">
-                    {user.badges.map(badge => (
+                    {user.badges.map((badge: any) => (
                       <div 
                         key={badge.id}
                         className="profile-badge"
@@ -320,7 +323,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
           {/* コンテンツタブ */}
           <div className="profile-tabs">
             <div className="profile-tabs__header">
-              {tabs.map(tab => (
+              {tabs.map((tab: any) => (
                 <button
                   key={tab.id}
                   className={`profile-tabs__tab ${activeTab === tab.id ? 'profile-tabs__tab--active' : ''}`}
@@ -338,7 +341,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
               {activeTab === 'articles' && (
                 <div className="profile-content-grid">
                   {content.articles.length > 0 ? (
-                    content.articles.map(article => (
+                    content.articles.map((article: any) => (
                       <Link key={article.id} href={`/articles/${article.slug || article.id}`} className="profile-article">
                         <div className="profile-article__header">
                           <span className="profile-article__emoji">{article.emoji}</span>
@@ -363,7 +366,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
                               </span>
                             </div>
                             <div className="profile-article__tags">
-                              {article.tags.map(tag => (
+                              {article.tags.map((tag: any) => (
                                 <span key={tag} className="profile-article__tag">
                                   {tag}
                                 </span>
@@ -387,7 +390,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
               {activeTab === 'books' && (
                 <div className="profile-book-grid">
                   {content.books.length > 0 ? (
-                    content.books.map(book => (
+                    content.books.map((book: any) => (
                       <BookCard key={book.id} {...book} />
                     ))
                   ) : (
@@ -404,7 +407,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
               {activeTab === 'scraps' && (
                 <div className="profile-content-grid">
                   {content.scraps.length > 0 ? (
-                    content.scraps.map(scrap => (
+                    content.scraps.map((scrap: any) => (
                       <Link key={scrap.id} href={`/scraps/${scrap.id}`} className="profile-scrap">
                         <div className="profile-scrap__header">
                           <span className="profile-scrap__emoji">{scrap.emoji}</span>
@@ -434,7 +437,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
               {activeTab === 'liked' && (
                 <div className="profile-content-grid">
                   {content.liked.length > 0 ? (
-                    content.liked.map(article => (
+                    content.liked.map((article: any) => (
                       <Link key={article.id} href={`/articles/${article.slug || article.id}`} className="profile-article">
                         <div className="profile-article__header">
                           <span className="profile-article__emoji">{article.emoji}</span>
@@ -453,7 +456,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
                               </span>
                             </div>
                             <div className="profile-article__tags">
-                              {article.tags.map(tag => (
+                              {article.tags.map((tag: any) => (
                                 <span key={tag} className="profile-article__tag">
                                   {tag}
                                 </span>
@@ -482,7 +485,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
               最近のアクティビティ
             </h2>
             <div className="profile-activity__list">
-              {user.recentActivity.map((activity, index) => (
+              {user.recentActivity.map((activity: any, index: number) => (
                 <div key={index} className="profile-activity__item">
                   <div className="profile-activity__icon">
                     {getActivityIcon(activity.type)}

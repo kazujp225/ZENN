@@ -43,9 +43,9 @@ export default function BooksPage() {
       
       // Sort books
       if (sortBy === 'popular') {
-        sortedBooks = sortedBooks.sort((a, b) => b.likes_count - a.likes_count)
+        sortedBooks = sortedBooks.sort((a: any, b: any) => b.likes_count - a.likes_count)
       } else {
-        sortedBooks = sortedBooks.sort((a, b) => 
+        sortedBooks = sortedBooks.sort((a: any, b: any) => 
           new Date(b.published_at || b.created_at).getTime() - 
           new Date(a.published_at || a.created_at).getTime()
         )

@@ -40,14 +40,17 @@ export const booksApi = {
       .eq('slug', slug)
       .single()
 
-    if (error) throw error
+    if (error) {
+      console.error('Error fetching book:', error)
+      return { data: null, error: error.message }
+    }
     
     // Sort chapters by position
     if (data?.chapters) {
-      data.chapters.sort((a, b) => a.position - b.position)
+      data.chapters.sort((a: any, b: any) => a.position - b.position)
     }
     
-    return data
+    return { data, error: null }
   },
 
   // Get books by user
