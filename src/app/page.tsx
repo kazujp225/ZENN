@@ -94,7 +94,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section - コンテンツドリブンな配置 */}
+      {/* Hero Section - コンパクトで並列なレイアウト */}
       <section className="relative overflow-hidden bg-gradient-to-b from-white via-blue-50/30 to-white">
         {/* 装飾的な背景要素 */}
         <div className="absolute inset-0 -z-10">
@@ -103,38 +103,31 @@ export default function HomePage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* 大きなホワイトスペースで重要性を強調 */}
-          <div className="py-20 md:py-32">
-            {/* 視覚的アンカーポイント - メインメッセージ */}
-            <div className="text-center space-y-8">
-              {/* メインタイトル - 最大の視覚的重み */}
-              <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl font-black tracking-tight">
-                  <span className="text-gray-900 leading-tight">
-                    エンジニアのための
-                  </span>
-                  <span className="block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2">
+          {/* コンパクトなヒーローセクション */}
+          <div className="py-12 md:py-20">
+            <div className="text-center space-y-6">
+              {/* タイトルとサブタイトルを1行にまとめる */}
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-5xl font-black tracking-tight">
+                  <span className="text-gray-900">エンジニアのための</span>
+                  <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent ml-2">
                     ナレッジベース
                   </span>
                 </h1>
-
-                {/* サブタイトル - セカンダリアンカー */}
-                <p className="text-xl md:text-2xl text-gray-600 font-light max-w-3xl mx-auto leading-relaxed">
-                  技術記事、書籍、スクラップで知識を共有し、
-                  <span className="block mt-1">学び続けよう</span>
+                <p className="text-lg md:text-xl text-gray-600 font-light max-w-2xl mx-auto">
+                  技術記事・書籍・スクラップで知識を共有し、学び続けよう
                 </p>
               </div>
 
-              {/* CTAボタン群 - 並列配置で比較を促す */}
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-6 pt-8">
-                {/* プライマリCTA - 視覚的に強調 */}
+              {/* CTAボタンを横並びに */}
+              <div className="flex justify-center items-center gap-4 pt-4">
                 <Link
                   href="/articles"
-                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-10 py-4 rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200"
+                  className="group inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl font-bold text-base shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200"
                 >
                   <span>記事を読む</span>
                   <svg
-                    className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -148,14 +141,13 @@ export default function HomePage() {
                   </svg>
                 </Link>
 
-                {/* セカンダリCTA */}
                 <Link
                   href="/books"
-                  className="group relative inline-flex items-center gap-3 bg-white text-gray-900 border-2 border-gray-200 px-10 py-4 rounded-2xl font-bold text-lg hover:border-gray-300 hover:bg-gray-50 transform hover:-translate-y-0.5 transition-all duration-200"
+                  className="group inline-flex items-center gap-2 bg-white text-gray-900 border-2 border-gray-200 px-6 py-3 rounded-xl font-bold text-base hover:border-gray-300 hover:bg-gray-50 transform hover:-translate-y-0.5 transition-all duration-200"
                 >
                   <span>本を探す</span>
                   <svg
-                    className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    className="w-4 h-4 group-hover:translate-x-0.5 transition-transform"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -170,27 +162,27 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              {/* 統計情報 - テキスト中心の単一カラム */}
-              <div className="flex justify-center items-center gap-8 md:gap-16 pt-12">
+              {/* 統計情報を横並びに */}
+              <div className="flex justify-center items-center gap-6 md:gap-12 pt-8">
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-gray-900">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900">
                     10K+
                   </div>
-                  <div className="text-sm text-gray-600 mt-1">技術記事</div>
+                  <div className="text-xs text-gray-600 mt-1">技術記事</div>
                 </div>
-                <div className="w-px h-12 bg-gray-300"></div>
+                <div className="w-px h-10 bg-gray-300"></div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-gray-900">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900">
                     500+
                   </div>
-                  <div className="text-sm text-gray-600 mt-1">技術書籍</div>
+                  <div className="text-xs text-gray-600 mt-1">技術書籍</div>
                 </div>
-                <div className="w-px h-12 bg-gray-300"></div>
+                <div className="w-px h-10 bg-gray-300"></div>
                 <div className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-gray-900">
+                  <div className="text-2xl md:text-3xl font-bold text-gray-900">
                     50K+
                   </div>
-                  <div className="text-sm text-gray-600 mt-1">エンジニア</div>
+                  <div className="text-xs text-gray-600 mt-1">エンジニア</div>
                 </div>
               </div>
             </div>

@@ -23,6 +23,11 @@ interface TabsProps {
 }
 
 export const Tabs = ({ tabs, defaultTab, activeTab: controlledActiveTab, onChange, onTabChange }: TabsProps) => {
+  // 空配列チェックを追加
+  if (!tabs || tabs.length === 0) {
+    return null
+  }
+  
   const firstTabKey = 'key' in tabs[0] ? tabs[0].key : tabs[0].id
   const [internalActiveTab, setInternalActiveTab] = useState(defaultTab || firstTabKey)
   const activeTab = controlledActiveTab || internalActiveTab

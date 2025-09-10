@@ -51,10 +51,15 @@ export default function ExplorePage() {
 
   const fetchTopics = async () => {
     try {
-      const { data } = await topicsApi.getPopularTopics(20)
-      setTopics(data || [])
+      const response = await topicsApi.getPopularTopics(20)
+      if (response && response.data) {
+        setTopics(response.data)
+      } else {
+        setTopics([])
+      }
     } catch (err: any) {
       console.error('トピック取得エラー:', err)
+      setTopics([])
     }
   }
 
@@ -123,19 +128,26 @@ export default function ExplorePage() {
           <div className="mb-8">
             <h3 className="text-sm font-medium text-gray-700 mb-3">人気のトピック</h3>
             <div className="flex flex-wrap gap-2">
-              {topics.slice(0, 10).map((topic) => (
-                <Chip
-                  key={topic.id}
-                  label={topic.display_name || topic.name}
-                  selected={selectedTopic === topic.name}
-                  onClick={() => handleTopicFilter(topic.name)}
-                />
-              ))}
+              {topics && topics.length > 0 ? (
+                topics.slice(0, 10).map((topic) => (
+                  <Chip
+                    key={topic.id}
+                    label={topic.display_name || topic.name}
+                    selected={selectedTopic === topic.name}
+                    onClick={() => handleTopicFilter(topic.name)}
+                  />
+                ))
+              ) : (
+                <p className="text-gray-500 text-sm">トピックを読み込み中...</p>
+              )}
             </div>
           </div>
 
           {/* タブ */}
-          <Tabs items={tabItems} activeTab={activeTab} onTabChange={setActiveTab} />
+          <Tabs tabs={tabItems.map(item => ({ 
+            id: item.value, 
+            label: `${item.label} (${item.count})` 
+          }))} activeTab={activeTab} onTabChange={setActiveTab} />
 
           {/* コンテンツ */}
           <div className="mt-8">
