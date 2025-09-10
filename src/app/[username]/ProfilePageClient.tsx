@@ -31,18 +31,33 @@ export default function ProfilePageClient({ username }: { username: string }) {
       setError(null)
       
       const cleanUsername = username.replace('@', '')
-      console.log('Fetching user data for username:', cleanUsername)
+      console.log('=== PROFILE PAGE DEBUG ===')
+      console.log('1. URL username:', username)
+      console.log('2. Clean username:', cleanUsername)
+      
+      // まずデータベース内の全ユーザーを確認
+      try {
+        const allUsersResponse = await fetch('/api/users')
+        const allUsersData = await allUsersResponse.json()
+        console.log('3. All users in database:', allUsersData.data?.map(u => ({ id: u.id, username: u.username })))
+      } catch (e) {
+        console.log('3. Failed to fetch all users:', e)
+      }
       
       // ユーザー情報を取得
+      console.log('4. Attempting to fetch user by username:', cleanUsername)
       const userResult = await usersApi.getUserByUsername(cleanUsername)
-      console.log('User result:', userResult)
+      console.log('5. getUserByUsername result:', userResult)
       
       if (!userResult.data) {
-        console.log('User not found, error:', userResult.error)
-        setError('ユーザーが見つかりません')
+        console.log('6. User not found. Error:', userResult.error)
+        console.log('7. Setting error state and returning')
+        setError(`ユーザーが見つかりません: ${cleanUsername}`)
         setLoading(false)
         return
       }
+      
+      console.log('8. User found successfully:', userResult.data)
 
       const userData = userResult.data
 

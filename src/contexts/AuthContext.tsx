@@ -124,71 +124,51 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await new Promise(resolve => setTimeout(resolve, 500)); // API呼び出しをシミュレート
 
       const baseUsername = email.split('@')[0];
-      // 既存のユーザーIDを取得するか、新しいUUIDを生成
-      let userId = '1'; // デフォルト
       
-      try {
-        // 既存ユーザーをusernameで検索
-        const existingUserResponse = await fetch(`/api/users?username=${baseUsername}`);
-        if (existingUserResponse.ok) {
-          const userData = await existingUserResponse.json();
-          if (userData.data && userData.data.length > 0) {
-            userId = userData.data[0].id;
-          } else {
-            // 新しいユーザーの場合、UUIDを生成
-            userId = crypto.randomUUID();
-          }
-        }
-      } catch (error) {
-        console.log('Failed to check existing user, using new UUID');
-        userId = crypto.randomUUID();
-      }
+      console.log('=== LOGIN DEBUG ===');
+      console.log('1. Email:', email);
+      console.log('2. Base username:', baseUsername);
 
-      // usersテーブルにユーザーレコードを作成/更新
-      const userPayload = {
-        id: userId,
-        email: email,
-        username: baseUsername,
-        display_name: baseUsername.charAt(0).toUpperCase() + baseUsername.slice(1),
-        avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
-        bio: '',
-        website_url: '',
-        twitter_username: '',
-        github_username: '',
-        location: '',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-
-      // APIを使ってユーザーを作成または更新
+      // sync-userエンドポイントを使用してユーザー情報を同期
+      let syncedUser;
       try {
-        const response = await fetch('/api/users', {
+        const syncResponse = await fetch('/api/auth/sync-user', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(userPayload),
+          body: JSON.stringify({
+            email: email,
+            username: baseUsername
+          }),
         });
         
-        if (!response.ok) {
-          console.log('User creation failed, user may already exist');
+        if (syncResponse.ok) {
+          const syncData = await syncResponse.json();
+          syncedUser = syncData.user;
+          console.log('3. User synced successfully:', syncedUser);
+        } else {
+          const errorData = await syncResponse.json();
+          console.error('4. User sync failed:', errorData.error);
+          throw new Error(errorData.error || 'ユーザー同期に失敗しました');
         }
       } catch (error) {
-        console.error('Failed to create user record:', error);
+        console.error('5. Failed to sync user:', error);
+        throw error;
       }
 
       const dummyUser: User = {
-        id: userId,
-        username: baseUsername,
-        displayName: baseUsername.charAt(0).toUpperCase() + baseUsername.slice(1),
-        email: email,
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
+        id: syncedUser.id,
+        username: syncedUser.username,
+        displayName: syncedUser.displayName,
+        email: syncedUser.email,
+        avatar: syncedUser.avatar,
         bio: 'フロントエンドエンジニア。React/Next.jsが得意です。',
         company: 'Tech Company',
         location: 'Tokyo, Japan',
         website: '',
-        github: baseUsername,
-        twitter: baseUsername,
+        github: syncedUser.username,
+        twitter: syncedUser.username,
         createdAt: new Date().toISOString(),
         stats: {
           articles: 0,
@@ -205,6 +185,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         bookmarkedArticleIds: [],
       };
 
+      console.log('6. Final user object:', dummyUser);
       setUser(dummyUser);
       localStorage.setItem('user', JSON.stringify(dummyUser));
     } catch (error) {
