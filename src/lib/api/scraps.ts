@@ -90,6 +90,35 @@ export const scrapsApi = {
     return data
   },
 
+  // Get scrap by ID
+  async getScrapById(id: string) {
+    const supabase = createClient()
+    
+    const { data, error } = await supabase
+      .from('scraps')
+      .select(`
+        *,
+        user:users(*),
+        comments:scrap_comments(
+          *,
+          user:users(username, display_name, avatar_url)
+        )
+      `)
+      .eq('id', id)
+      .single()
+
+    if (error) throw error
+    
+    // Sort comments by created_at
+    if (data?.comments) {
+      data.comments.sort((a, b) => 
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+      )
+    }
+    
+    return data
+  },
+
   // Get scraps by user
   async getScrapsByUser(userId: string, limit = 20, offset = 0) {
     const supabase = createClient()

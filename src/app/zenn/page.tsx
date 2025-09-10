@@ -109,7 +109,7 @@ export default function ZennPage() {
         commentsCount: scrap.comments_count,
         isOpen: !scrap.closed,
         emoji: scrap.emoji || '💭',
-        excerpt: scrap.content.substring(0, 150) + '...'
+        excerpt: (scrap.content || '').substring(0, 150) + '...'
       }))
 
       setTrendingArticles(techArticles)

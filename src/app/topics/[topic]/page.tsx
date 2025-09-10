@@ -156,7 +156,7 @@ function TopicPageClient({ topicId }: { topicId: string }) {
           commentsCount: scrap.comments_count,
           isOpen: !scrap.closed,
           emoji: scrap.emoji || '💭',
-          excerpt: scrap.content.substring(0, 150) + '...'
+          excerpt: (scrap.content || '').substring(0, 150) + '...'
         }))
       }
 

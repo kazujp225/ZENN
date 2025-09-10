@@ -439,7 +439,7 @@ export default function ScrapsPage() {
                     </div>
 
                     <p className="scrap-card-enhanced__excerpt">
-                      {scrap.content.substring(0, 150)}...
+                      {(scrap.content || '').substring(0, 150)}...
                     </p>
 
                     {scrap.topics && scrap.topics.length > 0 && (

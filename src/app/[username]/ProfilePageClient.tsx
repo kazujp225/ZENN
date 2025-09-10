@@ -122,7 +122,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
           commentsCount: scrap.comments_count,
           isOpen: !scrap.closed,
           emoji: scrap.emoji || '💭',
-          excerpt: scrap.content.substring(0, 150) + '...'
+          excerpt: (scrap.content || '').substring(0, 150) + '...'
         })),
         liked: [] // いいねした記事（後で実装）
       }
