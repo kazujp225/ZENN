@@ -30,9 +30,15 @@ export default function ProfilePageClient({ username }: { username: string }) {
       setLoading(true)
       setError(null)
       
+      const cleanUsername = username.replace('@', '')
+      console.log('Fetching user data for username:', cleanUsername)
+      
       // ユーザー情報を取得
-      const userResult = await usersApi.getUserByUsername(username.replace('@', ''))
+      const userResult = await usersApi.getUserByUsername(cleanUsername)
+      console.log('User result:', userResult)
+      
       if (!userResult.data) {
+        console.log('User not found, error:', userResult.error)
         setError('ユーザーが見つかりません')
         setLoading(false)
         return

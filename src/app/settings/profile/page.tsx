@@ -8,6 +8,8 @@ export default function ProfileSettingsPage() {
   const { user, updateProfile, isLoading } = useAuth();
   const [isSaving, setIsSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
     displayName: '',
@@ -65,9 +67,103 @@ export default function ProfileSettingsPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // ダミー実装: 実際はファイルをアップロードしてURLを取得
-    const avatarUrl = URL.createObjectURL(file);
-    await updateProfile({ avatar: avatarUrl });
+    // ファイルサイズチェック
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      alert('ファイルサイズが5MBを超えています。');
+      return;
+    }
+
+    // ファイル形式チェック
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('サポートされていないファイル形式です。JPEG、PNG、GIF、WebPのみ対応しています。');
+      return;
+    }
+
+    // プレビューを表示
+    const preview = URL.createObjectURL(file);
+    setPreviewUrl(preview);
+
+    if (!user?.id) {
+      alert('ユーザー情報が見つかりません。');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      
+      // FormDataを作成
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('userId', user.id);
+
+      // APIエンドポイントにアップロード
+      const response = await fetch('/api/upload/avatar', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'アップロードに失敗しました');
+      }
+
+      const { url } = await response.json();
+      
+      // AuthContextのユーザー情報を更新
+      await updateProfile({ avatar: url });
+      
+      setSuccessMessage('アバター画像を更新しました');
+      setTimeout(() => setSuccessMessage(''), 3000);
+      
+    } catch (error) {
+      console.error('Avatar upload error:', error);
+      alert(error instanceof Error ? error.message : 'アップロードに失敗しました');
+      // プレビューをクリア
+      setPreviewUrl(null);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleAvatarDelete = async () => {
+    if (!user?.id) return;
+    
+    if (!confirm('アバター画像を削除しますか？')) return;
+
+    try {
+      setUploading(true);
+      
+      // 現在のアバターURLからファイルパスを抽出
+      const avatarUrl = user.avatar || '';
+      const urlParts = avatarUrl.split('/');
+      const filePath = urlParts.slice(-2).join('/'); // "avatars/filename.jpg"
+      
+      const response = await fetch(`/api/upload/avatar?userId=${user.id}&filePath=${encodeURIComponent(filePath)}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || '削除に失敗しました');
+      }
+
+      const { defaultAvatar } = await response.json();
+      
+      // AuthContextのユーザー情報を更新
+      await updateProfile({ avatar: defaultAvatar });
+      setPreviewUrl(null);
+      
+      setSuccessMessage('アバター画像を削除しました');
+      setTimeout(() => setSuccessMessage(''), 3000);
+      
+    } catch (error) {
+      console.error('Avatar delete error:', error);
+      alert(error instanceof Error ? error.message : '削除に失敗しました');
+    } finally {
+      setUploading(false);
+    }
   };
 
   if (isLoading) {
@@ -110,29 +206,66 @@ export default function ProfileSettingsPage() {
         <div className="settings-section">
           <h2 className="settings-section__title">プロフィール画像</h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <img 
-              src={user.avatar || '/images/avatar-placeholder.svg'} 
-              alt={user.displayName || user.username}
-              style={{
-                width: '100px',
-                height: '100px',
-                borderRadius: '50%',
-                border: '3px solid #e5e7eb'
-              }}
-            />
+            <div style={{ position: 'relative' }}>
+              <img 
+                src={previewUrl || user.avatar || '/images/avatar-placeholder.svg'} 
+                alt={user.displayName || user.username}
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  border: '3px solid #e5e7eb',
+                  opacity: uploading ? 0.7 : 1
+                }}
+              />
+              {uploading && (
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  background: 'rgba(0, 0, 0, 0.7)',
+                  color: 'white',
+                  padding: '4px 8px',
+                  borderRadius: '4px',
+                  fontSize: '12px'
+                }}>
+                  アップロード中...
+                </div>
+              )}
+            </div>
             <div>
-              <label className="settings-button settings-button--primary" style={{ cursor: 'pointer' }}>
-                画像を変更
-                <input 
-                  type="file" 
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                  style={{ display: 'none' }}
-                />
-              </label>
-              <p className="settings-field__help" style={{ marginTop: '8px' }}>
-                JPG、PNG、GIF形式。最大5MBまで。
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '8px' }}>
+                <label className="settings-button settings-button--primary" style={{ cursor: uploading ? 'not-allowed' : 'pointer' }}>
+                  {uploading ? 'アップロード中...' : '画像を変更'}
+                  <input 
+                    type="file" 
+                    accept="image/jpeg,image/png,image/gif,image/webp"
+                    onChange={handleAvatarChange}
+                    disabled={uploading}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+                {user.avatar && !user.avatar.includes('dicebear.com') && (
+                  <button
+                    type="button"
+                    onClick={handleAvatarDelete}
+                    disabled={uploading}
+                    className="settings-button settings-button--secondary"
+                    style={{ cursor: uploading ? 'not-allowed' : 'pointer' }}
+                  >
+                    削除
+                  </button>
+                )}
+              </div>
+              <p className="settings-field__help">
+                JPEG、PNG、GIF、WebP形式。最大5MBまで。
               </p>
+              {previewUrl && (
+                <p className="settings-field__help" style={{ color: '#059669', marginTop: '4px' }}>
+                  プレビュー表示中（保存するとアップロードが完了します）
+                </p>
+              )}
             </div>
           </div>
         </div>

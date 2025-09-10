@@ -119,38 +119,98 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    // ダミー実装：任意のメールアドレスとパスワードでログイン可能
-    await new Promise(resolve => setTimeout(resolve, 500)); // API呼び出しをシミュレート
+    try {
+      // ダミー実装：任意のメールアドレスとパスワードでログイン可能
+      await new Promise(resolve => setTimeout(resolve, 500)); // API呼び出しをシミュレート
 
-    const dummyUser: User = {
-      id: '1',
-      username: email.split('@')[0],
-      displayName: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-      email: email,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
-      bio: 'フロントエンドエンジニア。React/Next.jsが得意です。',
-      company: 'Tech Company',
-      location: 'Tokyo, Japan',
-      github: email.split('@')[0],
-      twitter: email.split('@')[0],
-      createdAt: '2023-01-15',
-      stats: {
-        articles: 12,
-        books: 2,
-        scraps: 45,
-        followers: 234,
-        following: 156,
-        totalViews: 12345,
-        totalLikes: 567,
-      },
-      followingIds: ['2', '3', '4'],
-      followerIds: ['5', '6', '7', '8'],
-      likedArticleIds: ['1', '3', '5'],
-      bookmarkedArticleIds: ['2', '4', '6'],
-    };
+      const baseUsername = email.split('@')[0];
+      // 既存のユーザーIDを取得するか、新しいUUIDを生成
+      let userId = '1'; // デフォルト
+      
+      try {
+        // 既存ユーザーをusernameで検索
+        const existingUserResponse = await fetch(`/api/users?username=${baseUsername}`);
+        if (existingUserResponse.ok) {
+          const userData = await existingUserResponse.json();
+          if (userData.data && userData.data.length > 0) {
+            userId = userData.data[0].id;
+          } else {
+            // 新しいユーザーの場合、UUIDを生成
+            userId = crypto.randomUUID();
+          }
+        }
+      } catch (error) {
+        console.log('Failed to check existing user, using new UUID');
+        userId = crypto.randomUUID();
+      }
 
-    setUser(dummyUser);
-    localStorage.setItem('user', JSON.stringify(dummyUser));
+      // usersテーブルにユーザーレコードを作成/更新
+      const userPayload = {
+        id: userId,
+        email: email,
+        username: baseUsername,
+        display_name: baseUsername.charAt(0).toUpperCase() + baseUsername.slice(1),
+        avatar_url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
+        bio: '',
+        website_url: '',
+        twitter_username: '',
+        github_username: '',
+        location: '',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      // APIを使ってユーザーを作成または更新
+      try {
+        const response = await fetch('/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userPayload),
+        });
+        
+        if (!response.ok) {
+          console.log('User creation failed, user may already exist');
+        }
+      } catch (error) {
+        console.error('Failed to create user record:', error);
+      }
+
+      const dummyUser: User = {
+        id: userId,
+        username: baseUsername,
+        displayName: baseUsername.charAt(0).toUpperCase() + baseUsername.slice(1),
+        email: email,
+        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
+        bio: 'フロントエンドエンジニア。React/Next.jsが得意です。',
+        company: 'Tech Company',
+        location: 'Tokyo, Japan',
+        website: '',
+        github: baseUsername,
+        twitter: baseUsername,
+        createdAt: new Date().toISOString(),
+        stats: {
+          articles: 0,
+          books: 0,
+          scraps: 0,
+          followers: 0,
+          following: 0,
+          totalViews: 0,
+          totalLikes: 0,
+        },
+        followingIds: [],
+        followerIds: [],
+        likedArticleIds: [],
+        bookmarkedArticleIds: [],
+      };
+
+      setUser(dummyUser);
+      localStorage.setItem('user', JSON.stringify(dummyUser));
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
   }, []);
 
   const signup = useCallback(async (username: string, email: string, password: string) => {

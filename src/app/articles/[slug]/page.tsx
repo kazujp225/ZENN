@@ -4,9 +4,12 @@ import type { Article } from '@/types/article'
 
 async function getArticle(slug: string): Promise<Article | null> {
   try {
+    console.log('getArticle: Fetching article with slug:', slug)
     const articleResponse: any = await articlesApi.getArticleBySlug(slug)
+    console.log('getArticle: Response:', articleResponse)
     
     if (!articleResponse || !articleResponse.data) {
+      console.log('getArticle: No article data found')
       return null
     }
     
@@ -100,7 +103,10 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }> 
 }) {
   const { slug } = await params
+  console.log('ArticlePage: Loading article with slug:', slug)
+  
   const article = await getArticle(slug)
+  console.log('ArticlePage: Article data:', article ? 'Found' : 'Not found')
   
   if (!article) {
     return (
@@ -115,5 +121,17 @@ export default async function ArticlePage({
     )
   }
   
-  return <EnhancedArticleLayout article={article} />
+  // デバッグ用：シンプルな表示に変更
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+        <p className="text-gray-600 mb-8">著者: {article.author.name}</p>
+        <div className="prose prose-lg max-w-none">
+          <pre className="whitespace-pre-wrap">{article.content}</pre>
+        </div>
+      </div>
+    </div>
+  )
+  // return <EnhancedArticleLayout article={article} />
 }
