@@ -1,8 +1,11 @@
 import { createServerSupabaseClient } from '@/lib/supabase/server'
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 
-export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
+export const dynamic = 'force-dynamic'
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const origin = request.nextUrl.origin
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 

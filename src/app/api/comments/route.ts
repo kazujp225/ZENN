@@ -3,6 +3,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getCurrentUser } from '@/lib/auth'
 import { isSupabaseConfigured } from '@/lib/supabase/safe-client'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   // Supabaseが設定されていない場合はモックデータを返す
   if (!isSupabaseConfigured()) {
@@ -14,7 +16,7 @@ export async function GET(request: NextRequest) {
   }
   
   try {
-    const { searchParams } = new URL(request.url)
+    const searchParams = request.nextUrl.searchParams
     const article_id = searchParams.get('article_id')
     
     if (!article_id) {

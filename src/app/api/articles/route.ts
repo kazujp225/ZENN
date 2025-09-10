@@ -4,6 +4,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getCurrentUser } from '@/lib/auth'
 import { isSupabaseConfigured } from '@/lib/supabase/safe-client'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   // Supabaseが設定されていない場合はモックデータを返す
   if (!isSupabaseConfigured()) {
@@ -15,7 +17,7 @@ export async function GET(request: NextRequest) {
   }
   
   try {
-    const { searchParams } = new URL(request.url)
+    const searchParams = request.nextUrl.searchParams
     const limit = parseInt(searchParams.get('limit') || '20')
     const offset = parseInt(searchParams.get('offset') || '0')
     
@@ -296,7 +298,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const { searchParams } = new URL(request.url)
+    const searchParams = request.nextUrl.searchParams
     const id = searchParams.get('id')
 
     if (!id) {
