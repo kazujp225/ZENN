@@ -36,12 +36,12 @@ export default function HomePage() {
       ]);
 
       // データを設定
-      setTrendingArticles(trendingRes.data || []);
+      setTrendingArticles(Array.isArray(trendingRes?.data) ? trendingRes.data : []);
       setIdeaArticles(
         ideaRes.data?.filter((article) => article.type === "idea") || [],
       );
-      setFeaturedBooks(booksRes.data || []);
-      setActiveScraps(scrapsRes.data || []);
+      setFeaturedBooks(Array.isArray(booksRes?.data) ? booksRes.data : []);
+      setActiveScraps(Array.isArray(scrapsRes?.data) ? scrapsRes.data : []);
     } catch (err: any) {
       console.error("データ取得エラー:", err);
       setError(err.message || "データの取得に失敗しました");

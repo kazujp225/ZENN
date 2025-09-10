@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { storageApi } from '@/lib/api/storage'
 
 interface UploadProgress {
@@ -16,6 +16,16 @@ export function useFileUpload() {
   const [isUploading, setIsUploading] = useState(false)
   const [progress, setProgress] = useState<UploadProgress | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   const uploadAvatar = useCallback(async (
     userId: string,
@@ -56,7 +66,12 @@ export function useFileUpload() {
       return null
     } finally {
       setIsUploading(false)
-      setTimeout(() => setProgress(null), 1000)
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+      // Reset progress after 1 second
+      timeoutRef.current = setTimeout(() => setProgress(null), 1000)
     }
   }, [])
 
@@ -85,7 +100,12 @@ export function useFileUpload() {
       return null
     } finally {
       setIsUploading(false)
-      setTimeout(() => setProgress(null), 1000)
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+      // Reset progress after 1 second
+      timeoutRef.current = setTimeout(() => setProgress(null), 1000)
     }
   }, [])
 

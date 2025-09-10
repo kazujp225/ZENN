@@ -62,9 +62,9 @@ export default function ProfilePageClient({ username }: { username: string }) {
         zenn: userData.username,
         followersCount: 0,  // Will need to query separately
         followingCount: 0,  // Will need to query separately
-        articlesCount: articlesRes.data?.length || 0,
-        booksCount: booksRes.data?.length || 0,
-        scrapsCount: scrapsRes.data?.length || 0,
+        articlesCount: Array.isArray(articlesRes?.data) ? articlesRes.data.length : 0,
+        booksCount: Array.isArray(booksRes?.data) ? booksRes.data.length : 0,
+        scrapsCount: Array.isArray(scrapsRes?.data) ? scrapsRes.data.length : 0,
         joinedAt: userData.created_at,
         isVerified: false,  // Not in database
         badges: [],
@@ -74,7 +74,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
 
       // コンテンツを整形
       const userContent = {
-        articles: (articlesRes.data || []).map((article: any) => ({
+        articles: (Array.isArray(articlesRes?.data) ? articlesRes.data : []).map((article: any) => ({
           id: article.id,
           title: article.title,
           emoji: article.emoji || '📝',
@@ -92,7 +92,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
           type: article.type as 'tech' | 'idea',
           tags: article.topics || []
         })),
-        books: (booksRes.data || []).map((book: any) => ({
+        books: (Array.isArray(booksRes?.data) ? booksRes.data : []).map((book: any) => ({
           id: book.id,
           title: book.title,
           slug: book.slug,
@@ -109,7 +109,7 @@ export default function ProfilePageClient({ username }: { username: string }) {
           chapters: book.chapters_count || 0,
           pages: book.total_pages || 0
         })),
-        scraps: (scrapsRes.data || []).map((scrap: any) => ({
+        scraps: (Array.isArray(scrapsRes?.data) ? scrapsRes.data : []).map((scrap: any) => ({
           id: scrap.id,
           title: scrap.title,
           author: {

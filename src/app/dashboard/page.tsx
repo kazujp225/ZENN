@@ -58,9 +58,9 @@ export default function DashboardPage() {
         scrapsApi.getScrapsByUser(user.id, 10, 0)
       ]);
 
-      const userArticles = articlesRes.data || [];
-      const userBooks = booksRes.data || [];
-      const userScraps = scrapsRes.data || [];
+      const userArticles = Array.isArray(articlesRes?.data) ? articlesRes.data : [];
+      const userBooks = Array.isArray(booksRes?.data) ? booksRes.data : [];
+      const userScraps = Array.isArray(scrapsRes?.data) ? scrapsRes.data : [];
 
       setArticles(userArticles);
       setBooks(userBooks);

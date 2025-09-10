@@ -33,9 +33,9 @@ export default function TrendingPage() {
       ])
 
       // Sort by likes count to get trending items
-      const trendingArticles = (articlesRes.data || []).sort((a, b) => b.likes_count - a.likes_count)
-      const trendingBooks = (booksRes.data || []).sort((a, b) => b.likes_count - a.likes_count)
-      const trendingScraps = (scrapsRes.data || []).sort((a, b) => b.comments_count - a.comments_count)
+      const trendingArticles = (Array.isArray(articlesRes?.data) ? articlesRes.data : []).sort((a, b) => b.likes_count - a.likes_count)
+      const trendingBooks = (Array.isArray(booksRes?.data) ? booksRes.data : []).sort((a, b) => b.likes_count - a.likes_count)
+      const trendingScraps = (Array.isArray(scrapsRes?.data) ? scrapsRes.data : []).sort((a, b) => b.comments_count - a.comments_count)
 
       setArticles(trendingArticles)
       setBooks(trendingBooks)

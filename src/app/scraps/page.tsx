@@ -44,7 +44,7 @@ export default function ScrapsPage() {
         result = await scrapsApi.getScraps(20, 0)
       }
 
-      setScraps(result.data || [])
+      setScraps(Array.isArray(result?.data) ? result.data : [])
     } catch (err: any) {
       console.error('スクラップ取得エラー:', err)
       setError(err.message || 'スクラップの取得に失敗しました')
@@ -56,7 +56,7 @@ export default function ScrapsPage() {
   const fetchTopics = async () => {
     try {
       const data = await topicsApi.getPopularTopics(10)
-      setTopics(data || [])
+      setTopics(Array.isArray(data) ? data : [])
     } catch (err: any) {
       console.error('トピック取得エラー:', err)
     }

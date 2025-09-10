@@ -95,15 +95,15 @@ function TopicPageClient({ topicId }: { topicId: string }) {
       ])
 
       // トピックでフィルタリング（topics配列に含まれているか確認）
-      const topicArticles = (articlesRes.data || []).filter((article: any) =>
+      const topicArticles = (Array.isArray(articlesRes?.data) ? articlesRes.data : []).filter((article: any) =>
         article.topics?.some((t: string) => t.toLowerCase() === topicId.toLowerCase())
       )
       
-      const topicBooks = (booksRes.data || []).filter((book: any) =>
+      const topicBooks = (Array.isArray(booksRes?.data) ? booksRes.data : []).filter((book: any) =>
         book.topics?.some((t: string) => t.toLowerCase() === topicId.toLowerCase())
       )
       
-      const topicScraps = (scrapsRes.data || []).filter((scrap: any) =>
+      const topicScraps = (Array.isArray(scrapsRes?.data) ? scrapsRes.data : []).filter((scrap: any) =>
         scrap.topics?.some((t: string) => t.toLowerCase() === topicId.toLowerCase())
       )
 

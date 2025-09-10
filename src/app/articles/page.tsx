@@ -51,7 +51,7 @@ export default function ArticlesPage() {
         result = await articlesApi.getPublishedArticles(20, 0)
       }
 
-      let filteredArticles = result.data || []
+      let filteredArticles = Array.isArray(result?.data) ? result.data : []
       
       // Filter by type if specified
       if (selectedType !== 'all') {

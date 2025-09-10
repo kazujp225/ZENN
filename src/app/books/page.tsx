@@ -39,16 +39,17 @@ export default function BooksPage() {
         result = await booksApi.getPublishedBooks(20, 0)
       }
 
-      let sortedBooks = result.data || []
+      let sortedBooks = Array.isArray(result?.data) ? result.data : []
       
       // Sort books
       if (sortBy === 'popular') {
-        sortedBooks = sortedBooks.sort((a: any, b: any) => b.likes_count - a.likes_count)
+        sortedBooks = sortedBooks.sort((a: any, b: any) => (b.likes_count || 0) - (a.likes_count || 0))
       } else {
-        sortedBooks = sortedBooks.sort((a: any, b: any) => 
-          new Date(b.published_at || b.created_at).getTime() - 
-          new Date(a.published_at || a.created_at).getTime()
-        )
+        sortedBooks = sortedBooks.sort((a: any, b: any) => {
+          const dateA = new Date(a.published_at || a.created_at || 0).getTime()
+          const dateB = new Date(b.published_at || b.created_at || 0).getTime()
+          return dateB - dateA
+        })
       }
 
       setBooks(sortedBooks)

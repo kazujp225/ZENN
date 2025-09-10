@@ -38,9 +38,9 @@ export default function ExplorePage() {
         scrapsApi.getScraps(20, 0)
       ])
 
-      setArticles(articlesRes.data || [])
-      setBooks(booksRes.data || [])
-      setScraps(scrapsRes.data || [])
+      setArticles(Array.isArray(articlesRes?.data) ? articlesRes.data : [])
+      setBooks(Array.isArray(booksRes?.data) ? booksRes.data : [])
+      setScraps(Array.isArray(scrapsRes?.data) ? scrapsRes.data : [])
     } catch (err: any) {
       console.error('データ取得エラー:', err)
       setError(err.message || 'データの取得に失敗しました')
@@ -74,7 +74,7 @@ export default function ExplorePage() {
       } else {
         // トピックでフィルタ
         const filteredArticles = await articlesApi.getArticlesByTopic(topic, 20, 0)
-        setArticles(filteredArticles.data || [])
+        setArticles(Array.isArray(filteredArticles?.data) ? filteredArticles.data : [])
       }
     } catch (err: any) {
       console.error('フィルタエラー:', err)

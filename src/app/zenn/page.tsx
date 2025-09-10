@@ -32,7 +32,7 @@ export default function ZennPage() {
       ])
 
       // Tech記事とIdea記事を分離
-      const techArticles = (articlesRes.data || [])
+      const techArticles = (Array.isArray(articlesRes?.data) ? articlesRes.data : [])
         .filter((a: any) => a.type === 'tech')
         .sort((a: any, b: any) => b.likes_count - a.likes_count)
         .slice(0, 3)
@@ -55,7 +55,7 @@ export default function ZennPage() {
           tags: article.topics || []
         }))
 
-      const ideaArticlesData = (articlesRes.data || [])
+      const ideaArticlesData = (Array.isArray(articlesRes?.data) ? articlesRes.data : [])
         .filter((a: any) => a.type === 'idea')
         .sort((a: any, b: any) => b.likes_count - a.likes_count)
         .slice(0, 2)
@@ -79,7 +79,7 @@ export default function ZennPage() {
         }))
 
       // 書籍データを整形
-      const books = (booksRes.data || []).slice(0, 2).map((book: any) => ({
+      const books = (Array.isArray(booksRes?.data) ? booksRes.data : []).slice(0, 2).map((book: any) => ({
         id: book.id,
         title: book.title,
         slug: book.slug,
@@ -96,7 +96,7 @@ export default function ZennPage() {
       }))
 
       // スクラップデータを整形
-      const scraps = (scrapsRes.data || []).slice(0, 2).map((scrap: any) => ({
+      const scraps = (Array.isArray(scrapsRes?.data) ? scrapsRes.data : []).slice(0, 2).map((scrap: any) => ({
         id: scrap.id,
         title: scrap.title,
         author: {
