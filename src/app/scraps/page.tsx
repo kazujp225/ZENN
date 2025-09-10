@@ -244,7 +244,7 @@ export default function ScrapsPage() {
                     <span className="scraps-status-badge scraps-status-badge--open">OPEN</span>
                   </span>
                   <span className="scraps-status-filter__count">
-                    {scraps.filter(s => s.isOpen).length}
+                    {scraps.filter(s => !s.closed).length}
                   </span>
                 </button>
                 <button 
@@ -255,7 +255,7 @@ export default function ScrapsPage() {
                     <span className="scraps-status-badge scraps-status-badge--closed">CLOSED</span>
                   </span>
                   <span className="scraps-status-filter__count">
-                    {scraps.filter(s => !s.isOpen).length}
+                    {scraps.filter(s => s.closed).length}
                   </span>
                 </button>
               </div>
