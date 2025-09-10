@@ -1,12 +1,23 @@
 import { ScrapLayout } from '@/components/scrap/ScrapLayout'
 import { scrapsApi, commentsApi } from '@/lib/api'
 
-async function getScrap(id: string) {
+async function getScrap(idOrSlug: string) {
   try {
-    const { data } = await scrapsApi.getScrapById(id)
+    // Try to get by slug first, then by ID if it's a valid UUID
+    let data
+    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug)
+    
+    if (isUuid) {
+      const result = await scrapsApi.getScrapById(idOrSlug)
+      data = result.data
+    } else {
+      // Assume it's a slug
+      data = await scrapsApi.getScrapBySlug(idOrSlug)
+    }
+    
     if (!data) return null
     
-    const { data: comments } = await commentsApi.getCommentsByScrap(id, 50, 0)
+    const { data: comments } = await commentsApi.getCommentsByScrap(data.id, 50, 0)
     
     return {
       id: data.id,

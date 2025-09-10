@@ -59,59 +59,19 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create sample scraps
-    const scraps = [
-      {
-        title: 'React Hooks使用時のパフォーマンス最適化について',
-        emoji: '⚡',
-        slug: `react-hooks-performance-${Date.now()}`,
-        user_id: authorId,
-        closed: false,
-        comments_count: 12
-      },
-      {
-        title: 'PostgreSQLのクエリ最適化テクニック',
-        emoji: '🐘',
-        slug: `postgresql-optimization-${Date.now()}`,
-        user_id: authorId,
-        closed: false,
-        comments_count: 8
-      },
-      {
-        title: 'Docker Composeでの開発環境構築',
-        emoji: '🐳',
-        slug: `docker-compose-dev-${Date.now()}`,
-        user_id: authorId,
-        closed: true,
-        comments_count: 15
-      }
-    ]
-
+    // Scraps creation disabled - no mock data
     const createdScraps = []
-    for (const scrap of scraps) {
-      const { data, error } = await supabase
-        .from('scraps')
-        .insert(scrap)
-        .select()
-        .single()
-
-      if (error) {
-        console.error('Error creating scrap:', error)
-      } else {
-        createdScraps.push(data)
-      }
-    }
 
     return NextResponse.json({
       success: true,
       message: 'Sample data created successfully',
       created: {
         books: createdBooks.length,
-        scraps: createdScraps.length
+        scraps: 0
       },
       data: {
         books: createdBooks,
-        scraps: createdScraps
+        scraps: []
       }
     })
 
