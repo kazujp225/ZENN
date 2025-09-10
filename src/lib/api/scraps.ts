@@ -107,7 +107,10 @@ export const scrapsApi = {
       .eq('id', id)
       .single()
 
-    if (error) throw error
+    if (error) {
+      console.error('Error fetching scrap by ID:', error)
+      return { data: null, error }
+    }
     
     // Sort comments by created_at
     if (data?.comments) {
@@ -116,7 +119,7 @@ export const scrapsApi = {
       )
     }
     
-    return data
+    return { data, error: null }
   },
 
   // Get scraps by user

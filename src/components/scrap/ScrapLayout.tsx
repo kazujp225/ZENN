@@ -36,7 +36,7 @@ interface ScrapLayoutProps {
     isOpen: boolean
     closedAt?: string
     likes: number
-    topics: string[]
+    tags?: string[]
     posts: Post[]
   }
 }
@@ -153,17 +153,19 @@ export function ScrapLayout({ scrap }: ScrapLayoutProps) {
             </div>
 
             {/* トピックタグ */}
-            <div className="flex flex-wrap gap-2">
-              {scrap.topics.map(topic => (
-                <Link 
-                  key={topic}
-                  href={`/topics/${topic}`}
-                  className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm hover:bg-blue-100 transition-colors"
-                >
-                  {topic}
-                </Link>
-              ))}
-            </div>
+            {scrap.tags && scrap.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {scrap.tags.map(tag => (
+                  <Link 
+                    key={tag}
+                    href={`/topics/${tag}`}
+                    className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm hover:bg-blue-100 transition-colors"
+                  >
+                    {tag}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* タイムライン */}

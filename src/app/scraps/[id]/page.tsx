@@ -1,5 +1,5 @@
 import { ScrapLayout } from '@/components/scrap/ScrapLayout'
-import { scrapsApi, commentsApi } from '@/lib/api'
+import { scrapsApi } from '@/lib/api'
 
 async function getScrap(idOrSlug: string) {
   try {
@@ -8,16 +8,59 @@ async function getScrap(idOrSlug: string) {
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug)
     
     if (isUuid) {
-      const result = await scrapsApi.getScrapById(idOrSlug)
-      data = result.data
+      try {
+        const result = await scrapsApi.getScrapById(idOrSlug)
+        data = result?.data || result
+      } catch (e) {
+        console.error('Failed to get scrap by ID:', e)
+        return null
+      }
     } else {
       // Assume it's a slug
-      data = await scrapsApi.getScrapBySlug(idOrSlug)
+      try {
+        data = await scrapsApi.getScrapBySlug(idOrSlug)
+      } catch (e) {
+        console.error('Failed to get scrap by slug:', e)
+        return null
+      }
     }
     
     if (!data) return null
     
-    const { data: comments } = await commentsApi.getCommentsByScrap(data.id, 50, 0)
+    // Use comments from the scrap data itself
+    const comments = data.comments || []
+    
+    // Map comments to posts format expected by ScrapLayout
+    const posts = comments.map(c => ({
+      id: c.id,
+      author: {
+        username: c.user?.username || 'unknown',
+        name: c.user?.display_name || c.user?.username || 'Unknown',
+        avatar: c.user?.avatar_url || '/images/avatar-placeholder.svg'
+      },
+      content: c.content,
+      createdAt: c.created_at,
+      likes: Math.floor(Math.random() * 20),
+      isLiked: false,
+      replies: []
+    })) || []
+    
+    // Add initial post if there's content
+    if (data.content) {
+      posts.unshift({
+        id: 'initial',
+        author: {
+          username: data.user?.username || 'unknown',
+          name: data.user?.display_name || data.user?.username || 'Unknown',
+          avatar: data.user?.avatar_url || '/images/avatar-placeholder.svg'
+        },
+        content: data.content,
+        createdAt: data.created_at,
+        likes: 0,
+        isLiked: false,
+        replies: []
+      })
+    }
     
     return {
       id: data.id,
@@ -29,25 +72,13 @@ async function getScrap(idOrSlug: string) {
         avatar: data.user?.avatar_url || '/images/avatar-placeholder.svg',
         bio: data.user?.bio || ''
       },
-      content: data.content,
       isOpen: !data.closed,
       publishedAt: data.created_at,
       updatedAt: data.updated_at,
       commentsCount: data.comments_count,
       tags: data.topics || [],
       participants: Math.max(1, Math.floor(data.comments_count / 3)),
-      comments: comments?.map(c => ({
-        id: c.id,
-        author: {
-          username: c.user?.username || 'unknown',
-          name: c.user?.display_name || c.user?.username || 'Unknown',
-          avatar: c.user?.avatar_url || '/images/avatar-placeholder.svg'
-        },
-        content: c.content,
-        publishedAt: c.created_at,
-        likes: Math.floor(Math.random() * 20),
-        replies: []
-      })) || []
+      posts: posts
     }
   } catch (error) {
     console.error('スクラップ取得エラー:', error)
