@@ -78,69 +78,151 @@ export default function BooksPage() {
     <PageProvider>
       <div className="books-page">
         <div className="max-w-6xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">本</h1>
-              <p className="text-gray-600 mt-2">
-                技術書やエンジニアリングの書籍を探そう
-              </p>
-            </div>
-            <Link
-              href="/new/book"
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              本を出版する
-            </Link>
-          </div>
-
-          {/* Filters */}
-          <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
-            <div className="grid md:grid-cols-3 gap-4">
-              {/* Search */}
+          {/* Modern Header Section */}
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6 mb-8">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">📚 本</h1>
+                <p className="text-gray-600">技術書やエンジニアリングの書籍を探そう</p>
+              </div>
+              <Link
+                href="/new/book"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-5 py-2.5 rounded-xl font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+                本を出版する
+              </Link>
+            </div>
+
+            {/* Modern Filter Section */}
+            <div className="grid md:grid-cols-3 gap-4">
+              {/* Search with Icon */}
+              <div className="relative">
+                <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
                   検索
                 </label>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="本を検索..."
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                <div className="relative">
+                  <svg 
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="タイトルや著者で検索..."
+                    className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
               </div>
 
-              {/* Price Filter */}
+              {/* Price Filter with Custom Dropdown */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
                   価格
                 </label>
-                <select
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value as 'all' | 'free' | 'paid')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="all">すべて</option>
-                  <option value="free">無料</option>
-                  <option value="paid">有料</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value as 'all' | 'free' | 'paid')}
+                    className="w-full appearance-none px-4 py-2.5 pr-10 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 cursor-pointer"
+                  >
+                    <option value="all">💰 すべての価格</option>
+                    <option value="free">🆓 無料のみ</option>
+                    <option value="paid">💎 有料のみ</option>
+                  </select>
+                  <svg 
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
 
-              {/* Sort */}
+              {/* Sort with Custom Dropdown */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
                   並び順
                 </label>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as 'recent' | 'popular')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="recent">新着順</option>
-                  <option value="popular">人気順</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as 'recent' | 'popular')}
+                    className="w-full appearance-none px-4 py-2.5 pr-10 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200 cursor-pointer"
+                  >
+                    <option value="recent">🆕 新着順</option>
+                    <option value="popular">🔥 人気順</option>
+                  </select>
+                  <svg 
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
             </div>
+
+            {/* Active Filters Display */}
+            {(filter !== 'all' || sortBy !== 'recent' || searchQuery) && (
+              <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-gray-200">
+                <span className="text-sm text-gray-500">フィルター:</span>
+                {searchQuery && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-white rounded-lg text-sm text-gray-700 border border-gray-200">
+                    検索: {searchQuery}
+                    <button 
+                      onClick={() => setSearchQuery('')}
+                      className="ml-1 hover:text-red-600"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+                {filter !== 'all' && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-white rounded-lg text-sm text-gray-700 border border-gray-200">
+                    価格: {filter === 'free' ? '無料' : '有料'}
+                    <button 
+                      onClick={() => setFilter('all')}
+                      className="ml-1 hover:text-red-600"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+                {sortBy !== 'recent' && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-white rounded-lg text-sm text-gray-700 border border-gray-200">
+                    並び順: 人気順
+                    <button 
+                      onClick={() => setSortBy('recent')}
+                      className="ml-1 hover:text-red-600"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
+                <button 
+                  onClick={() => {
+                    setSearchQuery('')
+                    setFilter('all')
+                    setSortBy('recent')
+                  }}
+                  className="text-sm text-indigo-600 hover:text-indigo-800 ml-2"
+                >
+                  すべてクリア
+                </button>
+              </div>
+            )}
           </div>
 
           {error && (
