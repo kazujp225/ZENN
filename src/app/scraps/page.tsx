@@ -55,7 +55,7 @@ export default function ScrapsPage() {
 
   const fetchTopics = async () => {
     try {
-      const { data } = await topicsApi.getPopularTopics(10)
+      const data = await topicsApi.getPopularTopics(10)
       setTopics(data || [])
     } catch (err: any) {
       console.error('トピック取得エラー:', err)
