@@ -125,9 +125,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const baseUsername = email.split('@')[0];
       
-      console.log('=== LOGIN DEBUG ===');
-      console.log('1. Email:', email);
-      console.log('2. Base username:', baseUsername);
+      // 本番環境ではデバッグログを無効化
+      if (process.env.NODE_ENV === 'development') {
+        console.log('=== LOGIN DEBUG ===');
+        console.log('1. Email:', email.replace(/(.{2}).*@/, '$1***@'));
+        console.log('2. Base username:', baseUsername);
+      }
 
       // sync-userエンドポイントを使用してユーザー情報を同期
       let syncedUser;
@@ -185,7 +188,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         bookmarkedArticleIds: [],
       };
 
-      console.log('6. Final user object:', dummyUser);
+      // 本番環境ではユーザー情報ログを無効化
+      if (process.env.NODE_ENV === 'development') {
+        console.log('6. Final user object:', { ...dummyUser, email: '***masked***' });
+      }
       setUser(dummyUser);
       localStorage.setItem('user', JSON.stringify(dummyUser));
     } catch (error) {
