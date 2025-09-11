@@ -76,10 +76,9 @@ export function NotificationCenter({ userId, initialNotifications = [] }: Notifi
     
     // Update in database
     try {
-      await fetch('/api/notifications/read', {
+      await fetch(`/api/notifications/${notificationId}/read`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notificationId })
+        headers: { 'Content-Type': 'application/json' }
       })
     } catch (error) {
       console.error('Failed to mark notification as read:', error)

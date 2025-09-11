@@ -39,21 +39,14 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   private logErrorToService(error: Error, errorInfo: ErrorInfo) {
-    // エラーログをサーバーに送信する処理
-    fetch('/api/errors', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: error.message,
-        stack: error.stack,
-        componentStack: errorInfo.componentStack,
-        timestamp: new Date().toISOString(),
-        userAgent: window.navigator.userAgent,
-        url: window.location.href
-      }),
-    }).catch(console.error)
+    // エラーログをサーバーに送信する処理（現在は無効化）
+    console.error('Error logged locally:', {
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+      timestamp: new Date().toISOString(),
+      userAgent: window.navigator.userAgent,
+      url: window.location.href
+    })
   }
 
   private handleReset = () => {
