@@ -89,10 +89,6 @@ export const Header = () => {
                 <span className="zenn-header__nav-icon">🔥</span>
                 <span className="zenn-header__nav-text">Trending</span>
               </Link>
-              <Link href="/explore" className="zenn-header__nav-link">
-                <span className="zenn-header__nav-icon">🔍</span>
-                <span className="zenn-header__nav-text">Explore</span>
-              </Link>
               <Link href="/articles" className="zenn-header__nav-link">
                 <span className="zenn-header__nav-icon">📄</span>
                 <span className="zenn-header__nav-text">記事</span>
@@ -174,13 +170,6 @@ export const Header = () => {
                 onClick={() => setShowMobileMenu(false)}
               >
                 🔥 Trending
-              </Link>
-              <Link 
-                href="/explore" 
-                className="zenn-header__mobile-nav-link"
-                onClick={() => setShowMobileMenu(false)}
-              >
-                🔍 Explore
               </Link>
               <Link 
                 href="/articles" 

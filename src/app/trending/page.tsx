@@ -114,26 +114,19 @@ export default function TrendingPage() {
                         return (
                           <ArticleCard
                             key={article.id}
-                            article={{
-                              id: article.id,
-                              title: article.title,
-                              emoji: article.emoji || '📝',
-                              content: article.content,
-                              author: {
-                                id: author?.id || '',
-                                name: author?.display_name || author?.username || 'Unknown',
-                                username: author?.username || 'unknown',
-                                avatar: author?.avatar_url || '/images/avatar-placeholder.svg',
-                                githubUsername: author?.github_username
-                              },
-                              publishedAt: article.published_at || article.created_at,
-                              likes: article.likes_count || 0,
-                              comments: article.comments_count || 0,
-                              tags: article.topics || [],
-                              type: (article.type as 'tech' | 'idea') || 'tech',
-                              slug: article.slug,
-                              isLiked: false
+                            id={article.id}
+                            title={article.title}
+                            emoji={article.emoji || '📝'}
+                            author={{
+                              name: author?.display_name || author?.username || 'Unknown',
+                              username: author?.username || 'unknown',
+                              avatar: author?.avatar_url || '/images/avatar-placeholder.svg'
                             }}
+                            publishedAt={article.published_at || article.created_at}
+                            likes={article.likes_count || 0}
+                            comments={article.comments_count || 0}
+                            tags={article.topics || []}
+                            type={(article.type as 'tech' | 'idea') || 'tech'}
                           />
                         );
                       })
@@ -153,21 +146,18 @@ export default function TrendingPage() {
                         return (
                           <BookCard
                             key={book.id}
-                            book={{
-                              id: book.id,
-                              title: book.title,
-                              author: {
-                                username: author?.username || 'Unknown',
-                                name: author?.display_name || author?.username || 'Unknown',
-                                avatar: author?.avatar_url || '/images/avatar-placeholder.svg'
-                              },
-                              coverImage: book.cover_image_url || '/images/book-placeholder.svg',
-                              price: book.price || 0,
-                              isFree: book.is_free,
-                              rating: 4.5,
-                              reviews: book.likes_count,
-                              publishedAt: book.published_at || book.created_at
+                            id={book.id}
+                            title={book.title}
+                            author={{
+                              username: author?.username || 'Unknown',
+                              name: author?.display_name || author?.username || 'Unknown',
+                              avatar: author?.avatar_url || '/images/avatar-placeholder.svg'
                             }}
+                            coverImage={book.cover_image_url || '/images/book-placeholder.svg'}
+                            price={book.is_free ? 'free' : (book.price || 0)}
+                            likes={book.likes_count || 0}
+                            publishedAt={book.published_at || book.created_at}
+                            description={book.description}
                           />
                         );
                       })
@@ -187,20 +177,18 @@ export default function TrendingPage() {
                         return (
                           <ScrapCard
                             key={scrap.id}
-                            scrap={{
-                              id: scrap.id,
-                              title: scrap.title,
-                              emoji: scrap.emoji,
-                              author: {
-                                username: author?.username || 'Unknown',
-                                name: author?.display_name || author?.username || 'Unknown',
-                                avatar: author?.avatar_url || '/images/avatar-placeholder.svg'
-                              },
-                              publishedAt: scrap.created_at,
-                              comments: scrap.comments_count,
-                              isOpen: !scrap.closed,
-                              tags: scrap.topics || []
+                            id={scrap.id}
+                            title={scrap.title}
+                            emoji={scrap.emoji}
+                            author={{
+                              username: author?.username || 'Unknown',
+                              name: author?.display_name || author?.username || 'Unknown',
+                              avatar: author?.avatar_url || '/images/avatar-placeholder.svg'
                             }}
+                            publishedAt={scrap.created_at}
+                            updatedAt={scrap.updated_at || scrap.created_at}
+                            commentsCount={scrap.comments_count || 0}
+                            isOpen={!scrap.closed}
                           />
                         );
                       })

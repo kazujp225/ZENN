@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['assets.zenn.dev'],
+    domains: ['assets.zenn.dev', 'api.dicebear.com'],
     formats: ['image/avif', 'image/webp'],
   },
   compress: true,
