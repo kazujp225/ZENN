@@ -34,16 +34,6 @@ export function EnhancedHeader({ className }: HeaderProps) {
   const searchRef = useRef<HTMLDivElement>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const handleDemoLogin = useCallback(async () => {
-    if (isLoading) return
-    try {
-      await login({ email: 'user@example.com', password: 'password' })
-      setShowUserMenu(false)
-      router.push('/')
-    } catch (e) {
-      console.error('デモログイン失敗', e)
-    }
-  }, [isLoading, login, router])
 
   // メニューの外側クリック検知（ポータル対応）
   useEffect(() => {
@@ -548,14 +538,6 @@ export function EnhancedHeader({ className }: HeaderProps) {
                   >
                     ログイン
                   </Link>
-                  <button
-                    onClick={handleDemoLogin}
-                    disabled={isLoading}
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-                    title="デモ用のワンクリックログイン"
-                  >
-                    デモログイン
-                  </button>
                 </div>
               )}
 

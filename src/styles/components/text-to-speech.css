@@ -1,0 +1,264 @@
+.text-to-speech {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.text-to-speech--unavailable {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--color-text-tertiary, #9ca3af);
+  font-size: 0.875rem;
+}
+
+/* ヘッダー */
+.text-to-speech__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.text-to-speech__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.text-to-speech__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-primary, #3b82f6);
+}
+
+.text-to-speech__time {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-bg-tertiary, #f3f4f6);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+  font-weight: normal;
+  border-radius: 9999px;
+}
+
+.text-to-speech__settings-toggle {
+  padding: 0.5rem;
+  background-color: transparent;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+  color: var(--color-text-secondary, #6b7280);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.text-to-speech__settings-toggle:hover {
+  background-color: var(--color-bg-hover, #f9fafb);
+  color: var(--color-text, #111827);
+}
+
+/* 設定パネル */
+.text-to-speech__settings {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-radius: 0.5rem;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text-to-speech__setting {
+  margin-bottom: 1rem;
+}
+
+.text-to-speech__setting:last-child {
+  margin-bottom: 0;
+}
+
+.text-to-speech__setting label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #4b5563);
+}
+
+.text-to-speech__select {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.text-to-speech__slider {
+  width: 100%;
+}
+
+/* コントロール */
+.text-to-speech__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.text-to-speech__buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.text-to-speech__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background-color: var(--color-bg-secondary, white);
+  color: var(--color-text, #111827);
+}
+
+.text-to-speech__button:hover {
+  background-color: var(--color-bg-hover, #f9fafb);
+}
+
+.text-to-speech__button--primary {
+  background-color: var(--color-primary, #3b82f6);
+  color: white;
+  border-color: transparent;
+}
+
+.text-to-speech__button--primary:hover {
+  background-color: var(--color-primary-hover, #2563eb);
+}
+
+/* プログレスバー */
+.text-to-speech__progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.text-to-speech__progress-bar {
+  flex: 1;
+  height: 0.5rem;
+  background-color: var(--color-bg-tertiary, #e5e7eb);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.text-to-speech__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  border-radius: 9999px;
+  transition: width 0.3s ease-out;
+  position: relative;
+}
+
+.text-to-speech__progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.text-to-speech__progress-text {
+  min-width: 3rem;
+  text-align: right;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* ダークモード対応 */
+.dark .text-to-speech {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .text-to-speech__settings {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .text-to-speech__select {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.dark .text-to-speech__button {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.dark .text-to-speech__button:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.dark .text-to-speech__progress-bar {
+  background-color: var(--color-bg-tertiary);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 640px) {
+  .text-to-speech {
+    padding: 1rem;
+  }
+  
+  .text-to-speech__buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .text-to-speech__button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .text-to-speech__progress {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .text-to-speech__progress-bar {
+    width: 100%;
+  }
+}

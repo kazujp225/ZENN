@@ -1,0 +1,353 @@
+.enhanced-editor {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: var(--color-bg-secondary, white);
+}
+
+/* ツールバー */
+.enhanced-editor__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.enhanced-editor__toolbar-items {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.enhanced-editor__toolbar-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  color: var(--color-text-secondary, #6b7280);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.enhanced-editor__toolbar-button:hover {
+  background-color: var(--color-bg-hover, #e5e7eb);
+  color: var(--color-text, #111827);
+}
+
+.enhanced-editor__toolbar-divider {
+  width: 1px;
+  height: 1.5rem;
+  background-color: var(--color-border, #e5e7eb);
+  margin: 0 0.25rem;
+}
+
+.enhanced-editor__toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ビュー切り替え */
+.enhanced-editor__view-toggle {
+  display: flex;
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.enhanced-editor__view-button {
+  padding: 0.25rem 0.75rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.enhanced-editor__view-button:not(:last-child) {
+  border-right: 1px solid var(--color-border, #e5e7eb);
+}
+
+.enhanced-editor__view-button:hover {
+  background-color: var(--color-bg-hover, #f3f4f6);
+}
+
+.enhanced-editor__view-button--active {
+  background-color: var(--color-primary, #3b82f6);
+  color: white;
+}
+
+/* 保存ステータス */
+.enhanced-editor__save-status {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.enhanced-editor__save-status--saving {
+  color: var(--color-warning, #f59e0b);
+}
+
+.enhanced-editor__save-status--saved {
+  color: var(--color-success, #10b981);
+}
+
+/* コンテンツエリア */
+.enhanced-editor__content {
+  display: flex;
+  flex: 1;
+  position: relative;
+}
+
+.enhanced-editor__content--edit .enhanced-editor__editor {
+  width: 100%;
+}
+
+.enhanced-editor__content--split .enhanced-editor__editor {
+  width: 50%;
+  border-right: 1px solid var(--color-border, #e5e7eb);
+}
+
+.enhanced-editor__content--split .enhanced-editor__preview {
+  width: 50%;
+}
+
+.enhanced-editor__content--preview .enhanced-editor__preview {
+  width: 100%;
+}
+
+/* エディタ */
+.enhanced-editor__editor {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.enhanced-editor__textarea {
+  flex: 1;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--color-text, #111827);
+}
+
+.enhanced-editor__textarea::placeholder {
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+.enhanced-editor__status {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* プレビュー */
+.enhanced-editor__preview {
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: var(--color-bg-secondary, white);
+}
+
+.enhanced-editor__preview h1,
+.enhanced-editor__preview h2,
+.enhanced-editor__preview h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.enhanced-editor__preview h1 {
+  font-size: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border, #e5e7eb);
+}
+
+.enhanced-editor__preview h2 {
+  font-size: 1.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.enhanced-editor__preview h3 {
+  font-size: 1.25rem;
+}
+
+.enhanced-editor__preview p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+.enhanced-editor__preview code {
+  padding: 0.125rem 0.25rem;
+  background-color: var(--color-bg-tertiary, #f3f4f6);
+  border-radius: 0.25rem;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: var(--color-primary, #3b82f6);
+}
+
+.enhanced-editor__preview pre {
+  padding: 1rem;
+  background-color: var(--color-bg-tertiary, #f3f4f6);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.enhanced-editor__preview blockquote {
+  padding-left: 1rem;
+  border-left: 4px solid var(--color-primary, #3b82f6);
+  color: var(--color-text-secondary, #6b7280);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.enhanced-editor__preview ul,
+.enhanced-editor__preview ol {
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.enhanced-editor__preview li {
+  margin-bottom: 0.25rem;
+}
+
+.enhanced-editor__preview a {
+  color: var(--color-primary, #3b82f6);
+  text-decoration: underline;
+}
+
+.enhanced-editor__preview a:hover {
+  color: var(--color-primary-hover, #2563eb);
+}
+
+.enhanced-editor__preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.enhanced-editor__preview table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.enhanced-editor__preview th,
+.enhanced-editor__preview td {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  text-align: left;
+}
+
+.enhanced-editor__preview th {
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  font-weight: 600;
+}
+
+.enhanced-editor__preview hr {
+  border: none;
+  border-top: 2px solid var(--color-border, #e5e7eb);
+  margin: 2rem 0;
+}
+
+/* ダークモード対応 */
+.dark .enhanced-editor {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .enhanced-editor__toolbar {
+  background-color: var(--color-bg-tertiary);
+  border-bottom-color: var(--color-border);
+}
+
+.dark .enhanced-editor__toolbar-button {
+  color: var(--color-text-secondary);
+}
+
+.dark .enhanced-editor__toolbar-button:hover {
+  background-color: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.dark .enhanced-editor__view-toggle {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .enhanced-editor__textarea {
+  color: var(--color-text);
+}
+
+.dark .enhanced-editor__status {
+  background-color: var(--color-bg-tertiary);
+  border-top-color: var(--color-border);
+}
+
+.dark .enhanced-editor__preview {
+  background-color: var(--color-bg-secondary);
+}
+
+.dark .enhanced-editor__preview code {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-primary);
+}
+
+.dark .enhanced-editor__preview pre {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .enhanced-editor__preview th {
+  background-color: var(--color-bg-tertiary);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .enhanced-editor__toolbar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .enhanced-editor__toolbar-items {
+    flex-wrap: wrap;
+  }
+
+  .enhanced-editor__content--split {
+    flex-direction: column;
+  }
+
+  .enhanced-editor__content--split .enhanced-editor__editor,
+  .enhanced-editor__content--split .enhanced-editor__preview {
+    width: 100%;
+    height: 50%;
+    border-right: none;
+  }
+
+  .enhanced-editor__content--split .enhanced-editor__editor {
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+  }
+}

@@ -1,0 +1,330 @@
+.analytics-dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.analytics-dashboard--loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+}
+
+.analytics-dashboard__spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid var(--color-border, #e5e7eb);
+  border-top-color: var(--color-primary, #3b82f6);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ヘッダー */
+.analytics-dashboard__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.analytics-dashboard__title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: var(--color-text, #111827);
+}
+
+.analytics-dashboard__filters {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.analytics-dashboard__select {
+  min-width: 150px;
+}
+
+/* ステータスカード */
+.analytics-dashboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.analytics-stat-card {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  transition: all 0.3s;
+}
+
+.analytics-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.analytics-stat-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.analytics-stat-card__title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.analytics-stat-card__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-primary, #3b82f6);
+}
+
+.analytics-stat-card__value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-text, #111827);
+  margin-bottom: 0.5rem;
+}
+
+.analytics-stat-card__change {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.analytics-stat-card__change--positive {
+  color: #10b981;
+}
+
+.analytics-stat-card__change--negative {
+  color: #ef4444;
+}
+
+/* タブ */
+.analytics-dashboard__tabs {
+  margin-top: 2rem;
+}
+
+.analytics-dashboard__tabs-list {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--color-border, #e5e7eb);
+  margin-bottom: 2rem;
+}
+
+.analytics-dashboard__tab-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.analytics-dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* パフォーマンスリスト */
+.analytics-dashboard__performance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.analytics-dashboard__performance-item {
+  padding: 1rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.analytics-dashboard__performance-item:hover {
+  background-color: var(--color-bg-hover, #f3f4f6);
+}
+
+.analytics-dashboard__performance-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.analytics-dashboard__performance-header h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+.analytics-dashboard__performance-rate {
+  padding: 0.25rem 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 9999px;
+}
+
+.analytics-dashboard__performance-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.analytics-dashboard__performance-stats span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.analytics-dashboard__performance-bar {
+  height: 0.5rem;
+  background-color: var(--color-border, #e5e7eb);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.analytics-dashboard__performance-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  border-radius: 9999px;
+  transition: width 0.5s ease-out;
+}
+
+/* チャートスタイル */
+.recharts-wrapper {
+  width: 100% !important;
+}
+
+.recharts-cartesian-axis-tick-value {
+  font-size: 0.75rem;
+  fill: var(--color-text-secondary, #6b7280);
+}
+
+.recharts-legend-wrapper {
+  padding-top: 1rem !important;
+}
+
+.recharts-legend-item-text {
+  font-size: 0.875rem;
+  fill: var(--color-text, #111827) !important;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+.recharts-default-tooltip {
+  background-color: var(--color-bg-secondary, white) !important;
+  border: 1px solid var(--color-border, #e5e7eb) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.recharts-tooltip-label {
+  color: var(--color-text, #111827) !important;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.recharts-tooltip-item {
+  color: var(--color-text-secondary, #6b7280) !important;
+}
+
+/* ダークモード */
+.dark .analytics-dashboard__title {
+  color: var(--color-text);
+}
+
+.dark .analytics-stat-card {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .analytics-dashboard__performance-item {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .analytics-dashboard__performance-item:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.dark .recharts-cartesian-grid-horizontal line,
+.dark .recharts-cartesian-grid-vertical line {
+  stroke: var(--color-border) !important;
+}
+
+.dark .recharts-cartesian-axis-line {
+  stroke: var(--color-border) !important;
+}
+
+.dark .recharts-default-tooltip {
+  background-color: var(--color-bg-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* レスポンシブ */
+@media (max-width: 1024px) {
+  .analytics-dashboard {
+    padding: 1.5rem;
+  }
+  
+  .analytics-dashboard__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .analytics-dashboard {
+    padding: 1rem;
+  }
+  
+  .analytics-dashboard__header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .analytics-dashboard__filters {
+    flex-direction: column;
+  }
+  
+  .analytics-dashboard__stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .analytics-dashboard__performance-stats {
+    flex-wrap: wrap;
+  }
+  
+  .analytics-dashboard__tabs-list {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,209 @@
+.article-exporter {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+/* ヘッダー */
+.article-exporter__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.article-exporter__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+.article-exporter__options-toggle {
+  padding: 0.375rem 0.75rem;
+  background-color: transparent;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.375rem;
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.article-exporter__options-toggle:hover {
+  background-color: var(--color-bg-hover, #f9fafb);
+  color: var(--color-text, #111827);
+}
+
+/* オプション */
+.article-exporter__options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-radius: 0.5rem;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article-exporter__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.article-exporter__option label {
+  font-size: 0.875rem;
+  color: var(--color-text, #111827);
+  cursor: pointer;
+  user-select: none;
+}
+
+.article-exporter__option input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+/* コントロール */
+.article-exporter__controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.article-exporter__select {
+  flex: 1;
+  min-width: 200px;
+}
+
+.article-exporter__format {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.article-exporter__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background-color: var(--color-primary, #3b82f6);
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.article-exporter__button:hover:not(:disabled) {
+  background-color: var(--color-primary-hover, #2563eb);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.article-exporter__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.article-exporter__button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* 情報テキスト */
+.article-exporter__info {
+  padding: 0.75rem;
+  background-color: var(--color-bg-info, #eff6ff);
+  border: 1px solid var(--color-border-info, #bfdbfe);
+  border-radius: 0.375rem;
+}
+
+.article-exporter__info-text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-info, #1e40af);
+}
+
+/* フォーマットバッジ */
+.article-exporter__format-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-bg-tertiary, #f3f4f6);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+/* ダークモード */
+.dark .article-exporter {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .article-exporter__options {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .article-exporter__options-toggle {
+  border-color: var(--color-border);
+}
+
+.dark .article-exporter__options-toggle:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.dark .article-exporter__info {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.dark .article-exporter__info-text {
+  color: #93bbfc;
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .article-exporter {
+    padding: 1rem;
+  }
+  
+  .article-exporter__controls {
+    flex-direction: column;
+  }
+  
+  .article-exporter__select {
+    width: 100%;
+  }
+  
+  .article-exporter__button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .article-exporter__options {
+    grid-template-columns: 1fr;
+  }
+}

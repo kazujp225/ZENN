@@ -71,71 +71,6 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-/* デモボタンセクション */
-.auth-demo {
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-6);
-  border-bottom: 1px solid var(--color-border-light);
-}
-
-.auth-demo__label {
-  text-align: center;
-  font-size: 0.875rem;
-  color: var(--color-fg-tertiary);
-  margin-bottom: var(--space-4);
-}
-
-.auth-demo__buttons {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.auth-demo__button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  width: 100%;
-  padding: var(--space-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: white;
-  color: var(--color-fg);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.auth-demo__button:hover {
-  background: var(--color-bg-secondary);
-  border-color: var(--color-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.auth-demo__button--user {
-  border-color: var(--color-border);
-  background: var(--color-bg);
-}
-
-.auth-demo__button--pro {
-  border-color: var(--color-primary);
-  background: var(--color-primary-light);
-  color: var(--color-primary);
-}
-
-.auth-demo__button--admin {
-  border-color: var(--color-accent);
-  background: var(--color-accent-light);
-  color: var(--color-accent);
-}
-
-.auth-demo__button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 /* 区切り線 */
 .auth-divider {
@@ -400,18 +335,3 @@
   animation: slideUp 0.4s ease;
 }
 
-.auth-demo__button {
-  animation: slideUp 0.4s ease backwards;
-}
-
-.auth-demo__button:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.auth-demo__button:nth-child(2) {
-  animation-delay: 0.15s;
-}
-
-.auth-demo__button:nth-child(3) {
-  animation-delay: 0.2s;
-}

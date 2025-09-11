@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オフライン - Zenn Clone</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 500px;
+      margin: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    .icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #1a202c;
+    }
+    
+    p {
+      color: #718096;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    
+    .features {
+      text-align: left;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f7fafc;
+      border-radius: 10px;
+    }
+    
+    .features h2 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: #2d3748;
+    }
+    
+    .features ul {
+      list-style: none;
+    }
+    
+    .features li {
+      padding: 0.5rem 0;
+      display: flex;
+      align-items: center;
+      color: #4a5568;
+    }
+    
+    .features li::before {
+      content: '✓';
+      color: #48bb78;
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .status {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fef5e7;
+      border-radius: 10px;
+      color: #7d6608;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📡</div>
+    <h1>オフラインです</h1>
+    <p>
+      インターネット接続がありません。<br>
+      接続が回復したら、自動的にコンテンツが更新されます。
+    </p>
+    
+    <div class="features">
+      <h2>オフラインでも利用可能な機能：</h2>
+      <ul>
+        <li>キャッシュされた記事の閲覧</li>
+        <li>下書きの作成と編集</li>
+        <li>ブックマークした記事の確認</li>
+        <li>設定の変更</li>
+      </ul>
+    </div>
+    
+    <button class="button" onclick="window.location.reload()">
+      再接続を試す
+    </button>
+    
+    <div class="status" id="status">
+      <strong>ステータス:</strong> <span id="connection-status">オフライン</span>
+    </div>
+  </div>
+  
+  <script>
+    // 接続状態の監視
+    function updateStatus() {
+      const statusEl = document.getElementById('connection-status');
+      if (navigator.onLine) {
+        statusEl.textContent = 'オンライン（再読み込み中...）';
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
+      } else {
+        statusEl.textContent = 'オフライン';
+      }
+    }
+    
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+    
+    // Service Workerの状態確認
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then((registration) => {
+        console.log('Service Worker is active:', registration.active);
+      });
+    }
+    
+    // 定期的な接続チェック
+    setInterval(() => {
+      if (navigator.onLine) {
+        updateStatus();
+      }
+    }, 5000);
+  </script>
+</body>
+</html>

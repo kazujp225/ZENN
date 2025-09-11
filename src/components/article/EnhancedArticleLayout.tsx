@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/Button'
 import { OptimizedMarkdownContent } from './OptimizedMarkdownContent'
 import { CommentSection } from '../comment/CommentSection'
 import { ArticleErrorBoundary, CommentErrorBoundary } from '../common/ErrorBoundary'
+import { useAuth } from '@/contexts/AuthContext'
+import { useBookmarks } from '@/contexts/BookmarkContext'
 import type { Article, ArticleSlots } from '@/types/article'
 import '@/styles/pages/article-detail.css'
 import '@/styles/components/article-layout.css'
@@ -94,11 +96,38 @@ const ActionButtons = memo(({
 ActionButtons.displayName = 'ActionButtons'
 
 export const EnhancedArticleLayout = memo(({ article, slots }: EnhancedArticleLayoutProps) => {
+  const { user } = useAuth()
+  const { isBookmarked, toggleBookmark } = useBookmarks()
   const [activeSection, setActiveSection] = useState<string>('')
   const [isLiked, setIsLiked] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
   const [likesCount, setLikesCount] = useState(article.likes)
   const [showMobileToc, setShowMobileToc] = useState(false)
+
+  // ブックマーク状態の初期化
+  useEffect(() => {
+    setIsSaved(isBookmarked('article', article.id))
+  }, [isBookmarked, article.id])
+
+  // いいね状態の初期化
+  useEffect(() => {
+    const checkLikeStatus = async () => {
+      if (!user) return
+      
+      try {
+        const response = await fetch(`/api/likes?target_type=article&target_id=${article.id}`)
+        if (response.ok) {
+          const data = await response.json()
+          setIsLiked(data.liked)
+          setLikesCount(data.count)
+        }
+      } catch (error) {
+        console.error('Failed to check like status:', error)
+      }
+    }
+    
+    checkLikeStatus()
+  }, [user, article.id])
 
   // IntersectionObserverの最適化
   useEffect(() => {
@@ -164,20 +193,46 @@ export const EnhancedArticleLayout = memo(({ article, slots }: EnhancedArticleLa
   }, [])
 
   // いいね処理（楽観的アップデート）
-  const handleLike = useCallback(() => {
+  const handleLike = useCallback(async () => {
     const newIsLiked = !isLiked
+    const previousLikesCount = likesCount
+    
+    // 楽観的アップデート
     setIsLiked(newIsLiked)
     setLikesCount(prev => newIsLiked ? prev + 1 : prev - 1)
     
-    // TODO: 実際のAPI呼び出し
-    // API失敗時はロールバック処理を追加
-  }, [isLiked])
+    try {
+      const response = await fetch('/api/likes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          target_type: 'article',
+          target_id: article.id,
+        }),
+      })
+
+      if (!response.ok) {
+        // エラー時はロールバック
+        setIsLiked(!newIsLiked)
+        setLikesCount(previousLikesCount)
+        const error = await response.json()
+        console.error('Failed to like article:', error)
+      }
+    } catch (error) {
+      // エラー時はロールバック
+      setIsLiked(!newIsLiked)
+      setLikesCount(previousLikesCount)
+      console.error('Failed to like article:', error)
+    }
+  }, [isLiked, likesCount, article.id])
 
   // 保存処理
-  const handleSave = useCallback(() => {
-    setIsSaved(prev => !prev)
-    // TODO: 実際のAPI呼び出し
-  }, [])
+  const handleSave = useCallback(async () => {
+    const newState = await toggleBookmark('article', article.id)
+    setIsSaved(newState)
+  }, [toggleBookmark, article.id])
 
   // 共有処理（エラーハンドリング付き）
   const handleShare = useCallback(async () => {
@@ -418,7 +473,7 @@ export const EnhancedArticleLayout = memo(({ article, slots }: EnhancedArticleLa
                   <CommentSection
                     comments={article.comments}
                     articleId={article.id}
-                    currentUserId="developer1" // TODO: 実際のログインユーザーID
+                    currentUserId={user?.id}
                   />
                 </CommentErrorBoundary>
               </section>

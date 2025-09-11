@@ -1,0 +1,274 @@
+/* ダークモード用のスタイル */
+
+/* ベースカラー */
+.dark {
+  --color-bg: #0f1419;
+  --color-bg-secondary: #1a1f2e;
+  --color-bg-tertiary: #242938;
+  --color-bg-hover: #2a2f3e;
+  
+  --color-text: #e1e8ed;
+  --color-text-secondary: #9ca3af;
+  --color-text-tertiary: #6b7280;
+  
+  --color-border: #2a2f3e;
+  --color-border-light: #1f2937;
+  
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-light: rgba(59, 130, 246, 0.1);
+  
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* 背景色 */
+.dark body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.dark .bg-white {
+  background-color: var(--color-bg-secondary);
+}
+
+.dark .bg-gray-50 {
+  background-color: var(--color-bg);
+}
+
+.dark .bg-gray-100 {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .bg-gray-200 {
+  background-color: var(--color-bg-hover);
+}
+
+/* テキスト色 */
+.dark .text-gray-900 {
+  color: var(--color-text);
+}
+
+.dark .text-gray-800 {
+  color: var(--color-text);
+}
+
+.dark .text-gray-700 {
+  color: var(--color-text-secondary);
+}
+
+.dark .text-gray-600 {
+  color: var(--color-text-secondary);
+}
+
+.dark .text-gray-500 {
+  color: var(--color-text-tertiary);
+}
+
+/* ボーダー */
+.dark .border-gray-200 {
+  border-color: var(--color-border);
+}
+
+.dark .border-gray-300 {
+  border-color: var(--color-border);
+}
+
+.dark .divide-gray-200 > * + * {
+  border-color: var(--color-border);
+}
+
+/* カード */
+.dark .card {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .card:hover {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-primary);
+}
+
+/* ボタン */
+.dark .btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.dark .btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.dark .btn-secondary {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.dark .btn-secondary:hover {
+  background-color: var(--color-bg-hover);
+}
+
+/* 入力フィールド */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+/* ヘッダー */
+.dark .zenn-header {
+  background-color: var(--color-bg-secondary);
+  border-bottom-color: var(--color-border);
+}
+
+.dark .zenn-header__nav-link {
+  color: var(--color-text-secondary);
+}
+
+.dark .zenn-header__nav-link:hover {
+  color: var(--color-text);
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .zenn-header__nav-link--active {
+  color: var(--color-primary);
+}
+
+.dark .zenn-header__search-input {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.dark .zenn-header__search-input:focus {
+  background-color: var(--color-bg);
+  border-color: var(--color-primary);
+}
+
+/* ドロップダウン */
+.dark .dropdown-menu {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .dropdown-item:hover {
+  background-color: var(--color-bg-tertiary);
+}
+
+/* モーダル */
+.dark .modal {
+  background-color: var(--color-bg-secondary);
+}
+
+.dark .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* コードブロック */
+.dark pre,
+.dark code {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+}
+
+.dark .hljs {
+  background-color: var(--color-bg-tertiary);
+}
+
+/* スクロールバー */
+.dark ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--color-bg-tertiary);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 6px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* タブ */
+.dark .tabs__tab {
+  color: var(--color-text-secondary);
+  border-bottom-color: transparent;
+}
+
+.dark .tabs__tab:hover {
+  color: var(--color-text);
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .tabs__tab--active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* バッジ */
+.dark .badge {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text);
+}
+
+.dark .badge--primary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+/* アラート */
+.dark .alert {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.dark .alert--error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.dark .alert--success {
+  background-color: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #86efac;
+}
+
+/* トースト通知 */
+.dark .Toaster {
+  --toast-bg: var(--color-bg-secondary);
+  --toast-color: var(--color-text);
+  --toast-border: var(--color-border);
+}
+
+/* フッター */
+.dark footer {
+  background-color: var(--color-bg-secondary);
+  border-top-color: var(--color-border);
+}

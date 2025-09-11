@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserDropdown } from '@/components/auth/UserDropdown'
+import { ThemeToggleSimple } from '@/components/ui/ThemeToggle'
+import { NotificationDropdown } from '@/components/notification/NotificationDropdown'
 import '@/styles/components/header.css'
 import '@/styles/components/header-centered.css'
 
@@ -127,6 +129,9 @@ export const Header = () => {
               </Link>
 
               <div className="zenn-header__auth">
+                {/* テーマ切り替えボタン */}
+                <ThemeToggleSimple />
+                
                 {!isLoading && (
                   isAuthenticated && user ? (
                     /* 認証済みユーザー */
@@ -138,6 +143,9 @@ export const Header = () => {
                         </svg>
                         <span>投稿</span>
                       </Link>
+
+                      {/* 通知ドロップダウン */}
+                      <NotificationDropdown />
 
                       {/* ユーザーメニュー */}
                       <UserDropdown />

@@ -1,20 +1,25 @@
 // Service Worker for Zenn Clone PWA
-const CACHE_NAME = 'zenn-clone-v1';
+const CACHE_NAME = 'zenn-clone-v2';
+const STATIC_CACHE = 'zenn-static-v2';
+const DYNAMIC_CACHE = 'zenn-dynamic-v2';
+const API_CACHE = 'zenn-api-v2';
+
 const urlsToCache = [
   '/',
   '/articles',
   '/books',
   '/scraps',
-  '/explore',
-  '/manifest.json'
+  '/bookmarks',
+  '/manifest.json',
+  '/offline.html'
 ];
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
+    caches.open(STATIC_CACHE)
       .then((cache) => {
-        console.log('Opened cache');
+        console.log('[SW] Caching static assets');
         return cache.addAll(urlsToCache);
       })
   );

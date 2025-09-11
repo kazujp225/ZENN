@@ -24,18 +24,33 @@ export function CommentSection({
   const handleAddComment = async (content: string) => {
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
-      await new Promise(resolve => setTimeout(resolve, 1000)) // シミュレーション
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          article_id: articleId,
+          content,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'コメントの投稿に失敗しました')
+      }
+
+      const { data } = await response.json()
       
       const newComment: Comment = {
-        id: Date.now().toString(),
+        id: data.id,
         author: {
-          username: currentUserId || 'anonymous',
-          name: 'Anonymous User', // TODO: 実際のユーザー情報
-          avatar: '/images/avatar-placeholder.svg'
+          username: data.author.username,
+          name: data.author.display_name || data.author.username,
+          avatar: data.author.avatar_url || '/images/avatar-placeholder.svg'
         },
-        content,
-        publishedAt: new Date().toISOString(),
+        content: data.content,
+        publishedAt: data.created_at,
         likes: 0,
         isLiked: false,
         replies: []
@@ -54,18 +69,34 @@ export function CommentSection({
   const handleReply = async (commentId: string, content: string) => {
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
-      await new Promise(resolve => setTimeout(resolve, 1000)) // シミュレーション
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          article_id: articleId,
+          content,
+          parent_id: commentId,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'リプライの投稿に失敗しました')
+      }
+
+      const { data } = await response.json()
       
       const newReply = {
-        id: Date.now().toString(),
+        id: data.id,
         author: {
-          username: currentUserId || 'anonymous',
-          name: 'Anonymous User', // TODO: 実際のユーザー情報
-          avatar: '/images/avatar-placeholder.svg'
+          username: data.author.username,
+          name: data.author.display_name || data.author.username,
+          avatar: data.author.avatar_url || '/images/avatar-placeholder.svg'
         },
-        content,
-        publishedAt: new Date().toISOString(),
+        content: data.content,
+        publishedAt: data.created_at,
         likes: 0,
         isLiked: false
       }
@@ -90,8 +121,18 @@ export function CommentSection({
   const handleEditComment = async (commentId: string, content: string) => {
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
-      await new Promise(resolve => setTimeout(resolve, 1000)) // シミュレーション
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ content }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'コメントの編集に失敗しました')
+      }
       
       setComments(prev => prev.map(comment =>
         comment.id === commentId
@@ -117,8 +158,14 @@ export function CommentSection({
   const handleDeleteComment = async (commentId: string) => {
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
-      await new Promise(resolve => setTimeout(resolve, 1000)) // シミュレーション
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'コメントの削除に失敗しました')
+      }
       
       setComments(prev => prev.filter(comment => {
         if (comment.id === commentId) {
@@ -139,8 +186,21 @@ export function CommentSection({
   // いいね機能
   const handleLikeComment = async (commentId: string, isLiked: boolean) => {
     try {
-      // TODO: 実際のAPI呼び出し
-      await new Promise(resolve => setTimeout(resolve, 300)) // シミュレーション
+      const response = await fetch('/api/likes', {
+        method: isLiked ? 'POST' : 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          target_type: 'comment',
+          target_id: commentId,
+        }),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'いいねに失敗しました')
+      }
       
       setComments(prev => prev.map(comment => {
         if (comment.id === commentId) {

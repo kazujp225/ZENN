@@ -1,0 +1,399 @@
+.ab-test-manager {
+  background-color: var(--color-bg-secondary, white);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* ヘッダー */
+.ab-test-manager__header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  background-color: var(--color-bg-tertiary, #f9fafb);
+}
+
+.ab-test-manager__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+/* レイアウト */
+.ab-test-manager__layout {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  min-height: 600px;
+}
+
+/* サイドバー */
+.ab-test-manager__sidebar {
+  padding: 1.5rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-right: 1px solid var(--color-border, #e5e7eb);
+  overflow-y: auto;
+}
+
+.ab-test-manager__test-list {
+  margin-bottom: 2rem;
+}
+
+.ab-test-manager__test-list h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 1rem 0;
+}
+
+.ab-test-manager__test-item {
+  padding: 1rem;
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ab-test-manager__test-item:hover {
+  background-color: var(--color-bg-hover, #f3f4f6);
+  border-color: var(--color-primary, #3b82f6);
+}
+
+.ab-test-manager__test-item--selected {
+  background-color: rgba(59, 130, 246, 0.05);
+  border-color: var(--color-primary, #3b82f6);
+}
+
+.ab-test-manager__test-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ab-test-manager__test-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.ab-test-manager__test-description {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary, #6b7280);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.ab-test-manager__status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+}
+
+/* 作成フォーム */
+.ab-test-manager__create-card {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.ab-test-manager__create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ab-test-manager__variant-inputs h4 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 0.5rem 0;
+}
+
+.ab-test-manager__create-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  color: white;
+  border: none;
+}
+
+.ab-test-manager__create-btn:hover {
+  background: linear-gradient(135deg, #7c3aed, #2563eb);
+}
+
+/* メインコンテンツ */
+.ab-test-manager__main {
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.ab-test-manager__test-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.ab-test-manager__test-info h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--color-text, #111827);
+  margin: 0 0 0.5rem 0;
+}
+
+.ab-test-manager__test-info p {
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 0.75rem 0;
+}
+
+.ab-test-manager__test-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ab-test-manager__action-btn {
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  color: white;
+  border: none;
+}
+
+/* バリアント */
+.ab-test-manager__variants {
+  margin-bottom: 2rem;
+}
+
+.ab-test-manager__variants h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 1rem 0;
+}
+
+.ab-test-manager__variant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.ab-test-manager__variant-card {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.ab-test-manager__variant-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.ab-test-manager__variant-preview {
+  margin-bottom: 1rem;
+}
+
+.ab-test-manager__variant-preview h5 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 0.5rem 0;
+}
+
+.ab-test-manager__variant-preview p {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary, #6b7280);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.ab-test-manager__variant-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ab-test-manager__metric {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* 結果 */
+.ab-test-manager__results h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 1rem 0;
+}
+
+.ab-test-manager__results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.ab-test-manager__result-card {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.ab-test-manager__result-card h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 1rem 0;
+}
+
+.ab-test-manager__result-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.ab-test-manager__result-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ab-test-manager__result-label {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.ab-test-manager__result-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.ab-test-manager__result-value--positive {
+  color: #10b981;
+}
+
+.ab-test-manager__result-value--negative {
+  color: #ef4444;
+}
+
+.ab-test-manager__confidence-bar {
+  margin-bottom: 0.75rem;
+}
+
+.ab-test-manager__winner-badge {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  border: none;
+}
+
+.ab-test-manager__winner {
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+  border: 1px solid #fbbf24;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.ab-test-manager__winner h5 {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: var(--color-text, #111827);
+  margin: 0 0 0.5rem 0;
+}
+
+.ab-test-manager__winner p {
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+}
+
+/* ダークモード */
+.dark .ab-test-manager {
+  background-color: var(--color-bg-secondary);
+}
+
+.dark .ab-test-manager__header {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+}
+
+.dark .ab-test-manager__sidebar {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+}
+
+.dark .ab-test-manager__test-item {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .ab-test-manager__test-item:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.dark .ab-test-manager__create-card {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .ab-test-manager__variant-card,
+.dark .ab-test-manager__result-card {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .ab-test-manager__winner {
+  background: rgba(251, 191, 36, 0.05);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+/* レスポンシブ */
+@media (max-width: 1024px) {
+  .ab-test-manager__layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .ab-test-manager__sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+  }
+}
+
+@media (max-width: 768px) {
+  .ab-test-manager__sidebar {
+    padding: 1rem;
+  }
+  
+  .ab-test-manager__main {
+    padding: 1rem;
+  }
+  
+  .ab-test-manager__test-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .ab-test-manager__test-actions {
+    flex-direction: column;
+  }
+  
+  .ab-test-manager__variant-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ab-test-manager__results-grid {
+    grid-template-columns: 1fr;
+  }
+}

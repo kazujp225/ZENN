@@ -1,0 +1,335 @@
+.diff-viewer__dialog {
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 1200px;
+}
+
+.diff-viewer__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.diff-viewer__close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+/* ヘッダー */
+.diff-viewer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.diff-viewer__versions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.diff-viewer__version {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.diff-viewer__version-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.diff-viewer__version-number {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+}
+
+.diff-viewer__arrow {
+  font-size: 1.5rem;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+.diff-viewer__stats {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.diff-viewer__stat {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+.diff-viewer__stat--additions {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.diff-viewer__stat--deletions {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.diff-viewer__stat--unchanged {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: #6b7280;
+}
+
+/* コントロール */
+.diff-viewer__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-radius: 0.5rem;
+}
+
+.diff-viewer__view-mode {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.diff-viewer__filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text, #111827);
+  cursor: pointer;
+}
+
+.diff-viewer__filter input[type="checkbox"] {
+  cursor: pointer;
+}
+
+/* タブ */
+.diff-viewer__tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.diff-viewer__content-wrapper {
+  flex: 1;
+  overflow: auto;
+  max-height: 500px;
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.5rem;
+}
+
+/* 分割ビュー */
+.diff-viewer__split {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.diff-viewer__split-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--color-bg-tertiary, #f3f4f6);
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.diff-viewer__split-title {
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  text-align: center;
+  border-right: 1px solid var(--color-border, #e5e7eb);
+}
+
+.diff-viewer__split-title:last-child {
+  border-right: none;
+}
+
+.diff-viewer__split-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.diff-viewer__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr;
+  border-bottom: 1px solid var(--color-border-light, #f3f4f6);
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.diff-viewer__row:hover {
+  background-color: var(--color-bg-hover, #f9fafb);
+}
+
+.diff-viewer__line-number {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  color: var(--color-text-tertiary, #9ca3af);
+  font-size: 0.75rem;
+  text-align: right;
+  user-select: none;
+  border-right: 1px solid var(--color-border, #e5e7eb);
+}
+
+.diff-viewer__content {
+  padding: 0.25rem 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.diff-viewer__content--old {
+  border-right: 1px solid var(--color-border, #e5e7eb);
+}
+
+.diff-viewer__content--removed {
+  background-color: rgba(254, 226, 226, 0.5);
+}
+
+.diff-viewer__content--added {
+  background-color: rgba(220, 252, 231, 0.5);
+}
+
+.diff-viewer__empty {
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+/* 統合ビュー */
+.diff-viewer__unified {
+  padding: 1rem;
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.diff-viewer__added {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: #15803d;
+  text-decoration: none;
+}
+
+.diff-viewer__removed {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #dc2626;
+  text-decoration: line-through;
+}
+
+.diff-viewer__unchanged {
+  color: var(--color-text, #111827);
+}
+
+/* タイトル差分 */
+.diff-viewer__title-diff {
+  padding: 1.5rem;
+}
+
+.diff-viewer__title-diff h4 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  margin-bottom: 1rem;
+}
+
+.diff-viewer__title-content {
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+/* ダークモード */
+.dark .diff-viewer__header {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .diff-viewer__controls {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .diff-viewer__content-wrapper {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .diff-viewer__split-header {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+}
+
+.dark .diff-viewer__line-number {
+  background-color: var(--color-bg-tertiary);
+  border-color: var(--color-border);
+}
+
+.dark .diff-viewer__content--old {
+  border-color: var(--color-border);
+}
+
+.dark .diff-viewer__split-title {
+  border-color: var(--color-border);
+}
+
+.dark .diff-viewer__row {
+  border-color: var(--color-border);
+}
+
+.dark .diff-viewer__content--removed {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.dark .diff-viewer__content--added {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.dark .diff-viewer__added {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.dark .diff-viewer__removed {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+  .diff-viewer__dialog {
+    max-width: 95vw;
+  }
+  
+  .diff-viewer__header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .diff-viewer__controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .diff-viewer__split-header {
+    font-size: 0.75rem;
+  }
+  
+  .diff-viewer__content {
+    font-size: 0.75rem;
+  }
+}

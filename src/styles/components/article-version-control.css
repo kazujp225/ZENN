@@ -1,0 +1,303 @@
+.article-version-control {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.article-version-control--loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 1rem;
+}
+
+.article-version-control__spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid var(--color-border, #e5e7eb);
+  border-top-color: var(--color-primary, #3b82f6);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ヘッダー */
+.article-version-control__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.article-version-control__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+.article-version-control__count {
+  padding: 0.25rem 0.75rem;
+  background-color: var(--color-bg-tertiary, #f3f4f6);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+/* タイムライン */
+.article-version-control__timeline {
+  position: relative;
+}
+
+.article-version-item {
+  display: flex;
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.article-version-item:last-child {
+  padding-bottom: 0;
+}
+
+/* コネクター */
+.article-version-item__connector {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 1.5rem;
+}
+
+.article-version-item__line {
+  position: absolute;
+  top: 1.5rem;
+  bottom: -2rem;
+  width: 2px;
+  background-color: var(--color-border, #e5e7eb);
+}
+
+.article-version-item:last-child .article-version-item__line {
+  display: none;
+}
+
+.article-version-item__dot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: var(--color-bg-secondary, white);
+  border: 2px solid var(--color-border, #9ca3af);
+  z-index: 1;
+}
+
+.article-version-item__dot--current {
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--color-primary, #3b82f6);
+  border-color: var(--color-primary, #3b82f6);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* コンテンツ */
+.article-version-item__content {
+  flex: 1;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.article-version-item__content:hover {
+  background-color: var(--color-bg-hover, #f3f4f6);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.article-version-item__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.article-version-item__meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.article-version-item__version {
+  padding: 0.125rem 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 9999px;
+}
+
+.article-version-item__date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.article-version-item__author {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.article-version-item__avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.article-version-item__message {
+  font-size: 0.9375rem;
+  color: var(--color-text, #111827);
+  margin-bottom: 0.75rem;
+}
+
+.article-version-item__stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.article-version-item__stat {
+  padding: 0.125rem 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+.article-version-item__stat--additions {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.article-version-item__stat--deletions {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.article-version-item__tag {
+  padding: 0.125rem 0.5rem;
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+  border-radius: 9999px;
+}
+
+/* 展開コンテンツ */
+.article-version-item__expanded {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article-version-item__preview {
+  padding: 1rem;
+  background-color: var(--color-bg-secondary, white);
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.article-version-item__preview h4 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0 0 0.5rem 0;
+}
+
+.article-version-item__preview p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #6b7280);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.article-version-item__expanded-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ダークモード */
+.dark .article-version-control {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .article-version-control__count {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .article-version-item__content {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .article-version-item__content:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.dark .article-version-item__preview {
+  background-color: var(--color-bg-secondary);
+}
+
+.dark .article-version-item__tag {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .article-version-control {
+    padding: 1rem;
+  }
+  
+  .article-version-item__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .article-version-item__expanded-actions {
+    flex-direction: column;
+  }
+  
+  .article-version-item__expanded-actions button {
+    width: 100%;
+  }
+}

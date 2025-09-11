@@ -1,0 +1,323 @@
+.ai-tag-generator {
+  background-color: var(--color-bg-secondary, white);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+/* ヘッダー */
+.ai-tag-generator__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.ai-tag-generator__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text, #111827);
+  margin: 0;
+}
+
+.ai-tag-generator__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* 既存タグ */
+.ai-tag-generator__existing {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ai-tag-generator__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* アクション */
+.ai-tag-generator__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.ai-tag-generator__generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: white;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.ai-tag-generator__generate-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.3);
+}
+
+.ai-tag-generator__generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 提案 */
+.ai-tag-generator__suggestions {
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding-top: 1.5rem;
+}
+
+.ai-tag-generator__suggestions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.ai-tag-generator__suggestion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ai-tag-generator__suggestion-item {
+  position: relative;
+  padding: 1rem;
+  background-color: var(--color-bg-tertiary, #f9fafb);
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ai-tag-generator__suggestion-item:hover {
+  background-color: var(--color-bg-hover, #f3f4f6);
+  border-color: var(--color-primary, #3b82f6);
+}
+
+.ai-tag-generator__suggestion-item--selected {
+  background-color: rgba(139, 92, 246, 0.05);
+  border-color: #8b5cf6;
+}
+
+.ai-tag-generator__suggestion-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ai-tag-generator__suggestion-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text, #111827);
+}
+
+.ai-tag-generator__suggestion-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* カテゴリバッジ */
+.ai-tag-generator__category {
+  font-size: 0.75rem;
+  padding: 0.125rem 0.5rem;
+}
+
+.ai-tag-generator__category--blue {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.ai-tag-generator__category--purple {
+  background-color: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+  border-color: #8b5cf6;
+}
+
+.ai-tag-generator__category--green {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-color: #10b981;
+}
+
+.ai-tag-generator__category--orange {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+.ai-tag-generator__category--pink {
+  background-color: rgba(236, 72, 153, 0.1);
+  color: #ec4899;
+  border-color: #ec4899;
+}
+
+.ai-tag-generator__category--gray {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: #6b7280;
+  border-color: #6b7280;
+}
+
+/* 信頼度 */
+.ai-tag-generator__confidence {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ai-tag-generator__confidence-bar {
+  width: 60px;
+  height: 4px;
+  background-color: var(--color-border, #e5e7eb);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.ai-tag-generator__confidence-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #10b981);
+  border-radius: 9999px;
+  transition: width 0.3s ease-out;
+}
+
+.ai-tag-generator__confidence-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  min-width: 35px;
+}
+
+/* 詳細 */
+.ai-tag-generator__suggestion-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+.ai-tag-generator__reason {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary, #6b7280);
+  line-height: 1.4;
+}
+
+.ai-tag-generator__confidence-text {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+/* 選択インジケーター */
+.ai-tag-generator__selected-indicator {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #8b5cf6;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  font-size: 0.75rem;
+}
+
+/* 空状態 */
+.ai-tag-generator__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: var(--color-text-tertiary, #9ca3af);
+  text-align: center;
+}
+
+.ai-tag-generator__empty svg {
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.ai-tag-generator__empty p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* ダークモード */
+.dark .ai-tag-generator {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+}
+
+.dark .ai-tag-generator__existing {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .ai-tag-generator__suggestion-item {
+  background-color: var(--color-bg-tertiary);
+}
+
+.dark .ai-tag-generator__suggestion-item:hover {
+  background-color: var(--color-bg-hover);
+}
+
+.dark .ai-tag-generator__suggestion-item--selected {
+  background-color: rgba(139, 92, 246, 0.1);
+}
+
+.dark .ai-tag-generator__confidence-bar {
+  background-color: var(--color-border);
+}
+
+/* レスポンシブ */
+@media (max-width: 640px) {
+  .ai-tag-generator {
+    padding: 1rem;
+  }
+  
+  .ai-tag-generator__actions {
+    flex-direction: column;
+  }
+  
+  .ai-tag-generator__generate-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .ai-tag-generator__suggestions-header {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+  
+  .ai-tag-generator__suggestion-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
