@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function GET(request: NextRequest) {
+  // 🚨 SECURITY: This endpoint has been disabled for production security
+  return NextResponse.json({
+    error: 'Endpoint disabled for security reasons',
+    message: 'Test setup endpoints are not available in production'
+  }, { status: 403 })
+  
+  /*
   try {
     const supabase = createAdminClient()
     
@@ -123,4 +130,5 @@ export async function GET(request: NextRequest) {
       error: error.message
     }, { status: 500 })
   }
+  */
 }

@@ -176,6 +176,13 @@ const INDEX_STATEMENTS = [
 ]
 
 export async function GET(request: NextRequest) {
+  // 🚨 SECURITY: This endpoint has been disabled for production security
+  return NextResponse.json({
+    error: 'Endpoint disabled for security reasons',
+    message: 'Database initialization endpoints are not available in production'
+  }, { status: 403 })
+  
+  /*
   try {
     const supabase = createClient()
     const results = {
@@ -321,4 +328,5 @@ Zenn Cloneは、エンジニア向けの知識共有プラットフォームで�
       message: 'Failed to initialize database'
     }, { status: 500 })
   }
+  */
 }

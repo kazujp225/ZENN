@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(request: NextRequest) {
+  // 🚨 CRITICAL SECURITY: This endpoint has been disabled - it allows arbitrary SQL execution
+  return NextResponse.json({
+    error: 'Endpoint disabled for security reasons',
+    message: 'Direct SQL execution endpoints are extremely dangerous and not available'
+  }, { status: 403 })
+  
+  /*
   try {
     const { sql } = await request.json()
     
@@ -114,4 +121,5 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
       details: error 
     })
   }
+  */
 }

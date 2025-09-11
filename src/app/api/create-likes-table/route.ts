@@ -2,6 +2,13 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST() {
+  // 🚨 SECURITY: This endpoint has been disabled for production security
+  return NextResponse.json({
+    error: 'Endpoint disabled for security reasons',
+    message: 'Database creation endpoints are not available in production'
+  }, { status: 403 })
+  
+  /*
   try {
     const supabase = createAdminClient()
     
@@ -95,4 +102,5 @@ export async function POST() {
       details: error 
     })
   }
+  */
 }

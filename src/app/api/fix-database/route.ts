@@ -2,6 +2,13 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST() {
+  // 🚨 CRITICAL SECURITY: This endpoint has been disabled - it can drop and recreate all tables
+  return NextResponse.json({
+    error: 'Endpoint disabled for security reasons',
+    message: 'Database repair endpoints are extremely dangerous and not available'
+  }, { status: 403 })
+  
+  /*
   try {
     const supabase = createAdminClient()
 
@@ -173,4 +180,5 @@ export async function POST() {
       { status: 500 }
     )
   }
+  */
 }
