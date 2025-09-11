@@ -28,7 +28,7 @@ export const BookCard = ({
 }: BookCardProps) => {
   // author のバリデーション
   if (!author || !author.username) {
-    console.warn('BookCard: Invalid author data', { id, title, author })
+    // 警告ログ削除（セキュリティ対応）
     return null
   }
   const formatPrice = (price: number | 'free') => {

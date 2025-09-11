@@ -34,7 +34,7 @@ export const ScrapCard = ({
   const [isHovered, setIsHovered] = useState(false)
   // author のバリデーション
   if (!author || !author.username) {
-    console.warn('ScrapCard: Invalid author data', { id, title, author })
+    // 警告ログ削除（セキュリティ対応）
     return null
   }
   const formatDate = (dateString: string) => {

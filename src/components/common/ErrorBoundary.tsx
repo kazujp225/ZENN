@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo)
+    // エラーログ削除（セキュリティ対応）
     this.props.onError?.(error, errorInfo)
   }
 
@@ -148,7 +148,7 @@ export function ArticleErrorBoundary({ children }: { children: ReactNode }) {
       }
       onError={(error, errorInfo) => {
         // Log to monitoring service
-        console.error('Article render error:', { error, errorInfo })
+        // エラーログ削除（セキュリティ対応）
       }}
     >
       {children}
@@ -174,7 +174,7 @@ export function CommentErrorBoundary({ children }: { children: ReactNode }) {
         </div>
       }
       onError={(error, errorInfo) => {
-        console.error('Comment render error:', { error, errorInfo })
+        // エラーログ削除（セキュリティ対応）
       }}
     >
       {children}

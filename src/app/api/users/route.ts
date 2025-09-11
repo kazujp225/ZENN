@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       pageSize: limit
     })
   } catch (error) {
-    console.error('Error fetching users:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json({
       data: [],
       count: 0,
@@ -59,13 +59,13 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Error creating/updating user:', error)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
     return NextResponse.json({ data })
   } catch (error) {
-    console.error('Error in POST /api/users:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

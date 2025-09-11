@@ -8,7 +8,7 @@ export function createClient() {
   
   // 環境変数が設定されていない場合はエラーをスロー
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Missing Supabase environment variables')
+    // エラーログ削除（セキュリティ対応）
     // 開発環境用のモックURLを使用
     return createBrowserClient<Database>(
       'https://xyzcompany.supabase.co',

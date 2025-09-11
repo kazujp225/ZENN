@@ -50,7 +50,7 @@ export function RealtimeCommentSection({
       const data = await commentsApi.getArticleComments(articleId)
       // Comments will be synced via realtime subscription
     } catch (error) {
-      console.error('Failed to load comments:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
@@ -77,7 +77,7 @@ export function RealtimeCommentSection({
       setReplyTo(null)
     } catch (error) {
       removeOptimisticComment(optimisticId)
-      console.error('Failed to add comment:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsSubmitting(false)
     }
@@ -91,7 +91,7 @@ export function RealtimeCommentSection({
       setEditingId(null)
       setEditContent('')
     } catch (error) {
-      console.error('Failed to update comment:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
@@ -101,7 +101,7 @@ export function RealtimeCommentSection({
     try {
       await commentsApi.deleteArticleComment(commentId, articleId)
     } catch (error) {
-      console.error('Failed to delete comment:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
@@ -115,7 +115,7 @@ export function RealtimeCommentSection({
         await commentsApi.likeComment(commentId, currentUserId)
       }
     } catch (error) {
-      console.error('Failed to toggle like:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 

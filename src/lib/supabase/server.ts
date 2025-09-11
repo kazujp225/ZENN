@@ -11,7 +11,7 @@ export async function createClient() {
   
   // 環境変数が設定されていない場合はモックURLを使用
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Missing Supabase environment variables')
+    // エラーログ削除（セキュリティ対応）
     return createServerClient<Database>(
       'https://xyzcompany.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDYyMzkwMjIsImV4cCI6MTk2MTgxNTAyMn0.placeholder',

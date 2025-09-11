@@ -118,7 +118,7 @@ export function AITagGenerator({
       
       toast.success(`${mockSuggestions.length}個のタグ候補を生成しました`)
     } catch (error) {
-      console.error('Tag generation error:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('タグの生成に失敗しました')
     } finally {
       setIsGenerating(false)

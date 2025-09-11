@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(JSON.parse(savedUser))
         }
       } catch (error) {
-        console.error('認証状態の復元に失敗:', error)
+        // 認証状態の復元に失敗
       } finally {
         setIsLoading(false)
       }
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
+      // Supabase Auth APIを使用予定
       await new Promise(resolve => setTimeout(resolve, 1000)) // シミュレーション
 
       // 簡単なバリデーション（デモ用）
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error('メールアドレスまたはパスワードが正しくありません')
       }
     } catch (error) {
-      console.error('ログインエラー:', error)
+      // ログインエラー
       throw error
     } finally {
       setIsLoading(false)
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signup = async (email: string, password: string, name: string) => {
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
+      // Supabase Auth APIを使用予定
       await new Promise(resolve => setTimeout(resolve, 1500)) // シミュレーション
 
       const mockUser: User = {
@@ -107,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(mockUser)
       localStorage.setItem('auth-user', JSON.stringify(mockUser))
     } catch (error) {
-      console.error('サインアップエラー:', error)
+      // サインアップエラー
       throw error
     } finally {
       setIsLoading(false)
@@ -117,13 +117,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
+      // Supabase Auth APIを使用予定
       await new Promise(resolve => setTimeout(resolve, 500))
 
       setUser(null)
       localStorage.removeItem('auth-user')
     } catch (error) {
-      console.error('ログアウトエラー:', error)
+      // ログアウトエラー
       throw error
     } finally {
       setIsLoading(false)
@@ -133,26 +133,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithGoogle = async () => {
     setIsLoading(true)
     try {
-      // TODO: Google OAuth実装
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      const mockUser: User = {
-        id: 'google_' + Date.now(),
-        username: 'googleuser' + Math.random().toString(36).substr(2, 4),
-        name: 'Google ユーザー',
-        email: 'google@example.com',
-        avatar: '/images/avatar-placeholder.svg',
-        bio: 'Googleでログインしたユーザーです',
-        followersCount: 0,
-        followingCount: 0,
-        articlesCount: 0,
-        createdAt: new Date().toISOString()
-      }
-
-      setUser(mockUser)
-      localStorage.setItem('auth-user', JSON.stringify(mockUser))
+      // Google OAuth - SupabaseのsignInWithOAuthを使用予定
+      throw new Error('Google OAuth機能は現在実装中です。メールアドレスでの認証をご利用ください。')
     } catch (error) {
-      console.error('Google ログインエラー:', error)
+      // Google ログインエラー
       throw error
     } finally {
       setIsLoading(false)
@@ -162,26 +146,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginWithGithub = async () => {
     setIsLoading(true)
     try {
-      // TODO: GitHub OAuth実装
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      const mockUser: User = {
-        id: 'github_' + Date.now(),
-        username: 'githubuser' + Math.random().toString(36).substr(2, 4),
-        name: 'GitHub ユーザー',
-        email: 'github@example.com',
-        avatar: '/images/avatar-placeholder.svg',
-        bio: 'GitHubでログインしたユーザーです',
-        followersCount: 0,
-        followingCount: 0,
-        articlesCount: 0,
-        createdAt: new Date().toISOString()
-      }
-
-      setUser(mockUser)
-      localStorage.setItem('auth-user', JSON.stringify(mockUser))
+      // GitHub OAuth - SupabaseのsignInWithOAuthを使用予定
+      throw new Error('GitHub OAuth機能は現在実装中です。メールアドレスでの認証をご利用ください。')
     } catch (error) {
-      console.error('GitHub ログインエラー:', error)
+      // GitHub ログインエラー
       throw error
     } finally {
       setIsLoading(false)
@@ -193,14 +161,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     setIsLoading(true)
     try {
-      // TODO: 実際のAPI呼び出し
+      // Supabase Auth APIを使用予定
       await new Promise(resolve => setTimeout(resolve, 1000))
 
       const updatedUser = { ...user, ...data }
       setUser(updatedUser)
       localStorage.setItem('auth-user', JSON.stringify(updatedUser))
     } catch (error) {
-      console.error('プロフィール更新エラー:', error)
+      // プロフィール更新エラー
       throw error
     } finally {
       setIsLoading(false)

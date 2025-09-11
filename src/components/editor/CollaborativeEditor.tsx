@@ -50,12 +50,12 @@ export function CollaborativeEditor({
     // イベントリスナーの設定
     client.on('connected', () => {
       setIsConnected(true)
-      console.log('Collaboration connected')
+      // console.log削除（セキュリティ対応）
     })
 
     client.on('disconnected', () => {
       setIsConnected(false)
-      console.log('Collaboration disconnected')
+      // console.log削除（セキュリティ対応）
     })
 
     client.on('user-joined', (userData) => {
@@ -64,7 +64,7 @@ export function CollaborativeEditor({
         newMap.set(userData.id, userData)
         return newMap
       })
-      console.log('User joined:', userData.name)
+      // console.log削除（セキュリティ対応）
     })
 
     client.on('user-left', (userId) => {

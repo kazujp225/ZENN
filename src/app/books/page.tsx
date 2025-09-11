@@ -54,7 +54,7 @@ export default function BooksPage() {
 
       setBooks(sortedBooks)
     } catch (err: any) {
-      console.error('書籍取得エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || '書籍の取得に失敗しました')
     } finally {
       setLoading(false)

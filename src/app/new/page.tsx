@@ -27,16 +27,7 @@ export default function NewPostPage() {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      console.log('Submitting:', { 
-        type: activeTab, 
-        title, 
-        content, 
-        tags, 
-        emoji, 
-        isPublic, 
-        price 
-      });
-      
+      // console.log削除（セキュリティ対応）
       if (activeTab === 'article') {
         router.push('/articles');
       } else if (activeTab === 'book') {
@@ -47,7 +38,7 @@ export default function NewPostPage() {
         router.push('/');
       }
     } catch (error) {
-      console.error('投稿エラー:', error);
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsSubmitting(false);
     }

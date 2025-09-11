@@ -56,13 +56,13 @@ export class CollaborationClient extends EventEmitter {
       this.ws.onclose = this.handleClose.bind(this)
       this.ws.onerror = this.handleError.bind(this)
     } catch (error) {
-      console.error('Failed to create WebSocket connection:', error)
+      // エラーログ削除（セキュリティ対応）
       this.scheduleReconnect()
     }
   }
 
   private handleOpen() {
-    console.log('WebSocket connected')
+    // console.log削除（セキュリティ対応）
     this.isConnected = true
     this.reconnectAttempts = 0
     
@@ -108,17 +108,17 @@ export class CollaborationClient extends EventEmitter {
           // Pong received, connection is alive
           break
         default:
-          console.warn('Unknown message type:', data.type)
+          // 警告ログ削除（セキュリティ対応）
       }
       
       this.emit('message', data)
     } catch (error) {
-      console.error('Failed to parse WebSocket message:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
   private handleClose() {
-    console.log('WebSocket disconnected')
+    // console.log削除（セキュリティ対応）
     this.isConnected = false
     this.stopPing()
     this.emit('disconnected')
@@ -126,7 +126,7 @@ export class CollaborationClient extends EventEmitter {
   }
 
   private handleError(error: Event) {
-    console.error('WebSocket error:', error)
+    // エラーログ削除（セキュリティ対応）
     this.emit('error', error)
   }
 
@@ -187,7 +187,7 @@ export class CollaborationClient extends EventEmitter {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(JSON.stringify(data))
     } else {
-      console.warn('WebSocket is not connected')
+      // 警告ログ削除（セキュリティ対応）
     }
   }
 
@@ -232,7 +232,7 @@ export class CollaborationClient extends EventEmitter {
 
   private scheduleReconnect() {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.error('Max reconnection attempts reached')
+      // エラーログ削除（セキュリティ対応）
       this.emit('reconnect-failed')
       return
     }

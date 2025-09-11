@@ -32,7 +32,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error deleting notification:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to delete notification' },
       { status: 500 }

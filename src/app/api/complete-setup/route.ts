@@ -12,8 +12,7 @@ export async function POST() {
   try {
     const supabase = createAdminClient()
 
-    console.log('Starting complete database setup...')
-
+    // console.log削除（セキュリティ対応）
     // Step 1: Create exec_sql function if it doesn't exist
     const createFunctionQuery = `
       CREATE OR REPLACE FUNCTION exec_sql(sql text)
@@ -26,7 +25,7 @@ export async function POST() {
 
     const { error: functionError } = await supabase.rpc('exec_sql', { sql: createFunctionQuery })
     if (functionError) {
-      console.log('Function creation failed, trying alternative method...')
+      // console.log削除（セキュリティ対応）
       // If RPC doesn't work, we'll use the admin client directly
     }
 
@@ -268,7 +267,7 @@ export async function POST() {
         const { error } = await supabase.rpc('exec_sql', { sql: query })
         
         if (error) {
-          console.error(`RPC Error: ${query}`, error)
+          // エラーログ削除（セキュリティ対応）
           results.push({ 
             query: query.substring(0, 80) + '...', 
             status: 'error', 
@@ -283,7 +282,7 @@ export async function POST() {
           successCount++
         }
       } catch (directError) {
-        console.error(`Direct execution error: ${query}`, directError)
+        // エラーログ削除（セキュリティ対応）
         results.push({ 
           query: query.substring(0, 80) + '...', 
           status: 'error', 
@@ -293,8 +292,7 @@ export async function POST() {
       }
     }
 
-    console.log(`Setup completed: ${successCount} success, ${errorCount} errors`)
-
+    // console.log削除（セキュリティ対応）
     return NextResponse.json({
       success: errorCount === 0,
       message: `Database setup completed: ${successCount} success, ${errorCount} errors`,
@@ -307,7 +305,7 @@ export async function POST() {
     })
 
   } catch (error) {
-    console.error('Complete setup error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Complete setup failed', details: error.message },
       { status: 500 }

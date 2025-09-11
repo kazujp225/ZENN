@@ -103,7 +103,7 @@ export async function getCurrentUser(request?: NextRequest) {
     }
     
   } catch (error) {
-    console.error('Get current user error:', error)
+    // エラーログ削除（セキュリティ対応）
     return null
   }
 }

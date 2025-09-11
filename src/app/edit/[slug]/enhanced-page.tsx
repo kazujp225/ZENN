@@ -212,7 +212,7 @@ export default function EnhancedEditArticlePage({
         setTimeout(validateArticle, 100)
         
       } catch (error) {
-        console.error('記事の読み込みに失敗しました:', error)
+        // エラーログ削除（セキュリティ対応）
         setLoadError(error instanceof Error ? error.message : '記事の読み込みに失敗しました')
       } finally {
         setIsLoadingArticle(false)
@@ -300,7 +300,7 @@ export default function EnhancedEditArticlePage({
       return true
       
     } catch (error) {
-      console.error('保存に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       showNotificationMessage('保存に失敗しました', 'error')
       return false
     } finally {
@@ -431,7 +431,7 @@ export default function EnhancedEditArticlePage({
       }, 1000)
       
     } catch (error) {
-      console.error('記事の更新に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       showNotificationMessage('記事の更新に失敗しました', 'error')
     } finally {
       setIsPublishing(false)

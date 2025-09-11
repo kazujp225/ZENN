@@ -57,7 +57,7 @@ export default function ProfileSettingsPage() {
       setSuccessMessage('プロフィールを更新しました');
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
-      console.error('Failed to update profile:', error);
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsSaving(false);
     }
@@ -118,7 +118,7 @@ export default function ProfileSettingsPage() {
       setTimeout(() => setSuccessMessage(''), 3000);
       
     } catch (error) {
-      console.error('Avatar upload error:', error);
+      // エラーログ削除（セキュリティ対応）
       alert(error instanceof Error ? error.message : 'アップロードに失敗しました');
       // プレビューをクリア
       setPreviewUrl(null);
@@ -159,7 +159,7 @@ export default function ProfileSettingsPage() {
       setTimeout(() => setSuccessMessage(''), 3000);
       
     } catch (error) {
-      console.error('Avatar delete error:', error);
+      // エラーログ削除（セキュリティ対応）
       alert(error instanceof Error ? error.message : '削除に失敗しました');
     } finally {
       setUploading(false);

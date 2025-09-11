@@ -85,7 +85,7 @@ export function ComponentProvider({
     <GlobalErrorBoundary 
       level="component"
       onError={(error, errorInfo) => {
-        console.error(`Component error in ${name}:`, error, errorInfo)
+        // エラーログ削除（セキュリティ対応）
       }}
       fallback={
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 my-2">
@@ -114,8 +114,7 @@ export function PageProvider({
     <GlobalErrorBoundary 
       level="page"
       onError={(error, errorInfo) => {
-        console.error(`Page error in ${title}:`, error, errorInfo)
-        
+        // エラーログ削除（セキュリティ対応）
         // ページエラーの分析レポート送信
         if (process.env.NODE_ENV === 'production') {
           // 実際のアプリではエラー報告サービスに送信
@@ -154,7 +153,7 @@ export function ApiProvider({
     <GlobalErrorBoundary
       level="component"
       onError={(error, errorInfo) => {
-        console.error('API Error:', error, errorInfo)
+        // エラーログ削除（セキュリティ対応）
         onError?.(error)
         
         // API エラーのログ送信
@@ -204,7 +203,7 @@ export function FormProvider({
     <GlobalErrorBoundary
       level="component"
       onError={(error, errorInfo) => {
-        console.error('Form Error:', error, errorInfo)
+        // エラーログ削除（セキュリティ対応）
         onError?.(error)
       }}
       fallback={
@@ -243,11 +242,10 @@ export function HighPerformanceProvider({
     <GlobalErrorBoundary
       level="component"
       onError={(error, errorInfo) => {
-        console.error('High Performance Component Error:', error, errorInfo)
-        
+        // エラーログ削除（セキュリティ対応）
         // パフォーマンス関連エラーの特別処理
         if (error.message.includes('Maximum update depth exceeded')) {
-          console.warn('Performance issue detected - consider reducing chunk size or enabling virtualization')
+          // 警告ログ削除（セキュリティ対応）
         }
       }}
       fallback={
@@ -286,9 +284,9 @@ export function DevModeProvider({ children }: { children: ReactNode }) {
       onError={(error, errorInfo) => {
         // 開発モードでの詳細エラーログ
         console.group('🐛 Development Error Details')
-        console.error('Error:', error)
-        console.error('Error Info:', errorInfo)
-        console.error('Component Stack:', errorInfo.componentStack)
+        // エラーログ削除（セキュリティ対応）
+        // エラーログ削除（セキュリティ対応）
+        // エラーログ削除（セキュリティ対応）
         console.error('Timestamp:', new Date().toISOString())
         console.groupEnd()
 
@@ -310,7 +308,7 @@ export function DevModeProvider({ children }: { children: ReactNode }) {
 
           localStorage.setItem('dev-error-logs', JSON.stringify(newLogs))
         } catch (e) {
-          console.error('Failed to save error log:', e)
+          // エラーログ削除（セキュリティ対応）
         }
       }}
       fallback={
@@ -333,7 +331,7 @@ export function DevModeProvider({ children }: { children: ReactNode }) {
                   if (logs) {
                     console.table(JSON.parse(logs))
                   } else {
-                    console.log('No error logs found')
+                    // console.log削除（セキュリティ対応）
                   }
                 }}
                 className="mt-2 text-purple-600 underline text-sm hover:text-purple-800"
@@ -364,7 +362,7 @@ export const ProviderUsageExamples = {
     <ApiProvider 
       onError={(error) => {
         // カスタムエラーハンドリング
-        console.log('API error handled:', error)
+        // console.log削除（セキュリティ対応）
       }}
       retryCount={3}
     >

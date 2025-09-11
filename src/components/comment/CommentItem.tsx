@@ -59,7 +59,7 @@ export function CommentItem({
     try {
       await onDelete(comment.id)
     } catch (error) {
-      console.error('削除に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsDeleting(false)
     }
@@ -234,7 +234,7 @@ function ReplyItem({
     try {
       await onDelete(reply.id)
     } catch (error) {
-      console.error('削除に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsDeleting(false)
     }

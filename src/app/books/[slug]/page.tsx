@@ -50,7 +50,7 @@ async function getBook(slug: string) {
       relatedBooks: []
     }
   } catch (error) {
-    console.error('書籍取得エラー:', error)
+    // エラーログ削除（セキュリティ対応）
     return null
   }
 }

@@ -108,7 +108,7 @@ export default function EnhancedNewArticlePage() {
       setIsDirty(false)
       
     } catch (error) {
-      console.error('下書き保存に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       // エラー通知（実際の実装では適切な通知システムを使用）
       showNotification('下書きの保存に失敗しました', 'error')
     } finally {
@@ -155,7 +155,7 @@ export default function EnhancedNewArticlePage() {
           }
         }
       } catch (error) {
-        console.error('下書きの復元に失敗しました:', error)
+        // エラーログ削除（セキュリティ対応）
       }
     }
   }, [])
@@ -254,7 +254,7 @@ export default function EnhancedNewArticlePage() {
       router.push(`/articles/${publishData.slug}`)
       
     } catch (error) {
-      console.error('記事の公開に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       showNotification('記事の公開に失敗しました', 'error')
     } finally {
       setIsPublishing(false)

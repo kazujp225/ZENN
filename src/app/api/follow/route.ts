@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
         .maybeSingle()
 
       if (checkError) {
-        console.error('Error checking existing follow:', checkError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'Failed to check existing follow' },
           { status: 500 }
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (followError) {
-        console.error('Error creating follow:', followError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'Failed to follow user' },
           { status: 500 }
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
         .eq('following_id', following_id)
 
       if (unfollowError) {
-        console.error('Error unfollowing user:', unfollowError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'Failed to unfollow user' },
           { status: 500 }
@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
       })
     }
   } catch (error) {
-    console.error('Error processing follow action:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -178,7 +178,7 @@ export async function GET(request: NextRequest) {
         .order('created_at', { ascending: false })
 
       if (followersError) {
-        console.error('Error fetching followers:', followersError)
+        // エラーログ削除（セキュリティ対応）
         result.followers_error = followersError.message
       } else {
         result.followers = followers || []
@@ -195,7 +195,7 @@ export async function GET(request: NextRequest) {
         .order('created_at', { ascending: false })
 
       if (followingError) {
-        console.error('Error fetching following:', followingError)
+        // エラーログ削除（セキュリティ対応）
         result.following_error = followingError.message
       } else {
         result.following = following || []
@@ -220,7 +220,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(result)
   } catch (error) {
-    console.error('Error fetching follow data:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to fetch follow data' },
       { status: 500 }

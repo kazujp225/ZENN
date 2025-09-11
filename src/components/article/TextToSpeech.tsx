@@ -116,7 +116,7 @@ export function TextToSpeech({ text, title, autoPlay = false }: TextToSpeechProp
     }
     
     utterance.onerror = (event) => {
-      console.error('Speech synthesis error:', event)
+      // エラーログ削除（セキュリティ対応）
       setIsPlaying(false)
       setIsPaused(false)
       stopProgressTracking()

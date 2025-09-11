@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     const { data: user, error } = await query.single()
 
     if (error) {
-      console.error('Error fetching user profile:', error)
+      // エラーログ削除（セキュリティ対応）
       if (error.code === 'PGRST116') { // No rows found
         return NextResponse.json(
           { error: 'User not found' },
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
       data: profile
     })
   } catch (error) {
-    console.error('Error fetching profile:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to fetch profile' },
       { status: 500 }
@@ -235,7 +235,7 @@ export async function PUT(request: NextRequest) {
       .single()
 
     if (error) {
-      console.error('Error updating profile:', error)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to update profile' },
         { status: 500 }
@@ -247,7 +247,7 @@ export async function PUT(request: NextRequest) {
       data: updatedUser
     })
   } catch (error) {
-    console.error('Error updating profile:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -37,7 +37,7 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
           await loadUserProfile(session.user.id)
         }
       } catch (error) {
-        console.error('Session error:', error)
+        // エラーログ削除（セキュリティ対応）
       } finally {
         setIsLoading(false)
       }
@@ -48,8 +48,7 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
     // 認証状態の変更を監視
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.id)
-        
+        // console.log削除（セキュリティ対応）
         if (session?.user) {
           setUser(session.user)
           await loadUserProfile(session.user.id)
@@ -74,13 +73,13 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
         .single()
 
       if (error) {
-        console.error('Profile load error:', error)
+        // エラーログ削除（セキュリティ対応）
         return
       }
 
       setProfile(userProfile)
     } catch (error) {
-      console.error('Failed to load user profile:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
@@ -108,12 +107,12 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
           })
 
         if (profileError) {
-          console.error('Profile creation error:', profileError)
+          // エラーログ削除（セキュリティ対応）
           throw new Error('Failed to create user profile')
         }
       }
     } catch (error: any) {
-      console.error('Sign up error:', error)
+      // エラーログ削除（セキュリティ対応）
       throw new Error(error.message || 'Sign up failed')
     }
   }
@@ -127,7 +126,7 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
       if (error) throw error
     } catch (error: any) {
-      console.error('Sign in error:', error)
+      // エラーログ削除（セキュリティ対応）
       throw new Error(error.message || 'Sign in failed')
     }
   }
@@ -140,7 +139,7 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setUser(null)
       setProfile(null)
     } catch (error: any) {
-      console.error('Sign out error:', error)
+      // エラーログ削除（セキュリティ対応）
       throw new Error(error.message || 'Sign out failed')
     }
   }
@@ -164,7 +163,7 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
       // ローカル状態を更新
       setProfile(prev => prev ? { ...prev, ...data } : null)
     } catch (error: any) {
-      console.error('Profile update error:', error)
+      // エラーログ削除（セキュリティ対応）
       throw new Error(error.message || 'Profile update failed')
     }
   }

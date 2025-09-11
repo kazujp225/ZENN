@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (error) {
-        console.error('Error creating book:', error)
+        // エラーログ削除（セキュリティ対応）
       } else {
         createdBooks.push(data)
       }
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error creating sample data:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to create sample data' },
       { status: 500 }

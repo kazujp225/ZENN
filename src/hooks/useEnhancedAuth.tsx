@@ -227,7 +227,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
             lastActiveAt: new Date().toISOString()
           } : null)
         } catch (error) {
-          console.error('ハートビート失敗:', error)
+          // エラーログ削除（セキュリティ対応）
         }
       }
     }, 5 * 60 * 1000) // 5分間隔
@@ -270,7 +270,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
         }
         
       } catch (error) {
-        console.error('認証状態の復元に失敗:', error)
+        // エラーログ削除（セキュリティ対応）
         // セキュリティのため、エラー時はクリーンアップ
         localStorage.removeItem('auth-user')
         localStorage.removeItem('auth-session')
@@ -350,7 +350,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('auth-user', JSON.stringify(user))
       localStorage.setItem('auth-session', JSON.stringify(session))
     } catch (error) {
-      console.error('認証データの保存に失敗:', error)
+      // エラーログ削除（セキュリティ対応）
       throw new Error('セッションの保存に失敗しました')
     }
   }, [])
@@ -532,7 +532,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       })
 
     } catch (error) {
-      console.error('サインアップエラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -567,7 +567,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       }
 
     } catch (error) {
-      console.error('ログアウトエラー:', error)
+      // エラーログ削除（セキュリティ対応）
       // エラーでもローカルデータはクリア
       setUser(null)
       setSession(null)
@@ -624,7 +624,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       startHeartbeat()
 
     } catch (error) {
-      console.error('Google ログインエラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -678,7 +678,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       startHeartbeat()
 
     } catch (error) {
-      console.error('GitHub ログインエラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -728,7 +728,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       })
 
     } catch (error) {
-      console.error('プロフィール更新エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -763,7 +763,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       })
 
     } catch (error) {
-      console.error('パスワード変更エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -791,7 +791,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       await logout(true)
 
     } catch (error) {
-      console.error('アカウント削除エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -820,7 +820,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       scheduleTokenRefresh(newSession.expiresAt)
       
     } catch (error) {
-      console.error('セッション更新エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       // 更新失敗時はログアウト
       await logout()
     }
@@ -841,7 +841,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       return { secret: mockSecret, qrCode: mockQrCode }
       
     } catch (error) {
-      console.error('2FA有効化エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -869,7 +869,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       }
       
     } catch (error) {
-      console.error('2FA確認エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -893,7 +893,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       }
       
     } catch (error) {
-      console.error('2FA無効化エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -916,7 +916,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       })
       
     } catch (error) {
-      console.error('確認メール送信エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -940,7 +940,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       }
       
     } catch (error) {
-      console.error('メール確認エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -963,7 +963,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       })
       
     } catch (error) {
-      console.error('パスワードリセット要求エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -989,7 +989,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       })
       
     } catch (error) {
-      console.error('パスワードリセットエラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -1019,7 +1019,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       return mockSessions
       
     } catch (error) {
-      console.error('セッション取得エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     }
   }, [user, session])
@@ -1038,7 +1038,7 @@ export function EnhancedAuthProvider({ children }: { children: ReactNode }) {
       })
       
     } catch (error) {
-      console.error('セッション無効化エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     }
   }, [user])

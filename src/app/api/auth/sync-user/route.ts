@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       .or(`email.eq.${email},username.eq.${username}`)
     
     if (searchError) {
-      console.error('User search error:', searchError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'ユーザー検索に失敗しました' },
         { status: 500 }
@@ -35,8 +35,7 @@ export async function POST(request: NextRequest) {
     if (existingUsers && existingUsers.length > 0) {
       // 既存のユーザーが見つかった場合は更新
       user = existingUsers[0]
-      console.log('Found existing user:', user.id, user.username)
-      
+      // console.log削除（セキュリティ対応）
       const { data: updatedUser, error: updateError } = await supabase
         .from('users')
         .update({
@@ -49,7 +48,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (updateError) {
-        console.error('User update error:', updateError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'ユーザー更新に失敗しました' },
           { status: 500 }
@@ -60,8 +59,7 @@ export async function POST(request: NextRequest) {
     } else {
       // 新しいユーザーを作成
       const userId = crypto.randomUUID()
-      console.log('Creating new user with ID:', userId)
-      
+      // console.log削除（セキュリティ対応）
       const userPayload = {
         id: userId,
         email: email,
@@ -84,7 +82,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (createError) {
-        console.error('User creation error:', createError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'ユーザー作成に失敗しました' },
           { status: 500 }
@@ -106,7 +104,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Sync user error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: '予期しないエラーが発生しました' },
       { status: 500 }

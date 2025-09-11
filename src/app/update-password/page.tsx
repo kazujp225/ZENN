@@ -53,7 +53,7 @@ export default function UpdatePasswordPage() {
         router.push('/login')
       }, 3000)
     } catch (err: any) {
-      console.error('パスワード更新エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || 'パスワードの更新に失敗しました')
     } finally {
       setIsLoading(false)

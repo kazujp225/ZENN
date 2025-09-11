@@ -31,7 +31,7 @@ export async function authMiddleware(request: NextRequest) {
 
     return response
   } catch (error) {
-    console.error('Auth middleware error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.next()
   }
 }

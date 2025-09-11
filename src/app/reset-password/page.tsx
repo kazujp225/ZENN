@@ -28,7 +28,7 @@ export default function ResetPasswordPage() {
 
       setIsSuccess(true)
     } catch (err: any) {
-      console.error('パスワードリセットエラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || 'パスワードリセットメールの送信に失敗しました')
     } finally {
       setIsLoading(false)

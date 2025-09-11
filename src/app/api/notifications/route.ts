@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       pageSize: limit
     })
   } catch (error) {
-    console.error('Error fetching notifications:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to fetch notifications' },
       { status: 500 }
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       data
     })
   } catch (error) {
-    console.error('Error creating notification:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to create notification' },
       { status: 500 }
@@ -144,7 +144,7 @@ export async function PATCH(request: NextRequest) {
       data
     })
   } catch (error) {
-    console.error('Error updating notifications:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to update notifications' },
       { status: 500 }

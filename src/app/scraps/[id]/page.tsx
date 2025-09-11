@@ -12,7 +12,7 @@ async function getScrap(idOrSlug: string) {
         const result = await scrapsApi.getScrapById(idOrSlug)
         data = result?.data || result
       } catch (e) {
-        console.error('Failed to get scrap by ID:', e)
+        // エラーログ削除（セキュリティ対応）
         return null
       }
     } else {
@@ -20,7 +20,7 @@ async function getScrap(idOrSlug: string) {
       try {
         data = await scrapsApi.getScrapBySlug(idOrSlug)
       } catch (e) {
-        console.error('Failed to get scrap by slug:', e)
+        // エラーログ削除（セキュリティ対応）
         return null
       }
     }
@@ -81,7 +81,7 @@ async function getScrap(idOrSlug: string) {
       posts: posts
     }
   } catch (error) {
-    console.error('スクラップ取得エラー:', error)
+    // エラーログ削除（セキュリティ対応）
     return null
   }
 }

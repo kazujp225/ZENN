@@ -32,7 +32,7 @@ export default function ArticlesPage() {
       const data = await topicsApi.getPopularTopics(10)
       setTopics(data || [])
     } catch (err: any) {
-      console.error('トピック取得エラー:', err)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
@@ -60,7 +60,7 @@ export default function ArticlesPage() {
 
       setArticles(filteredArticles)
     } catch (err: any) {
-      console.error('記事取得エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || '記事の取得に失敗しました')
     } finally {
       setLoading(false)

@@ -27,7 +27,7 @@ export const PostingModal = ({ isOpen, onClose, isLoggedIn, onLogin }: PostingMo
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitting:', { type: activeTab, title, content, tags, emoji, isPublic, price });
+    // console.log削除（セキュリティ対応）
     onClose();
   };
 

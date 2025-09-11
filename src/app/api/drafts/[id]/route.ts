@@ -56,7 +56,7 @@ export async function GET(
       versions: versions || []
     })
   } catch (error) {
-    console.error('Error fetching draft:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -148,7 +148,7 @@ export async function PATCH(
       .single()
 
     if (updateError) {
-      console.error('Error updating draft:', updateError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to update draft' },
         { status: 500 }
@@ -160,7 +160,7 @@ export async function PATCH(
       draft: updatedDraft
     })
   } catch (error) {
-    console.error('Error updating draft:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -219,7 +219,7 @@ export async function DELETE(
       .eq('id', id)
 
     if (deleteError) {
-      console.error('Error deleting draft:', deleteError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to delete draft' },
         { status: 500 }
@@ -230,7 +230,7 @@ export async function DELETE(
       message: 'Draft deleted successfully'
     })
   } catch (error) {
-    console.error('Error deleting draft:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

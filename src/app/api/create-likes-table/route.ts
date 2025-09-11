@@ -16,7 +16,7 @@ export async function POST() {
     const { error: createError } = await supabase.rpc('create_likes_table', {})
 
     if (createError) {
-      console.error('Error creating likes table:', createError)
+      // エラーログ削除（セキュリティ対応）
     }
 
     // 手動でSQL実行
@@ -70,7 +70,7 @@ export async function POST() {
       if (statement.trim()) {
         const { error } = await supabase.rpc('exec_sql', { sql: statement.trim() + ';' })
         if (error) {
-          console.error('SQL Error:', error)
+          // エラーログ削除（セキュリティ対応）
         }
       }
     }
@@ -82,7 +82,7 @@ export async function POST() {
       .limit(0)
 
     if (infoError) {
-      console.error('Table info error:', infoError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json({ 
         success: false, 
         error: 'Likes table may not exist',
@@ -95,7 +95,7 @@ export async function POST() {
       message: 'Likes table setup complete'
     })
   } catch (error) {
-    console.error('Setup error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json({ 
       success: false, 
       error: 'Setup failed',

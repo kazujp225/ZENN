@@ -16,25 +16,23 @@ export async function testSupabaseConnection() {
       .limit(1)
     
     if (error) {
-      console.error('❌ Database connection failed:', error.message)
+      // エラーログ削除（セキュリティ対応）
       return false
     }
     
-    console.log('✅ Successfully connected to Supabase database')
-    
+    // console.log削除（セキュリティ対応）
     // Test auth connection
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
     if (authError && authError.message !== 'Auth session missing!') {
-      console.error('❌ Auth connection failed:', authError.message)
+      // エラーログ削除（セキュリティ対応）
       return false
     }
     
-    console.log('✅ Supabase Auth is configured')
-    
+    // console.log削除（セキュリティ対応）
     return true
   } catch (error) {
-    console.error('❌ Connection test failed:', error)
+    // エラーログ削除（セキュリティ対応）
     return false
   }
 }

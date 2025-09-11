@@ -41,7 +41,7 @@ export const booksApi = {
       .single()
 
     if (error) {
-      console.error('Error fetching book:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error: error.message }
     }
     

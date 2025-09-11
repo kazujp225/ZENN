@@ -167,7 +167,7 @@ function TopicPageClient({ topicId }: { topicId: string }) {
         scrapsCount: topicScraps.length
       })
     } catch (err: any) {
-      console.error('トピックコンテンツ取得エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || 'データの取得に失敗しました')
     } finally {
       setLoading(false)

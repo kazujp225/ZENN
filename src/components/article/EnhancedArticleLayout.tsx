@@ -122,7 +122,7 @@ export const EnhancedArticleLayout = memo(({ article, slots }: EnhancedArticleLa
           setLikesCount(data.count)
         }
       } catch (error) {
-        console.error('Failed to check like status:', error)
+        // エラーログ削除（セキュリティ対応）
       }
     }
     
@@ -218,13 +218,13 @@ export const EnhancedArticleLayout = memo(({ article, slots }: EnhancedArticleLa
         setIsLiked(!newIsLiked)
         setLikesCount(previousLikesCount)
         const error = await response.json()
-        console.error('Failed to like article:', error)
+        // エラーログ削除（セキュリティ対応）
       }
     } catch (error) {
       // エラー時はロールバック
       setIsLiked(!newIsLiked)
       setLikesCount(previousLikesCount)
-      console.error('Failed to like article:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [isLiked, likesCount, article.id])
 
@@ -248,7 +248,7 @@ export const EnhancedArticleLayout = memo(({ article, slots }: EnhancedArticleLa
         // TODO: トースト通知を表示
       }
     } catch (err) {
-      console.log('Share failed:', err)
+      // console.log削除（セキュリティ対応）
       // TODO: エラー通知を表示
     }
   }, [article.title])

@@ -4,12 +4,11 @@ import type { Article } from '@/types/article'
 
 async function getArticle(slug: string): Promise<Article | null> {
   try {
-    console.log('getArticle: Fetching article with slug:', slug)
+    // console.log削除（セキュリティ対応）
     const articleResponse: any = await articlesApi.getArticleBySlug(slug)
-    console.log('getArticle: Response:', articleResponse)
-    
+    // console.log削除（セキュリティ対応）
     if (!articleResponse || !articleResponse.data) {
-      console.log('getArticle: No article data found')
+      // console.log削除（セキュリティ対応）
       return null
     }
     
@@ -20,7 +19,7 @@ async function getArticle(slug: string): Promise<Article | null> {
     try {
       comments = await commentsApi.getArticleComments(data.id) || []
     } catch (err) {
-      console.error('Failed to fetch comments:', err)
+      // エラーログ削除（セキュリティ対応）
     }
     
     // Get related articles
@@ -75,7 +74,7 @@ async function getArticle(slug: string): Promise<Article | null> {
     
     return article
   } catch (error) {
-    console.error('記事取得エラー:', error)
+    // エラーログ削除（セキュリティ対応）
     return null
   }
 }
@@ -103,11 +102,9 @@ export default async function ArticlePage({
   params: Promise<{ slug: string }> 
 }) {
   const { slug } = await params
-  console.log('ArticlePage: Loading article with slug:', slug)
-  
+  // console.log削除（セキュリティ対応）
   const article = await getArticle(slug)
-  console.log('ArticlePage: Article data:', article ? 'Found' : 'Not found')
-  
+  // console.log削除（セキュリティ対応）
   if (!article) {
     return (
       <div className="min-h-screen bg-white">

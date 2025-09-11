@@ -40,8 +40,7 @@ export async function POST(request: NextRequest) {
     
     if (!response.ok) {
       // 代替案：直接SQLを送信（危険だが開発環境用）
-      console.log('Attempting direct table creation...')
-      
+      // console.log削除（セキュリティ対応）
       // likesテーブルの存在確認
       try {
         const { error: testError } = await supabase
@@ -56,7 +55,7 @@ export async function POST(request: NextRequest) {
           })
         }
       } catch (e) {
-        console.log('Likes table does not exist, will create manually')
+        // console.log削除（セキュリティ対応）
       }
       
       // 手動でSupabaseダッシュボード指示を返す
@@ -114,7 +113,7 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
     })
     
   } catch (error) {
-    console.error('Direct SQL error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json({ 
       success: false, 
       error: 'Failed to execute SQL',

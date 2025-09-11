@@ -119,7 +119,7 @@ export function ArticleTranslator({ article, onTranslated }: ArticleTranslatorPr
       onTranslated?.(translated)
       toast.success(`記事を${selectedLanguage?.nativeName}に翻訳しました`)
     } catch (error) {
-      console.error('Translation error:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('翻訳に失敗しました')
     } finally {
       setIsTranslating(false)

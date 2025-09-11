@@ -30,7 +30,7 @@ export async function GET(
 
     return NextResponse.json({ data })
   } catch (error) {
-    console.error('Error fetching article:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Article not found' },
       { status: 404 }
@@ -111,7 +111,7 @@ export async function PUT(
 
     return NextResponse.json({ data })
   } catch (error) {
-    console.error('Error updating article:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to update article' },
       { status: 500 }
@@ -159,7 +159,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error deleting article:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to delete article' },
       { status: 500 }

@@ -43,7 +43,7 @@ export function useInfiniteScroll({
         }
       } catch (err) {
         setError(err instanceof Error ? err : new Error('Failed to load more'))
-        console.error('Infinite scroll error:', err)
+        // エラーログ削除（セキュリティ対応）
       } finally {
         setIsLoading(false)
         loadingRef.current = false

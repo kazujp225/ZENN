@@ -54,7 +54,7 @@ export const articlesApi = {
       .single()
 
     if (error) {
-      console.error('Error fetching article:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error: error.message }
     }
     return { data, error: null }

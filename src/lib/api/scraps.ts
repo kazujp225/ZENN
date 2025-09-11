@@ -108,7 +108,7 @@ export const scrapsApi = {
       .single()
 
     if (error) {
-      console.error('Error fetching scrap by ID:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error }
     }
     

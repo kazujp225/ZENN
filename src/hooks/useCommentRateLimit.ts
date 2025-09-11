@@ -80,7 +80,7 @@ export function useCommentRateLimit(userId?: string, config: Partial<RateLimitCo
       localStorage.setItem(storageKey, JSON.stringify(recentComments))
 
     } catch (error) {
-      console.error('レート制限状態の更新に失敗:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [userId, finalConfig, storageKey, cooldownKey])
 
@@ -119,7 +119,7 @@ export function useCommentRateLimit(userId?: string, config: Partial<RateLimitCo
       return true
 
     } catch (error) {
-      console.error('コメント記録に失敗:', error)
+      // エラーログ削除（セキュリティ対応）
       return false
     }
   }, [userId, storageKey, cooldownKey, finalConfig.cooldownMinutes, updateRateLimit])

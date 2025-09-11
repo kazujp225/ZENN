@@ -32,28 +32,18 @@ export default function TrendingPage() {
         scrapsApi.getOpenScraps(20, 0)
       ])
 
-      console.log('Trending API responses:', {
-        articles: articlesRes,
-        books: booksRes,
-        scraps: scrapsRes
-      })
-
+      // console.log削除（セキュリティ対応）
       // Sort by likes count to get trending items
       const trendingArticles = (Array.isArray(articlesRes?.data) ? articlesRes.data : []).sort((a, b) => b.likes_count - a.likes_count)
       const trendingBooks = (Array.isArray(booksRes?.data) ? booksRes.data : []).sort((a, b) => b.likes_count - a.likes_count)
       const trendingScraps = (Array.isArray(scrapsRes?.data) ? scrapsRes.data : []).sort((a, b) => b.comments_count - a.comments_count)
 
-      console.log('Trending data set:', {
-        articles: trendingArticles.length,
-        books: trendingBooks.length,
-        scraps: trendingScraps.length
-      })
-
+      // console.log削除（セキュリティ対応）
       setArticles(trendingArticles)
       setBooks(trendingBooks)
       setScraps(trendingScraps)
     } catch (err: any) {
-      console.error('トレンドデータ取得エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || 'データの取得に失敗しました')
     } finally {
       setLoading(false)
@@ -109,7 +99,7 @@ export default function TrendingPage() {
                       </div>
                     ) : (
                       articles.map((article) => {
-                        console.log('Rendering article:', article);
+                        // console.log削除（セキュリティ対応）
                         const author = article.author || article.user;
                         return (
                           <ArticleCard

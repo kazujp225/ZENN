@@ -87,7 +87,7 @@ export async function PATCH(
       .single()
 
     if (updateError) {
-      console.error('Error updating comment:', updateError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to update comment', details: updateError.message },
         { status: 500 }
@@ -99,7 +99,7 @@ export async function PATCH(
       data: updatedComment
     })
   } catch (error) {
-    console.error('Error updating comment:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -159,7 +159,7 @@ export async function DELETE(
       .eq('id', id)
 
     if (deleteError) {
-      console.error('Error deleting comment:', deleteError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to delete comment', details: deleteError.message },
         { status: 500 }
@@ -179,7 +179,7 @@ export async function DELETE(
       .eq('id', existingComment.article_id)
 
     if (updateError) {
-      console.error('Error updating comment count:', updateError)
+      // エラーログ削除（セキュリティ対応）
       // エラーでもコメント削除は成功しているので続行
     }
 
@@ -187,7 +187,7 @@ export async function DELETE(
       message: 'Comment deleted successfully'
     })
   } catch (error) {
-    console.error('Error deleting comment:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
           .single()
       } catch (error) {
         // Ignore duplicates
-        console.log(`Topic ${topic.name} already exists or failed:`, error)
+        // console.log削除（セキュリティ対応）
       }
     }
     

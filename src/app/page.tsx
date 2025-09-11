@@ -53,7 +53,7 @@ export default function HomePage() {
       setFeaturedBooks(Array.isArray(booksRes?.data) ? booksRes.data : []);
       setActiveScraps(Array.isArray(scrapsRes?.data) ? scrapsRes.data : []);
     } catch (err: any) {
-      console.error("データ取得エラー:", err);
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || "データの取得に失敗しました");
     } finally {
       setLoading(false);

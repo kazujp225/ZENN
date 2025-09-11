@@ -39,7 +39,7 @@ const getArticleForEdit = async (slug: string): Promise<ArticleDraft | null> => 
       updatedAt: data.updated_at
     }
   } catch (error) {
-    console.error('記事取得エラー:', error)
+    // エラーログ削除（セキュリティ対応）
     return null
   }
 }
@@ -71,7 +71,7 @@ export default function EditArticleClient({ slug }: { slug: string }) {
           setLastSaved(new Date(articleData.updatedAt))
         }
       } catch (error) {
-        console.error('記事の読み込みに失敗しました:', error)
+        // エラーログ削除（セキュリティ対応）
         router.push('/404')
       }
     }
@@ -100,7 +100,7 @@ export default function EditArticleClient({ slug }: { slug: string }) {
       setLastSaved(new Date())
       setHasChanges(false)
     } catch (error) {
-      console.error('保存に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsSaving(false)
     }
@@ -166,7 +166,7 @@ export default function EditArticleClient({ slug }: { slug: string }) {
       alert('記事を更新しました')
       router.push(`/articles/${slug}`)
     } catch (error) {
-      console.error('記事の更新に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       alert('記事の更新に失敗しました')
     } finally {
       setIsPublishing(false)

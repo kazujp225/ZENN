@@ -18,7 +18,7 @@ export const chaptersApi = {
       .range(offset, offset + limit - 1)
     
     if (error) {
-      console.error('チャプター取得エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error: error.message, count: 0 }
     }
     
@@ -51,7 +51,7 @@ export const chaptersApi = {
       .single()
     
     if (error) {
-      console.error('チャプター詳細取得エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error: error.message }
     }
     
@@ -77,7 +77,7 @@ export const chaptersApi = {
       .single()
     
     if (error) {
-      console.error('チャプター作成エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error: error.message }
     }
     
@@ -103,7 +103,7 @@ export const chaptersApi = {
       .single()
     
     if (error) {
-      console.error('チャプター更新エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error: error.message }
     }
     
@@ -122,7 +122,7 @@ export const chaptersApi = {
       .eq('id', id)
     
     if (error) {
-      console.error('チャプター削除エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       return { success: false, error: error.message }
     }
     

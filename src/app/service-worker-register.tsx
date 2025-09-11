@@ -9,15 +9,14 @@ export function ServiceWorkerRegister() {
         navigator.serviceWorker
           .register('/service-worker.js')
           .then((registration) => {
-            console.log('Service Worker registered:', registration)
-            
+            // console.log削除（セキュリティ対応）
             // Check for updates periodically
             setInterval(() => {
               registration.update()
             }, 60000) // Check every minute
           })
           .catch((error) => {
-            console.error('Service Worker registration failed:', error)
+            // エラーログ削除（セキュリティ対応）
           })
       })
     }

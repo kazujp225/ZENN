@@ -113,13 +113,13 @@ export class RealtimeService {
     channel
       .on('presence', { event: 'sync' }, () => {
         const state = channel.presenceState()
-        console.log('Online users:', state)
+        // console.log削除（セキュリティ対応）
       })
       .on('presence', { event: 'join' }, ({ key, newPresences }) => {
-        console.log('User joined:', key, newPresences)
+        // console.log削除（セキュリティ対応）
       })
       .on('presence', { event: 'leave' }, ({ key, leftPresences }) => {
-        console.log('User left:', key, leftPresences)
+        // console.log削除（セキュリティ対応）
       })
       .subscribe(async (status) => {
         if (status === 'SUBSCRIBED') {

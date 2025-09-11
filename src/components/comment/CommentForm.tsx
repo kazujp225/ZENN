@@ -32,7 +32,7 @@ export function CommentForm({
       await onSubmit(content.trim())
       setContent('')
     } catch (error) {
-      console.error('コメントの投稿に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsSubmitting(false)
     }

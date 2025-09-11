@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
       pageSize: limit
     })
   } catch (error) {
-    console.error('Error fetching articles:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to fetch articles' },
       { status: 500 }
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (articleError) {
-      console.error('Error creating article:', articleError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: `Failed to create article: ${articleError.message}`, details: articleError },
         { status: 500 }
@@ -136,13 +136,13 @@ export async function POST(request: NextRequest) {
         .insert(topicRelations)
 
       if (topicsError) {
-        console.error('Error adding topics:', topicsError)
+        // エラーログ削除（セキュリティ対応）
       }
     }
 
     return NextResponse.json({ data: article })
   } catch (error) {
-    console.error('Error creating article:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to create article' },
       { status: 500 }
@@ -234,7 +234,7 @@ export async function PUT(request: NextRequest) {
       .single()
 
     if (updateError) {
-      console.error('Error updating article:', updateError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: `Failed to update article: ${updateError.message}` },
         { status: 500 }
@@ -261,7 +261,7 @@ export async function PUT(request: NextRequest) {
           .insert(topicRelations)
 
         if (topicsError) {
-          console.error('Error updating topics:', topicsError)
+          // エラーログ削除（セキュリティ対応）
         }
       }
     }
@@ -271,7 +271,7 @@ export async function PUT(request: NextRequest) {
       data: updatedArticle 
     })
   } catch (error) {
-    console.error('Error updating article:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to update article' },
       { status: 500 }
@@ -340,7 +340,7 @@ export async function DELETE(request: NextRequest) {
       .eq('user_id', user.id) // 二重チェック
 
     if (deleteError) {
-      console.error('Error deleting article:', deleteError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: `Failed to delete article: ${deleteError.message}` },
         { status: 500 }
@@ -355,7 +355,7 @@ export async function DELETE(request: NextRequest) {
       }
     })
   } catch (error) {
-    console.error('Error deleting article:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to delete article' },
       { status: 500 }

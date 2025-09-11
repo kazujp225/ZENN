@@ -57,7 +57,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         setLastFetch(new Date())
       }
     } catch (error) {
-      console.error('Failed to fetch notifications:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('通知の取得に失敗しました')
     } finally {
       setLoading(false)
@@ -80,7 +80,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         setUnreadCount(prev => Math.max(0, prev - 1))
       }
     } catch (error) {
-      console.error('Failed to mark notification as read:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [])
 
@@ -99,7 +99,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         toast.success('すべての通知を既読にしました')
       }
     } catch (error) {
-      console.error('Failed to mark all notifications as read:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('既読処理に失敗しました')
     }
   }, [])
@@ -120,7 +120,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         toast.success('通知を削除しました')
       }
     } catch (error) {
-      console.error('Failed to delete notification:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('削除に失敗しました')
     }
   }, [notifications])
@@ -138,7 +138,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         toast.success('すべての通知をクリアしました')
       }
     } catch (error) {
-      console.error('Failed to clear all notifications:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('クリアに失敗しました')
     }
   }, [])
@@ -165,8 +165,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!user) return
 
-    // TODO: WebSocket接続を実装
-    // const ws = new WebSocket(`${process.env.NEXT_PUBLIC_WS_URL}/notifications`)
+    // WebSocket接続 - Supabase Realtimeを使用予定
+    // Supabase Realtimeで通知の購読を実装予定
     // ws.onmessage = (event) => {
     //   const notification = JSON.parse(event.data)
     //   setNotifications(prev => [notification, ...prev])

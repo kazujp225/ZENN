@@ -44,7 +44,7 @@ export default function NewBookPage() {
 
       router.push('/books')
     } catch (err: any) {
-      console.error('本の作成エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || '本の作成に失敗しました')
     } finally {
       setIsSubmitting(false)

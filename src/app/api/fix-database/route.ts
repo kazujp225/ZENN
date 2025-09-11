@@ -12,8 +12,7 @@ export async function POST() {
   try {
     const supabase = createAdminClient()
 
-    console.log('Starting database repair...')
-
+    // console.log削除（セキュリティ対応）
     // 1. Drop and recreate tables with correct schema
     const repairQueries = [
       // Drop existing tables in correct order
@@ -161,20 +160,19 @@ export async function POST() {
       console.log(`Executing: ${query.substring(0, 50)}...`)
       const { error } = await supabase.rpc('exec_sql', { sql: query })
       if (error) {
-        console.error(`Error executing query: ${query}`, error)
+        // エラーログ削除（セキュリティ対応）
         // Continue with other queries
       }
     }
 
-    console.log('Database repair completed')
-
+    // console.log削除（セキュリティ対応）
     return NextResponse.json({
       success: true,
       message: 'Database schema repaired successfully'
     })
 
   } catch (error) {
-    console.error('Database repair error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Database repair failed', details: error },
       { status: 500 }

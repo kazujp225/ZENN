@@ -24,7 +24,7 @@ export const usersApi = {
       .single()
 
     if (error) {
-      console.error('Error fetching user:', error)
+      // エラーログ削除（セキュリティ対応）
       return { data: null, error: error.message }
     }
     return { data, error: null }

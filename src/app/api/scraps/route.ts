@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       pageSize: limit
     })
   } catch (error) {
-    console.error('Error fetching scraps:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json({
       data: [],
       count: 0,

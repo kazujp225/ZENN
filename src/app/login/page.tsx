@@ -24,7 +24,7 @@ export default function LoginPage() {
       await login({ email, password })
       router.push('/')
     } catch (err: any) {
-      console.error('Login error:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || 'ログインに失敗しました。メールアドレスとパスワードを確認してください。')
     } finally {
       setIsLoading(false)
@@ -35,7 +35,7 @@ export default function LoginPage() {
     try {
       await signInWithOAuth(provider)
     } catch (err: any) {
-      console.error('OAuth login error:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(`${provider}ログインに失敗しました`)
     }
   }

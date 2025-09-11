@@ -74,7 +74,7 @@ export function ArticleExporter({ article }: ArticleExporterProps) {
       
       toast.success(`記事を${getFormatLabel(selectedFormat)}形式でエクスポートしました`)
     } catch (error) {
-      console.error('Export error:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('エクスポートに失敗しました')
     } finally {
       setIsExporting(false)

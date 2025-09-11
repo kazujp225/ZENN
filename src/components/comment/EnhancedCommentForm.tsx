@@ -105,8 +105,7 @@ export function EnhancedCommentForm({
       showSuccessMessage()
       
     } catch (error) {
-      console.error('コメントの投稿に失敗しました:', error)
-      
+      // エラーログ削除（セキュリティ対応）
       // エラーメッセージを表示
       setErrors([{
         field: 'submit',

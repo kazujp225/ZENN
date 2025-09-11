@@ -118,7 +118,7 @@ export default function ZennPage() {
       setRecentScraps(scraps)
 
     } catch (err: any) {
-      console.error('コンテンツ取得エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || 'データの取得に失敗しました')
     } finally {
       setLoading(false)

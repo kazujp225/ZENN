@@ -69,7 +69,7 @@ export default function NewArticlePage() {
       
       setLastSaved(new Date())
     } catch (error) {
-      console.error('下書き保存に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsSaving(false)
     }
@@ -95,7 +95,7 @@ export default function NewArticlePage() {
         setArticle(draft)
         setLastSaved(new Date())
       } catch (error) {
-        console.error('下書きの復元に失敗しました:', error)
+        // エラーログ削除（セキュリティ対応）
       }
     }
   }, [])
@@ -165,7 +165,7 @@ export default function NewArticlePage() {
       // 記事ページへリダイレクト
       router.push(`/articles/${data.slug}`)
     } catch (error) {
-      console.error('記事の公開に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       alert('記事の公開に失敗しました: ' + (error instanceof Error ? error.message : 'Unknown error'))
     } finally {
       setIsPublishing(false)

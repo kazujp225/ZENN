@@ -490,7 +490,7 @@ export function useEnhancedSearch() {
     } catch (error) {
       if ((error as Error).name === 'AbortError') return
       
-      console.error('検索エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       setState(prev => ({
         ...prev,
         results: append ? prev.results : [],
@@ -550,7 +550,7 @@ export function useEnhancedSearch() {
 
         setState(prev => ({ ...prev, suggestions: mockSuggestions }))
       } catch (error) {
-        console.error('検索候補取得エラー:', error)
+        // エラーログ削除（セキュリティ対応）
         setState(prev => ({ ...prev, suggestions: [] }))
       }
     }, 200)
@@ -570,7 +570,7 @@ export function useEnhancedSearch() {
 
       setState(prev => ({ ...prev, popularTags: tags }))
     } catch (error) {
-      console.error('人気タグ取得エラー:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [])
 
@@ -583,7 +583,7 @@ export function useEnhancedSearch() {
       const recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]')
       setState(prev => ({ ...prev, recentSearches }))
     } catch (error) {
-      console.error('検索履歴読み込みエラー:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [loadPopularTags])
 
@@ -600,7 +600,7 @@ export function useEnhancedSearch() {
       try {
         localStorage.setItem('recentSearches', JSON.stringify(newHistory))
       } catch (error) {
-        console.error('検索履歴保存エラー:', error)
+        // エラーログ削除（セキュリティ対応）
       }
 
       return { ...prev, recentSearches: newHistory }
@@ -612,7 +612,7 @@ export function useEnhancedSearch() {
     try {
       localStorage.removeItem('recentSearches')
     } catch (error) {
-      console.error('検索履歴削除エラー:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [])
 

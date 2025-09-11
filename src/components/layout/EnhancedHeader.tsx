@@ -151,7 +151,7 @@ export function EnhancedHeader({ className }: HeaderProps) {
       setShowUserMenu(false)
       router.push('/')
     } catch (error) {
-      console.error('Logout failed:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [logout, router])
 

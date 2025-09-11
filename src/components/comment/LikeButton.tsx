@@ -37,7 +37,7 @@ export function LikeButton({
       // エラー時はロールバック
       setOptimisticIsLiked(isLiked)
       setOptimisticLikes(likes)
-      console.error('いいねに失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setIsLoading(false)
     }

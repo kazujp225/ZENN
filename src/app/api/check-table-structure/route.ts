@@ -21,7 +21,7 @@ export async function GET() {
       .order('ordinal_position')
     
     if (columnsError) {
-      console.error('Columns error:', columnsError)
+      // エラーログ削除（セキュリティ対応）
     }
 
     // テーブル一覧を確認
@@ -32,7 +32,7 @@ export async function GET() {
       .like('table_name', '%like%')
       
     if (tablesError) {
-      console.error('Tables error:', tablesError)
+      // エラーログ削除（セキュリティ対応）
     }
 
     // likesテーブルに直接アクセスを試行
@@ -59,7 +59,7 @@ export async function GET() {
     })
     
   } catch (error) {
-    console.error('Check error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json({ 
       error: 'Check failed',
       details: error 

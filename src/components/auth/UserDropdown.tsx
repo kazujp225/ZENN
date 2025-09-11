@@ -23,14 +23,7 @@ export const UserDropdown: React.FC = () => {
 
   if (!user) return null;
 
-  // デバッグ用：ユーザー情報をコンソールに出力
-  console.log('=== USER DROPDOWN DEBUG ===');
-  console.log('Current user:', {
-    id: user.id,
-    username: user.username,
-    displayName: user.displayName,
-    email: user.email
-  });
+  // デバッグログ削除（セキュリティ対応）
 
   return (
     <div className="user-dropdown" ref={dropdownRef}>

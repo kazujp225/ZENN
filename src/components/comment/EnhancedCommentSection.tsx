@@ -111,7 +111,7 @@ export function EnhancedCommentSection({
       showNotification('コメントを投稿しました', 'success')
       
     } catch (error) {
-      console.error('コメントの投稿に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -165,7 +165,7 @@ export function EnhancedCommentSection({
       showNotification('リプライを投稿しました', 'success')
       
     } catch (error) {
-      console.error('リプライの投稿に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -199,7 +199,7 @@ export function EnhancedCommentSection({
       showNotification('コメントを更新しました', 'success')
       
     } catch (error) {
-      console.error('コメントの編集に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -224,7 +224,7 @@ export function EnhancedCommentSection({
       showNotification('コメントを削除しました', 'info')
       
     } catch (error) {
-      console.error('コメントの削除に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -261,7 +261,7 @@ export function EnhancedCommentSection({
         return comment
       }))
     } catch (error) {
-      console.error('いいねに失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     }
   }, [])

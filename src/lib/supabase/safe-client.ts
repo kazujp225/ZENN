@@ -13,7 +13,7 @@ export function getSafeSupabaseClient() {
       error: null
     }
   } catch (error) {
-    console.error('Supabase client initialization failed:', error)
+    // エラーログ削除（セキュリティ対応）
     return {
       client: null,
       isConfigured: false,

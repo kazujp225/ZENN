@@ -33,7 +33,7 @@ export async function POST() {
     
     const { error: sqlError } = await supabase.rpc('exec_sql', { sql })
     if (sqlError) {
-      console.error('SQL Error:', sqlError)
+      // エラーログ削除（セキュリティ対応）
     }
 
     // RLSポリシーを作成
@@ -55,7 +55,7 @@ export async function POST() {
     for (const policy of policies) {
       const { error } = await supabase.rpc('exec_sql', { sql: policy.sql })
       if (error) {
-        console.error(`Error creating policy ${policy.name}:`, error)
+        // エラーログ削除（セキュリティ対応）
       }
     }
 
@@ -82,7 +82,7 @@ export async function POST() {
     
     const { error: rpcError } = await supabase.rpc('exec_sql', { sql: rpcSql })
     if (rpcError) {
-      console.error('RPC Error:', rpcError)
+      // エラーログ削除（セキュリティ対応）
     }
 
     // テスト用：likesテーブルの存在を確認
@@ -92,7 +92,7 @@ export async function POST() {
       .limit(0)
 
     if (testError) {
-      console.error('Table test error:', testError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json({ 
         success: false, 
         error: 'Likes table verification failed',
@@ -105,7 +105,7 @@ export async function POST() {
       message: 'Likes table fixed successfully'
     })
   } catch (error) {
-    console.error('Fix error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json({ 
       success: false, 
       error: 'Fix failed',

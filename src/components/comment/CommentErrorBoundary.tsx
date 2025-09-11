@@ -27,8 +27,7 @@ export class CommentErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('コメント機能でエラーが発生:', error, errorInfo)
-    
+    // エラーログ削除（セキュリティ対応）
     this.setState({
       errorInfo: errorInfo.componentStack || undefined
     })

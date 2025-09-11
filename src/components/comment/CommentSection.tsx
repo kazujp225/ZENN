@@ -58,7 +58,7 @@ export function CommentSection({
       
       setComments(prev => [newComment, ...prev])
     } catch (error) {
-      console.error('コメントの投稿に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -110,7 +110,7 @@ export function CommentSection({
           : comment
       ))
     } catch (error) {
-      console.error('リプライの投稿に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -147,7 +147,7 @@ export function CommentSection({
             }
       ))
     } catch (error) {
-      console.error('コメントの編集に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -176,7 +176,7 @@ export function CommentSection({
         return true
       }))
     } catch (error) {
-      console.error('コメントの削除に失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     } finally {
       setIsLoading(false)
@@ -227,7 +227,7 @@ export function CommentSection({
         return comment
       }))
     } catch (error) {
-      console.error('いいねに失敗しました:', error)
+      // エラーログ削除（セキュリティ対応）
       throw error
     }
   }

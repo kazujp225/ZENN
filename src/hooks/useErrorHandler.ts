@@ -14,7 +14,7 @@ export function useErrorHandler() {
   const handleError = useCallback((error: unknown, options?: ErrorOptions) => {
     const errorMessage = error instanceof Error ? error.message : '予期しないエラーが発生しました'
     
-    console.error('Error caught:', error)
+    // エラーログ削除（セキュリティ対応）
     setError(error instanceof Error ? error : new Error(errorMessage))
 
     if (!options?.silent) {

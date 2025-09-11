@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
     const { data, error, count } = await query
 
     if (error) {
-      console.error('Error fetching bookmarks:', error)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to fetch bookmarks', details: error.message },
         { status: 500 }
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
       count: count || 0
     })
   } catch (error) {
-    console.error('Error fetching bookmarks:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -157,7 +157,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     if (checkError) {
-      console.error('Error checking existing bookmark:', checkError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to check existing bookmark' },
         { status: 500 }
@@ -172,7 +172,7 @@ export async function POST(request: NextRequest) {
         .eq('id', existingBookmark.id)
 
       if (deleteError) {
-        console.error('Error removing bookmark:', deleteError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'Failed to remove bookmark' },
           { status: 500 }
@@ -196,7 +196,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (bookmarkError) {
-        console.error('Error creating bookmark:', bookmarkError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'Failed to create bookmark' },
           { status: 500 }
@@ -210,7 +210,7 @@ export async function POST(request: NextRequest) {
       })
     }
   } catch (error) {
-    console.error('Error processing bookmark:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -257,7 +257,7 @@ export async function DELETE(request: NextRequest) {
       .eq('target_type', target_type)
 
     if (error) {
-      console.error('Error deleting bookmark:', error)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to delete bookmark' },
         { status: 500 }
@@ -269,7 +269,7 @@ export async function DELETE(request: NextRequest) {
       bookmarked: false
     })
   } catch (error) {
-    console.error('Error deleting bookmark:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

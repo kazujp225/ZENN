@@ -110,7 +110,7 @@ export function CodeSnippetShare({
       onShare?.(fullShareData)
       toast.success('共有リンクを生成しました')
     } catch (error) {
-      console.error('Share URL generation error:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('共有リンクの生成に失敗しました')
     } finally {
       setIsGenerating(false)

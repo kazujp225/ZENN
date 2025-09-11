@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       user: userData
     })
   } catch (error) {
-    console.error('Registration error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

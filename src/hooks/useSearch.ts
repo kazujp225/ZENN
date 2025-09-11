@@ -220,7 +220,7 @@ export function useSearch() {
       setResults(filteredResults)
       setTotalCount(filteredResults.length)
     } catch (error) {
-      console.error('検索エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       setResults([])
       setTotalCount(0)
     } finally {
@@ -261,7 +261,7 @@ export function useSearch() {
 
       setSuggestions(mockSuggestions)
     } catch (error) {
-      console.error('検索候補取得エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       setSuggestions([])
     }
   }, [])
@@ -308,7 +308,7 @@ export function useSearch() {
       ].slice(0, 10) // 最大10件
       localStorage.setItem('searchHistory', JSON.stringify(newHistory))
     } catch (error) {
-      console.error('検索履歴保存エラー:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }, [])
 
@@ -316,7 +316,7 @@ export function useSearch() {
     try {
       return JSON.parse(localStorage.getItem('searchHistory') || '[]')
     } catch (error) {
-      console.error('検索履歴取得エラー:', error)
+      // エラーログ削除（セキュリティ対応）
       return []
     }
   }, [])

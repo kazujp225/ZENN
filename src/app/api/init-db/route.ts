@@ -192,7 +192,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Execute table creation statements
-    console.log('Creating tables...')
+    // console.log削除（セキュリティ対応）
     for (const sql of SQL_STATEMENTS) {
       try {
         // Extract table name for logging

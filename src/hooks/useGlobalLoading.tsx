@@ -92,7 +92,7 @@ class LoadingManager {
     // タイムアウト設定
     if (options.timeout) {
       const timeoutId = setTimeout(() => {
-        console.warn(`Loading timeout for ${id}`)
+        // 警告ログ削除（セキュリティ対応）
         this.stop(id)
       }, options.timeout)
       

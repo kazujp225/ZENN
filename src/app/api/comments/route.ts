@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: true })
 
     if (error) {
-      console.error('Error fetching comments:', error)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to fetch comments', details: error.message },
         { status: 500 }
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
       count: count || 0
     })
   } catch (error) {
-    console.error('Error fetching comments:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Failed to fetch comments' },
       { status: 500 }
@@ -161,7 +161,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (commentError) {
-      console.error('Error creating comment:', commentError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to create comment', details: commentError.message },
         { status: 500 }
@@ -181,7 +181,7 @@ export async function POST(request: NextRequest) {
       .eq('id', article_id)
 
     if (updateError) {
-      console.error('Error updating comment count:', updateError)
+      // エラーログ削除（セキュリティ対応）
       // エラーでもコメント作成は成功しているので続行
     }
 
@@ -190,7 +190,7 @@ export async function POST(request: NextRequest) {
       data: comment
     })
   } catch (error) {
-    console.error('Error creating comment:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

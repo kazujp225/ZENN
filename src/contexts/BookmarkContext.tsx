@@ -48,7 +48,7 @@ export function BookmarkProvider({ children }: { children: ReactNode }) {
         setBookmarks(bookmarkMap)
       }
     } catch (error) {
-      console.error('Failed to fetch bookmarks:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setLoading(false)
     }
@@ -119,7 +119,7 @@ export function BookmarkProvider({ children }: { children: ReactNode }) {
         return newMap
       })
       
-      console.error('Failed to toggle bookmark:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('操作に失敗しました')
       return currentState
     }

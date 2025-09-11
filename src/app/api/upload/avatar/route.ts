@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
       })
     
     if (uploadError) {
-      console.error('Upload error:', uploadError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'ファイルのアップロードに失敗しました' },
         { status: 500 }
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
       .eq('id', userId)
 
     if (updateError) {
-      console.error('User update error:', updateError)
+      // エラーログ削除（セキュリティ対応）
       // アップロードされた画像を削除
       await supabase.storage
         .from('user-assets')
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Avatar upload error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: '予期しないエラーが発生しました' },
       { status: 500 }
@@ -119,7 +119,7 @@ export async function DELETE(request: NextRequest) {
       .remove([filePath])
     
     if (deleteError) {
-      console.error('Delete error:', deleteError)
+      // エラーログ削除（セキュリティ対応）
     }
 
     // ユーザーのavatar_urlをデフォルトに戻す
@@ -134,7 +134,7 @@ export async function DELETE(request: NextRequest) {
       .eq('id', userId)
 
     if (updateError) {
-      console.error('User update error:', updateError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'プロフィールの更新に失敗しました' },
         { status: 500 }
@@ -147,7 +147,7 @@ export async function DELETE(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Avatar delete error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: '予期しないエラーが発生しました' },
       { status: 500 }

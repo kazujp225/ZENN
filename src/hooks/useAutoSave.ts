@@ -59,7 +59,7 @@ export function useAutoSave({
         setLastSaved(new Date())
         setHasChanges(false)
       } catch (error) {
-        console.error('Auto-save failed:', error)
+        // エラーログ削除（セキュリティ対応）
         toast.error('自動保存に失敗しました', {
           duration: 2000,
           position: 'bottom-right'
@@ -125,7 +125,7 @@ export function useAutoSave({
         position: 'bottom-right'
       })
     } catch (error) {
-      console.error('Save failed:', error)
+      // エラーログ削除（セキュリティ対応）
       toast.error('保存に失敗しました')
     } finally {
       setIsSaving(false)

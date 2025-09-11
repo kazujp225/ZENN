@@ -6,23 +6,23 @@
 export const logger = {
   log: (message: string, ...args: any[]) => {
     if (process.env.NODE_ENV === 'development') {
-      console.log(message, ...args)
+      // console.log削除（セキュリティ対応）
     }
   },
 
   error: (message: string, ...args: any[]) => {
-    console.error(message, ...args)
+    // エラーログ削除（セキュリティ対応）
   },
 
   warn: (message: string, ...args: any[]) => {
     if (process.env.NODE_ENV === 'development') {
-      console.warn(message, ...args)
+      // 警告ログ削除（セキュリティ対応）
     }
   },
 
   debug: (message: string, ...args: any[]) => {
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[DEBUG] ${message}`, ...args)
+      // console.log削除（セキュリティ対応）
     }
   },
 
@@ -39,7 +39,7 @@ export const logger = {
         }
       })
       
-      console.log(message, safeCopy)
+      // console.log削除（セキュリティ対応）
     }
   }
 }

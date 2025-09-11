@@ -58,7 +58,7 @@ export default function NewScrapPage() {
 
       router.push('/scraps')
     } catch (err: any) {
-      console.error('スクラップ作成エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || 'スクラップの作成に失敗しました')
     } finally {
       setIsSubmitting(false)

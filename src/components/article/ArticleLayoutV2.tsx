@@ -74,7 +74,7 @@ export function ArticleLayoutV2({ article, slots }: ArticleLayoutProps) {
           url: window.location.href
         })
       } catch (err) {
-        console.log('Share failed:', err)
+        // console.log削除（セキュリティ対応）
       }
     }
   }, [article.title])

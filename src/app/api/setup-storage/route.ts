@@ -12,8 +12,7 @@ export async function POST() {
   try {
     const supabase = createAdminClient()
 
-    console.log('Setting up storage buckets...')
-
+    // console.log削除（セキュリティ対応）
     // Create storage buckets
     const buckets = [
       {
@@ -42,12 +41,11 @@ export async function POST() {
     const results = []
 
     for (const bucket of buckets) {
-      console.log(`Creating bucket: ${bucket.name}`)
-      
+      // console.log削除（セキュリティ対応）
       const { data: existingBucket } = await supabase.storage.getBucket(bucket.id)
       
       if (existingBucket) {
-        console.log(`Bucket ${bucket.name} already exists`)
+        // console.log削除（セキュリティ対応）
         results.push({ bucket: bucket.name, status: 'already_exists' })
         continue
       }
@@ -59,17 +57,16 @@ export async function POST() {
       })
 
       if (error) {
-        console.error(`Error creating bucket ${bucket.name}:`, error)
+        // エラーログ削除（セキュリティ対応）
         results.push({ bucket: bucket.name, status: 'error', error: error.message })
       } else {
-        console.log(`Successfully created bucket: ${bucket.name}`)
+        // console.log削除（セキュリティ対応）
         results.push({ bucket: bucket.name, status: 'created' })
       }
     }
 
     // Set up bucket policies
-    console.log('Setting up bucket policies...')
-    
+    // console.log削除（セキュリティ対応）
     const policyQueries = [
       // Avatar bucket policies
       `CREATE POLICY "Avatar images are publicly accessible" ON storage.objects
@@ -103,7 +100,7 @@ export async function POST() {
     for (const query of policyQueries) {
       const { error } = await supabase.rpc('exec_sql', { sql: query })
       if (error) {
-        console.error(`Error creating policy: ${query}`, error)
+        // エラーログ削除（セキュリティ対応）
         policyResults.push({ policy: query.substring(0, 50) + '...', status: 'error', error: error.message })
       } else {
         policyResults.push({ policy: query.substring(0, 50) + '...', status: 'created' })
@@ -118,7 +115,7 @@ export async function POST() {
     })
 
   } catch (error) {
-    console.error('Storage setup error:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Storage setup failed', details: error },
       { status: 500 }

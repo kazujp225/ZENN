@@ -47,7 +47,7 @@ function SearchContent() {
       setBooks(Array.isArray(booksRes?.data) ? booksRes.data : [])
       setScraps(Array.isArray(scrapsRes?.data) ? scrapsRes.data : [])
     } catch (err: any) {
-      console.error('検索エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || '検索に失敗しました')
     } finally {
       setLoading(false)

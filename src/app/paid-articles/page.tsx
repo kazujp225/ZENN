@@ -44,7 +44,7 @@ export default function PaidArticlesPage() {
       
       setArticles(paidArticles)
     } catch (err: any) {
-      console.error('有料記事取得エラー:', err)
+      // エラーログ削除（セキュリティ対応）
       setError(err.message || '記事の取得に失敗しました')
     } finally {
       setLoading(false)

@@ -115,7 +115,7 @@ export default function DashboardPage() {
       
       setNotifications(generatedNotifications);
     } catch (error) {
-      console.error('ダッシュボードデータ取得エラー:', error);
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setLoading(false);
     }

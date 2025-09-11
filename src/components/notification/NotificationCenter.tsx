@@ -81,7 +81,7 @@ export function NotificationCenter({ userId, initialNotifications = [] }: Notifi
         headers: { 'Content-Type': 'application/json' }
       })
     } catch (error) {
-      console.error('Failed to mark notification as read:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
@@ -97,7 +97,7 @@ export function NotificationCenter({ userId, initialNotifications = [] }: Notifi
         body: JSON.stringify({ userId })
       })
     } catch (error) {
-      console.error('Failed to mark all notifications as read:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 
@@ -109,7 +109,7 @@ export function NotificationCenter({ userId, initialNotifications = [] }: Notifi
         method: 'DELETE'
       })
     } catch (error) {
-      console.error('Failed to delete notification:', error)
+      // エラーログ削除（セキュリティ対応）
     }
   }
 

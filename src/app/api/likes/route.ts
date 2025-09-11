@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     if (checkError) {
-      console.error('Error checking existing like:', checkError)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { error: 'Failed to check existing like' },
         { status: 500 }
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
         .eq('id', existingLike.id)
 
       if (deleteError) {
-        console.error('Error removing like:', deleteError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'Failed to remove like' },
           { status: 500 }
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (likeError) {
-        console.error('Error creating like:', likeError)
+        // エラーログ削除（セキュリティ対応）
         return NextResponse.json(
           { error: 'Failed to create like' },
           { status: 500 }
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
       })
     }
   } catch (error) {
-    console.error('Error processing like:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -137,10 +137,10 @@ async function updateLikeCount(supabase: any, targetType: string, targetId: stri
     })
 
     if (error) {
-      console.error(`Error updating ${targetType} likes count:`, error)
+      // エラーログ削除（セキュリティ対応）
     }
   } catch (error) {
-    console.error(`Error calling increment function for ${targetType}:`, error)
+    // エラーログ削除（セキュリティ対応）
   }
 }
 
@@ -176,7 +176,7 @@ export async function GET(request: NextRequest) {
       .eq('target_type', target_type)
 
     if (error) {
-      console.error('Error fetching likes:', error)
+      // エラーログ削除（セキュリティ対応）
       return NextResponse.json(
         { 
           error: 'Failed to fetch likes', 
@@ -199,7 +199,7 @@ export async function GET(request: NextRequest) {
       likes: likes
     })
   } catch (error) {
-    console.error('Error fetching likes:', error)
+    // エラーログ削除（セキュリティ対応）
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

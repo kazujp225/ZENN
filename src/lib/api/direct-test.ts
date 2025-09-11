@@ -7,12 +7,11 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env.local') })
 
 async function testDirect() {
   try {
-    console.log('🚀 Direct Supabase API test...')
-    
+    // console.log削除（セキュリティ対応）
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
     
-    console.log('🔗 Supabase URL:', supabaseUrl)
+    // console.log削除（セキュリティ対応）
     console.log('🔑 Service Role Key:', serviceRoleKey ? `${serviceRoleKey.slice(0, 20)}...` : 'Missing')
     
     // Create client with service role key (bypasses RLS)
@@ -24,31 +23,28 @@ async function testDirect() {
     })
     
     // Test 1: Simple health check
-    console.log('\n📡 Testing basic connection...')
+    // console.log削除（セキュリティ対応）
     const { data: healthData, error: healthError } = await supabase
       .from('users')
       .select('count', { count: 'exact', head: true })
     
     if (healthError) {
-      console.error('❌ Health check failed:', healthError.message)
-      
+      // エラーログ削除（セキュリティ対応）
       // Try to create a simple table to test connection
-      console.log('\n🔧 Testing table creation...')
+      // console.log削除（セキュリティ対応）
       const { error: createError } = await supabase
         .from('test_table')
         .select('*')
         .limit(1)
         
-      console.log('Create test result:', createError?.message || 'Success')
-      
+      // console.log削除（セキュリティ対応）
       return false
     }
     
-    console.log('✅ Health check passed')
-    console.log('📊 Users table count:', healthData)
-    
+    // console.log削除（セキュリティ対応）
+    // console.log削除（セキュリティ対応）
     // Test 2: Try to insert a test user
-    console.log('\n👤 Testing user insertion...')
+    // console.log削除（セキュリティ対応）
     const testUser = {
       username: 'test_user_' + Date.now(),
       email: `test_${Date.now()}@example.com`,
@@ -62,21 +58,20 @@ async function testDirect() {
       .single()
     
     if (insertError) {
-      console.error('❌ Insert failed:', insertError.message)
+      // エラーログ削除（セキュリティ対応）
     } else {
-      console.log('✅ Test user created:', insertData.username)
-      
+      // console.log削除（セキュリティ対応）
       // Clean up - delete the test user
       await supabase
         .from('users')
         .delete()
         .eq('id', insertData.id)
       
-      console.log('🧹 Test user cleaned up')
+      // console.log削除（セキュリティ対応）
     }
     
     // Test 3: Check other tables
-    console.log('\n📋 Testing other tables...')
+    // console.log削除（セキュリティ対応）
     const tables = ['articles', 'books', 'scraps', 'topics']
     
     for (const table of tables) {
@@ -85,30 +80,30 @@ async function testDirect() {
         .select('*', { count: 'exact', head: true })
       
       if (error) {
-        console.log(`❌ ${table}: ${error.message}`)
+        // console.log削除（セキュリティ対応）
       } else {
-        console.log(`✅ ${table}: ${count || 0} records`)
+        // console.log削除（セキュリティ対応）
       }
     }
     
-    console.log('\n🎉 All tests completed successfully!')
+    // console.log削除（セキュリティ対応）
     return true
     
   } catch (error: any) {
-    console.error('💥 Test failed:', error.message)
+    // エラーログ削除（セキュリティ対応）
     return false
   }
 }
 
 testDirect().then(success => {
   console.log('\n' + '='.repeat(50))
-  console.log(success ? '✅ DIRECT TEST PASSED' : '❌ DIRECT TEST FAILED')
+  // console.log削除（セキュリティ対応）
   console.log('='.repeat(50))
   
   if (success) {
-    console.log('🚀 Your Supabase database is ready!')
-    console.log('💡 You can now use all API functions')
-    console.log('🌐 Next.js app is running at http://localhost:3001')
+    // console.log削除（セキュリティ対応）
+    // console.log削除（セキュリティ対応）
+    // console.log削除（セキュリティ対応）
   }
   
   process.exit(success ? 0 : 1)

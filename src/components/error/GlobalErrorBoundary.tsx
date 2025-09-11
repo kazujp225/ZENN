@@ -47,7 +47,7 @@ const reportError = async (error: Error, errorInfo: ErrorInfo, errorId: string, 
     //   })
     // })
   } catch (reportingError) {
-    console.error('Failed to report error:', reportingError)
+    // エラーログ削除（セキュリティ対応）
   }
 }
 
@@ -80,8 +80,7 @@ export class GlobalErrorBoundary extends Component<Props, State> {
     const { onError, level = 'component' } = this.props
     const errorId = this.state.errorId || generateErrorId()
 
-    console.error('ErrorBoundary caught an error:', error, errorInfo)
-
+    // エラーログ削除（セキュリティ対応）
     // カスタムエラーハンドラーを呼び出し
     onError?.(error, errorInfo)
 
@@ -318,7 +317,7 @@ export const ComponentErrorBoundary: React.FC<{ children: ReactNode; name?: stri
   <GlobalErrorBoundary 
     level="component"
     onError={(error, errorInfo) => {
-      console.error(`Error in component ${name}:`, error, errorInfo)
+      // エラーログ削除（セキュリティ対応）
     }}
   >
     {children}

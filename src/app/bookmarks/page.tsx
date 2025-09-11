@@ -75,7 +75,7 @@ export default function BookmarksPage() {
         setBookmarks(bookmarks)
       }
     } catch (error) {
-      console.error('Failed to fetch bookmarks:', error)
+      // エラーログ削除（セキュリティ対応）
     } finally {
       setLoading(false)
     }
