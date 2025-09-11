@@ -43,6 +43,12 @@ export default function TrendingPage() {
       const trendingBooks = (Array.isArray(booksRes?.data) ? booksRes.data : []).sort((a, b) => b.likes_count - a.likes_count)
       const trendingScraps = (Array.isArray(scrapsRes?.data) ? scrapsRes.data : []).sort((a, b) => b.comments_count - a.comments_count)
 
+      console.log('Trending data set:', {
+        articles: trendingArticles.length,
+        books: trendingBooks.length,
+        scraps: trendingScraps.length
+      })
+
       setArticles(trendingArticles)
       setBooks(trendingBooks)
       setScraps(trendingScraps)
@@ -102,31 +108,35 @@ export default function TrendingPage() {
                         <p className="text-gray-600">記事がありません</p>
                       </div>
                     ) : (
-                      articles.map((article) => (
-                        <ArticleCard
-                          key={article.id}
-                          article={{
-                            id: article.id,
-                            title: article.title,
-                            emoji: article.emoji,
-                            content: article.content,
-                            author: {
-                              id: article.user?.id || '',
-                              name: article.user?.display_name || article.user?.username || 'Unknown',
-                              username: article.user?.username || 'unknown',
-                              avatar: article.user?.avatar_url || '/images/avatar-placeholder.svg',
-                              githubUsername: article.user?.github_username
-                            },
-                            publishedAt: article.published_at || article.created_at,
-                            likes: article.likes_count,
-                            comments: article.comments_count,
-                            tags: article.topics || [],
-                            type: article.type as 'tech' | 'idea',
-                            slug: article.slug,
-                            isLiked: false
-                          }}
-                        />
-                      ))
+                      articles.map((article) => {
+                        console.log('Rendering article:', article);
+                        const author = article.author || article.user;
+                        return (
+                          <ArticleCard
+                            key={article.id}
+                            article={{
+                              id: article.id,
+                              title: article.title,
+                              emoji: article.emoji || '📝',
+                              content: article.content,
+                              author: {
+                                id: author?.id || '',
+                                name: author?.display_name || author?.username || 'Unknown',
+                                username: author?.username || 'unknown',
+                                avatar: author?.avatar_url || '/images/avatar-placeholder.svg',
+                                githubUsername: author?.github_username
+                              },
+                              publishedAt: article.published_at || article.created_at,
+                              likes: article.likes_count || 0,
+                              comments: article.comments_count || 0,
+                              tags: article.topics || [],
+                              type: (article.type as 'tech' | 'idea') || 'tech',
+                              slug: article.slug,
+                              isLiked: false
+                            }}
+                          />
+                        );
+                      })
                     )}
                   </div>
                 )}
@@ -138,26 +148,29 @@ export default function TrendingPage() {
                         <p className="text-gray-600">本がありません</p>
                       </div>
                     ) : (
-                      books.map((book) => (
-                        <BookCard
-                          key={book.id}
-                          book={{
-                            id: book.id,
-                            title: book.title,
-                            author: {
-                              username: book.user?.username || 'Unknown',
-                              name: book.user?.display_name || book.user?.username || 'Unknown',
-                              avatar: book.user?.avatar_url || '/images/avatar-placeholder.svg'
-                            },
-                            coverImage: book.cover_image_url || '/images/book-placeholder.svg',
-                            price: book.price || 0,
-                            isFree: book.is_free,
-                            rating: 4.5,
-                            reviews: book.likes_count,
-                            publishedAt: book.published_at || book.created_at
-                          }}
-                        />
-                      ))
+                      books.map((book) => {
+                        const author = book.author || book.user;
+                        return (
+                          <BookCard
+                            key={book.id}
+                            book={{
+                              id: book.id,
+                              title: book.title,
+                              author: {
+                                username: author?.username || 'Unknown',
+                                name: author?.display_name || author?.username || 'Unknown',
+                                avatar: author?.avatar_url || '/images/avatar-placeholder.svg'
+                              },
+                              coverImage: book.cover_image_url || '/images/book-placeholder.svg',
+                              price: book.price || 0,
+                              isFree: book.is_free,
+                              rating: 4.5,
+                              reviews: book.likes_count,
+                              publishedAt: book.published_at || book.created_at
+                            }}
+                          />
+                        );
+                      })
                     )}
                   </div>
                 )}
@@ -169,25 +182,28 @@ export default function TrendingPage() {
                         <p className="text-gray-600">スクラップがありません</p>
                       </div>
                     ) : (
-                      scraps.map((scrap) => (
-                        <ScrapCard
-                          key={scrap.id}
-                          scrap={{
-                            id: scrap.id,
-                            title: scrap.title,
-                            emoji: scrap.emoji,
-                            author: {
-                              username: scrap.user?.username || 'Unknown',
-                              name: scrap.user?.display_name || scrap.user?.username || 'Unknown',
-                              avatar: scrap.user?.avatar_url || '/images/avatar-placeholder.svg'
-                            },
-                            publishedAt: scrap.created_at,
-                            comments: scrap.comments_count,
-                            isOpen: !scrap.closed,
-                            tags: scrap.topics || []
-                          }}
-                        />
-                      ))
+                      scraps.map((scrap) => {
+                        const author = scrap.author || scrap.user;
+                        return (
+                          <ScrapCard
+                            key={scrap.id}
+                            scrap={{
+                              id: scrap.id,
+                              title: scrap.title,
+                              emoji: scrap.emoji,
+                              author: {
+                                username: author?.username || 'Unknown',
+                                name: author?.display_name || author?.username || 'Unknown',
+                                avatar: author?.avatar_url || '/images/avatar-placeholder.svg'
+                              },
+                              publishedAt: scrap.created_at,
+                              comments: scrap.comments_count,
+                              isOpen: !scrap.closed,
+                              tags: scrap.topics || []
+                            }}
+                          />
+                        );
+                      })
                     )}
                   </div>
                 )}
