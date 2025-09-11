@@ -121,17 +121,5 @@ export default async function ArticlePage({
     )
   }
   
-  // デバッグ用：シンプルな表示に変更
-  return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
-        <p className="text-gray-600 mb-8">著者: {article.author.name}</p>
-        <div className="prose prose-lg max-w-none">
-          <pre className="whitespace-pre-wrap">{article.content}</pre>
-        </div>
-      </div>
-    </div>
-  )
-  // return <EnhancedArticleLayout article={article} />
+  return <EnhancedArticleLayout article={article} />
 }

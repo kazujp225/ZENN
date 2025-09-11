@@ -32,6 +32,12 @@ export default function TrendingPage() {
         scrapsApi.getOpenScraps(20, 0)
       ])
 
+      console.log('Trending API responses:', {
+        articles: articlesRes,
+        books: booksRes,
+        scraps: scrapsRes
+      })
+
       // Sort by likes count to get trending items
       const trendingArticles = (Array.isArray(articlesRes?.data) ? articlesRes.data : []).sort((a, b) => b.likes_count - a.likes_count)
       const trendingBooks = (Array.isArray(booksRes?.data) ? booksRes.data : []).sort((a, b) => b.likes_count - a.likes_count)
