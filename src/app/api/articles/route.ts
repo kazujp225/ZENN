@@ -3,6 +3,29 @@ import { createClient } from '@/lib/supabase/client'
 import { createServerAuthClient } from '@/lib/supabase/auth'
 import { isSupabaseConfigured } from '@/lib/supabase/safe-client'
 
+// ヘルパー関数：現在のユーザーを取得
+async function getCurrentUser(request: NextRequest) {
+  try {
+    const supabase = createServerAuthClient()
+    const { data: { user }, error } = await supabase.auth.getUser()
+    
+    if (error) {
+      console.error('Auth error:', error)
+      return null
+    }
+    
+    return user
+  } catch (error) {
+    console.error('Error getting current user:', error)
+    return null
+  }
+}
+
+// ヘルパー関数：管理者クライアントを作成
+function createAdminClient() {
+  return createClient()
+}
+
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
@@ -95,6 +118,8 @@ export async function POST(request: NextRequest) {
       const timestamp = Date.now()
       finalSlug = `${finalSlug}-${timestamp}`
     }
+
+    const supabase = createClient()
 
     // Create article
     const { data: article, error: articleError } = await supabase
